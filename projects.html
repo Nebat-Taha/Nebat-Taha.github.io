@@ -1,52 +1,102 @@
-/* Navigation Menu Styles */
-nav {
-    position: sticky;
-    top: 0;
-    background: white;
-    border-bottom: 1px solid var(--border);
-    padding: 10px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 1000;
-}
-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-nav ul li {
-    margin-left: 20px;
-}
-nav ul li a {
-    text-decoration: none;
-    color: var(--text);
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
-    font-size: 0.9rem;
-}
-nav ul li a:hover {
-    color: var(--accent);
-}
-/* Smooth scrolling for the whole page */
-html {
-    scroll-behavior: smooth;
-}
-<nav>
-    <div style="font-weight: 900; letter-spacing: -1px;">[YOUR INITIALS]</div>
-    <ul>
-        <li><a href="#summary">ABOUT</a></li>
-        <li><a href="#evolution">EVOLUTION</a></li>
-        <li><a href="#principles">PRINCIPLES</a></li>
-        <li><a href="projects.html">PROJECTS</a></li> </ul>
-</nav>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | [Your Name]</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --accent: #2563eb;
+            --code-bg: #f8fafc;
+            --border: #e2e8f0;
+        }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; 
+            line-height: 1.6; color: var(--text); max-width: 900px; margin: 0 auto; padding: 40px 20px; 
+        }
+        
+        /* Consistent Navigation */
+        nav { position: sticky; top: 0; background: white; border-bottom: 1px solid var(--border); padding: 10px 0; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; }
+        nav ul li { margin-left: 20px; }
+        nav ul li a { text-decoration: none; color: var(--text); font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 0.9rem; }
+        
+        h1 { font-family: 'Courier New', Courier, monospace; font-size: 1.8rem; border-bottom: 3px solid var(--text); padding-bottom: 10px; }
+        h2 { color: var(--accent); font-size: 1.4rem; margin-top: 40px; }
+        h3 { font-size: 1.1rem; margin-top: 25px; border-left: 3px solid var(--border); padding-left: 10px; }
+        
+        .project-meta { margin-bottom: 20px; }
+        .tag { background: var(--code-bg); color: #475569; padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); font-size: 0.8rem; font-family: 'Courier New', Courier, monospace; margin-right: 5px; }
+        
+        .decision-box { background: #f1f5f9; padding: 20px; border-radius: 8px; border-left: 5px solid var(--accent); margin: 20px 0; }
+        .decision-box strong { display: block; margin-bottom: 5px; }
 
-<header id="top">
-    <h1>[Your Name]</h1>
-    <p><strong>Cloud & DevOps Engineer</strong> | 10+ Years Systems Infrastructure</p>
-    <div class="social-links">
-        <a href="https://linkedin.com/in/yourprofile">LINKEDIN</a>
-        <a href="https://github.com/yourusername">GITHUB</a>
-    </div>
-</header>
+        .back-link { display: inline-block; margin-bottom: 20px; text-decoration: none; color: var(--accent); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div style="font-weight: 900; letter-spacing: -1px;">[INITIALS]</div>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="index.html#evolution">EVOLUTION</a></li>
+            <li><a href="projects.html" style="color: var(--accent);">PROJECTS</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h1 style="margin-top: 40px;">// Documentation & Case Studies</h1>
+        <p>A deep dive into the technical decisions, trade-offs, and architectures I have implemented.</p>
+
+        <article class="project-case-study">
+            <h2>01. Automated CI/CD for Legacy Banking Middleware</h2>
+            <div class="project-meta">
+                <span class="tag">GitHub Actions</span>
+                <span class="tag">Docker</span>
+                <span class="tag">Terraform</span>
+                <span class="tag">AWS EKS</span>
+            </div>
+
+            <h3>The Challenge</h3>
+            <p>A legacy Java application required manual deployment to on-premise VMs, leading to a 2-day lead time for production releases and frequent "human-error" outages.</p>
+
+            <h3>Design Decisions</h3>
+            <div class="decision-box">
+                <strong>Decision: Containerization over VM Image Baking</strong>
+                <p>I chose to containerize the application using multi-stage Docker builds instead of using traditional Packer/AMI flows. 
+                <em>Why?</em> To standardize the environment between the developer's local machine and the production EKS cluster, reducing "it works on my machine" issues by 90%.</p>
+            </div>
+
+            <div class="decision-box">
+                <strong>Decision: GitHub Actions for Orchestration</strong>
+                <p>Despite the team's familiarity with Jenkins, I implemented GitHub Actions. 
+                <em>Why?</em> To eliminate the overhead of managing a Jenkins master server and to leverage "Jobs-as-Code" tightly coupled with the source repository.</p>
+            </div>
+
+            <h3>Architecture Flow</h3>
+            <p>The pipeline includes: Linting -> Unit Testing -> Security Scanning (Trivy) -> Build -> Push to ECR -> ArgoCD Sync.</p>
+            
+            
+
+            <h3>The Outcome</h3>
+            <ul>
+                <li><strong>Lead Time:</strong> Reduced from 48 hours to 12 minutes.</li>
+                <li><strong>Reliability:</strong> 100% automated rollbacks implemented on failed health checks.</li>
+                <li><strong>Cost:</strong> Switched to Spot Instances for Dev environments, saving 60% on monthly cloud spend.</li>
+            </ul>
+        </article>
+        <hr style="margin: 60px 0; border: 0; border-top: 1px solid var(--border);">
+
+        </main>
+
+    <footer>
+        <p style="text-align: center; color: #888; font-size: 0.8rem; margin-top: 100px;">
+            &copy; 2026 | Built with focus on Clarity and Performance.
+        </p>
+    </footer>
+
+</body>
+</html>
