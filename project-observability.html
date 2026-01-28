@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Observability Framework | Nebat Taha Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav>
+        <div class="logo">NT</div>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="projects.html" style="color: var(--accent);">PROJECTS</a></li>
+            <li><a href="assets/Nebat_Taha_Resume.pdf" class="nav-resume" target="_blank" download>RESUME</a></li>
+        </ul>
+    </nav>
+
+    <article class="project-detail">
+        <header>
+            <a href="projects.html" class="back-link">← Back to Projects</a>
+            <h1>Modernizing AWS Observability: From Silos to GitOps</h1>
+            <div class="project-meta">
+                <span class="tag">Prometheus</span>
+                <span class="tag">Grafana</span>
+                <span class="tag">Python</span>
+                <span class="tag">AWS SQS</span>
+                <span class="tag">GitOps</span>
+            </div>
+        </header>
+
+        <section class="intro-section">
+            <p class="about-text">
+                In complex AWS environments, visibility is often trapped behind high-cost CloudWatch dashboards or siloed accounts. 
+                I engineered a centralized observability platform that monitors <strong>AWS SQS</strong> and infrastructure health using 
+                a 100% "Monitoring-as-Code" approach.
+            </p>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>01. The Technical Engine</h2>
+            <p>The solution utilizes <strong>Prometheus</strong> as the time-series core, pulling data from three distinct sources to create a unified view.</p>
+            
+            <div class="decision-box">
+                <h3>Custom Python SQS Exporter</h3>
+                <p>Standard exporters often lack the granularity needed for specific queue behaviors. I developed a <strong>Python script using Boto3</strong> that dynamically discovers all SQS queues and exposes real-time metrics (Messages Visible, Age of Oldest Message) on a Prometheus-compatible endpoint.</p>
+            </div>
+
+            
+        </section>
+
+        <section>
+            <h2>02. Evolving to a Collaborative Model</h2>
+            <p>The most critical phase of this project was moving away from a "single-server" setup to a <strong>Collaborative GitOps workflow</strong>. This ensured the system was production-ready and team-accessible.</p>
+
+            <div class="evolution-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Traditional Setup</th>
+                            <th>My Collaborative Model</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Config Management</strong></td>
+                            <td>Manual SSH edits</td>
+                            <td><strong>Git-Controlled (Versioned)</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Auth / Security</strong></td>
+                            <td>Hardcoded IAM Keys</td>
+                            <td><strong>IAM Instance Profiles (Roles)</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Uptime</strong></td>
+                            <td>Manual script execution</td>
+                            <td><strong>Systemd Daemons (Auto-Restart)</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dependency</strong></td>
+                            <td>System-wide Python</td>
+                            <td><strong>Isolated Virtual Environments</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section>
+            <h2>03. Visualization & Visualization</h2>
+            <p>Data is useless without clarity. I built <strong>Grafana Dashboards</strong> that use "Join by Field" transformations to correlate SQS throughput with infrastructure health metrics, providing a single pane of glass for SRE teams.</p>
+            
+            
+        </section>
+
+        <section class="project-footer">
+            <h2>Key Outcomes</h2>
+            <ul>
+                <li><strong>Security Hardened:</strong> Eliminated static AWS credentials by utilizing IAM Roles.</li>
+                <li><strong>Team Ready:</strong> Entire monitoring stack can be updated via Git Pull Requests.</li>
+                <li><strong>Zero Data Loss:</strong> Implemented Systemd <code>Restart=always</code> policies for all exporters.</li>
+            </ul>
+            
+            <div class="cta-box" style="margin-top: 40px; text-align: center;">
+                <a href="https://github.com/Nebat-Taha/prometheus-monitoring" target="_blank" class="read-more">View GitOps Repository →</a>
+            </div>
+        </section>
+    </article>
+
+    <footer>
+        <p>&copy; 2026 Nebat Taha | Built with code & coffee.</p>
+    </footer>
+
+</body>
+</html>
