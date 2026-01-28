@@ -30,7 +30,16 @@ th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border)
 .arrow { color: var(--accent); font-weight: bold; }
 
 /* Project Cards */
-.project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px; }
+/*.project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px; } */
+.project-grid {
+    display: grid;
+    /* This tells the browser: "Make as many columns as fit, 
+       but each must be at least 300px wide" */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    gap: 25px;
+    margin-top: 30px;
+    align-items: stretch; /* Keeps card heights equal in the same row */
+}
 .project-card { border: 1px solid var(--border); padding: 20px; border-radius: 8px; transition: transform 0.2s; }
 .project-card:hover { transform: translateY(-5px); border-color: var(--accent); }
 
