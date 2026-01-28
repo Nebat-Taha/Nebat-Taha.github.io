@@ -1,3 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | [Your Name]</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --accent: #2563eb;
+            --code-bg: #f8fafc;
+            --border: #e2e8f0;
+        }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; 
+            line-height: 1.6; color: var(--text); max-width: 900px; margin: 0 auto; padding: 40px 20px; 
+        }
+        
+        /* Consistent Navigation */
+        nav { position: sticky; top: 0; background: white; border-bottom: 1px solid var(--border); padding: 10px 0; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; }
+        nav ul li { margin-left: 20px; }
+        nav ul li a { text-decoration: none; color: var(--text); font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 0.9rem; }
+        
+        h1 { font-family: 'Courier New', Courier, monospace; font-size: 1.8rem; border-bottom: 3px solid var(--text); padding-bottom: 10px; }
+        h2 { color: var(--accent); font-size: 1.4rem; margin-top: 40px; }
+        h3 { font-size: 1.1rem; margin-top: 25px; border-left: 3px solid var(--border); padding-left: 10px; }
+        
+        .project-meta { margin-bottom: 20px; }
+        .tag { background: var(--code-bg); color: #475569; padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); font-size: 0.8rem; font-family: 'Courier New', Courier, monospace; margin-right: 5px; }
+        
+        .decision-box { background: #f1f5f9; padding: 20px; border-radius: 8px; border-left: 5px solid var(--accent); margin: 20px 0; }
+        .decision-box strong { display: block; margin-bottom: 5px; }
+
+        .back-link { display: inline-block; margin-bottom: 20px; text-decoration: none; color: var(--accent); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div style="font-weight: 900; letter-spacing: -1px;">[INITIALS]</div>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="index.html#evolution">EVOLUTION</a></li>
+            <li><a href="projects.html" style="color: var(--accent);">PROJECTS</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h1 style="margin-top: 40px;">// Documentation & Case Studies</h1>
+        <p>A deep dive into the technical decisions, trade-offs, and architectures I have implemented.</p>
+<article class="project-case-study">
+    <h2>Multi-Region Infrastructure Framework with GitHub Actions</h2>
+    <div class="project-meta">
+        <span class="tag">Terraform</span>
+        <span class="tag">GitHub Actions</span>
+        <span class="tag">AWS</span>
+        <span class="tag">S3/DynamoDB (State)</span>
+    </div>
+
+    <p>
+        Managed a scalable multi-region AWS architecture using a modular Terraform structure and automated CI/CD pipelines. 
+        Designed to support rapid expansion into new regions with zero changes to the underlying deployment logic.
+    </p>
+
+    <h3>Design Decisions</h3>
+
+    <div class="decision-box">
+        <strong>Decision: GitHub Actions Matrix Strategy for Regional Deployment</strong>
+        <p>Instead of sequential deployments, I implemented a <code>strategy: matrix</code> in GitHub Actions.
+        <br><em>Why?</em> This allows for parallel execution across regions (ap-southeast-2, eu-central-1, etc.). It ensures consistency while significantly reducing total build time as the regional footprint grows.</p>
+    </div>
+
+    <div class="decision-box">
+        <strong>Decision: Decoupled Global vs. Regional State</strong>
+        <p>I split the infrastructure into <code>terraform-mr/global</code> and <code>terraform-mr/regions/</code>.
+        <br><em>Why?</em> Banking-grade stability requires minimizing the "blast radius." Changes to regional compute shouldn't risk the global IAM or Networking backbone. Each region operates on its own independent state file with S3 versioning and DynamoDB locking.</p>
+    </div>
+
+    <div class="decision-box">
+        <strong>Decision: Separate Drift Detection Pipeline</strong>
+        <p>Created a standalone workflow for drift detection, separate from the main deployment pipeline.
+        <br><em>Why?</em> This enforces a clear separation between <strong>Change Execution</strong> and <strong>Change Detection</strong>. It allows for continuous monitoring of infrastructure health without the risk of an accidental 'apply' during a detection run.</p>
+    </div>
+
+    <h3>Infrastructure Architecture</h3>
+    <p>The project follows a "Golden Path" for regional expansion. Adding a region requires only two steps: creating a new folder and updating the matrix list.</p>
+    
+    
+
+    <h3>Key Outcomes</h3>
+    <ul>
+        <li><strong>Scalability:</strong> Successfully automated parallel deployments across 3+ AWS regions.</li>
+        <li><strong>Security:</strong> Implemented encrypted remote state with strictly scoped IAM policies and MFA protection.</li>
+        <li><strong>Maintainability:</strong> Reduced code duplication by 70% through a centralized <code>/modules</code> library consumed by all regions.</li>
+    </ul>
+
+    <a href="https://github.com/Nebat-Taha/regional-terraform" target="_blank" style="color: var(--accent); font-weight: bold;">View Repository on GitHub →</a>
 <article class="project-case-study">
     <h2>Multi-Region Infrastructure Framework with GitHub Actions</h2>
     <div class="project-meta">
@@ -46,3 +145,15 @@
 
     <a href="https://github.com/Nebat-Taha/regional-terraform" target="_blank" style="color: var(--accent); font-weight: bold;">View Repository on GitHub →</a>
 </article>
+<hr style="margin: 60px 0; border: 0; border-top: 1px solid var(--border);">
+
+        </main>
+
+    <footer>
+        <p style="text-align: center; color: #888; font-size: 0.8rem; margin-top: 100px;">
+            &copy; 2026 | Built with focus on Clarity and Performance.
+        </p>
+    </footer>
+
+</body>
+</html>
