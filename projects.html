@@ -50,42 +50,53 @@
         <p>A deep dive into the technical decisions, trade-offs, and architectures I have implemented.</p>
 
         <article class="project-case-study">
-            <h2>01. Automated CI/CD for Legacy Banking Middleware</h2>
-            <div class="project-meta">
-                <span class="tag">GitHub Actions</span>
-                <span class="tag">Docker</span>
-                <span class="tag">Terraform</span>
-                <span class="tag">AWS EKS</span>
-            </div>
+    <h2>Multi-Region Infrastructure Framework with GitHub Actions</h2>
+    <div class="project-meta">
+        <span class="tag">Terraform</span>
+        <span class="tag">GitHub Actions</span>
+        <span class="tag">AWS</span>
+        <span class="tag">S3/DynamoDB (State)</span>
+    </div>
 
-            <h3>The Challenge</h3>
-            <p>A legacy Java application required manual deployment to on-premise VMs, leading to a 2-day lead time for production releases and frequent "human-error" outages.</p>
+    <p>
+        Managed a scalable multi-region AWS architecture using a modular Terraform structure and automated CI/CD pipelines. 
+        Designed to support rapid expansion into new regions with zero changes to the underlying deployment logic.
+    </p>
 
-            <h3>Design Decisions</h3>
-            <div class="decision-box">
-                <strong>Decision: Containerization over VM Image Baking</strong>
-                <p>I chose to containerize the application using multi-stage Docker builds instead of using traditional Packer/AMI flows. 
-                <em>Why?</em> To standardize the environment between the developer's local machine and the production EKS cluster, reducing "it works on my machine" issues by 90%.</p>
-            </div>
+    <h3>Design Decisions</h3>
 
-            <div class="decision-box">
-                <strong>Decision: GitHub Actions for Orchestration</strong>
-                <p>Despite the team's familiarity with Jenkins, I implemented GitHub Actions. 
-                <em>Why?</em> To eliminate the overhead of managing a Jenkins master server and to leverage "Jobs-as-Code" tightly coupled with the source repository.</p>
-            </div>
+    <div class="decision-box">
+        <strong>Decision: GitHub Actions Matrix Strategy for Regional Deployment</strong>
+        <p>Instead of sequential deployments, I implemented a <code>strategy: matrix</code> in GitHub Actions.
+        <br><em>Why?</em> This allows for parallel execution across regions (ap-southeast-2, eu-central-1, etc.). It ensures consistency while significantly reducing total build time as the regional footprint grows.</p>
+    </div>
 
-            <h3>Architecture Flow</h3>
-            <p>The pipeline includes: Linting -> Unit Testing -> Security Scanning (Trivy) -> Build -> Push to ECR -> ArgoCD Sync.</p>
-            
-            
+    <div class="decision-box">
+        <strong>Decision: Decoupled Global vs. Regional State</strong>
+        <p>I split the infrastructure into <code>terraform-mr/global</code> and <code>terraform-mr/regions/</code>.
+        <br><em>Why?</em> Banking-grade stability requires minimizing the "blast radius." Changes to regional compute shouldn't risk the global IAM or Networking backbone. Each region operates on its own independent state file with S3 versioning and DynamoDB locking.</p>
+    </div>
 
-            <h3>The Outcome</h3>
-            <ul>
-                <li><strong>Lead Time:</strong> Reduced from 48 hours to 12 minutes.</li>
-                <li><strong>Reliability:</strong> 100% automated rollbacks implemented on failed health checks.</li>
-                <li><strong>Cost:</strong> Switched to Spot Instances for Dev environments, saving 60% on monthly cloud spend.</li>
-            </ul>
-        </article>
+    <div class="decision-box">
+        <strong>Decision: Separate Drift Detection Pipeline</strong>
+        <p>Created a standalone workflow for drift detection, separate from the main deployment pipeline.
+        <br><em>Why?</em> This enforces a clear separation between <strong>Change Execution</strong> and <strong>Change Detection</strong>. It allows for continuous monitoring of infrastructure health without the risk of an accidental 'apply' during a detection run.</p>
+    </div>
+
+    <h3>Infrastructure Architecture</h3>
+    <p>The project follows a "Golden Path" for regional expansion. Adding a region requires only two steps: creating a new folder and updating the matrix list.</p>
+    
+    
+
+    <h3>Key Outcomes</h3>
+    <ul>
+        <li><strong>Scalability:</strong> Successfully automated parallel deployments across 3+ AWS regions.</li>
+        <li><strong>Security:</strong> Implemented encrypted remote state with strictly scoped IAM policies and MFA protection.</li>
+        <li><strong>Maintainability:</strong> Reduced code duplication by 70% through a centralized <code>/modules</code> library consumed by all regions.</li>
+    </ul>
+
+    <a href="https://github.com/Nebat-Taha/regional-terraform" target="_blank" style="color: var(--accent); font-weight: bold;">View Repository on GitHub →</a>
+</article>
         <hr style="margin: 60px 0; border: 0; border-top: 1px solid var(--border);">
 
         </main>
