@@ -1,0 +1,66 @@
+<nav>
+    <div style="font-weight: 900;">NT</div>
+    <ul>
+        <li><a href="index.html">HOME</a></li>
+        <li><a href="projects.html" style="color: var(--accent);">PROJECTS</a></li>
+        <li><a href="assets/Nebat_Taha_Resume.pdf" class="nav-resume" target="_blank" download>RESUME</a></li>
+    </ul>
+</nav>
+
+<article style="margin-top:40px;">
+    <a href="projects.html" style="color: var(--accent); text-decoration: none;">← Back to Projects</a>
+    <h1>Disaster Recovery: Alternatives and Recommendations</h1>
+    
+    <p class="about-text">
+        In high-stakes industries like banking, Disaster Recovery (DR) isn't just a technical backup plan—it's a core business requirement. This analysis explores the shift from traditional passive models to modern, automated resilience.
+    </p>
+
+    <h2>01. The Alternatives</h2>
+    <div class="evolution-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Logic</th>
+                    <th>RTO</th>
+                    <th>Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Active-Passive</strong></td>
+                    <td>1:1 Mapping (Idle backup)</td>
+                    <td>30-60 min</td>
+                    <td>Very High</td>
+                </tr>
+                <tr>
+                    <td><strong>Pilot Light</strong></td>
+                    <td>Minimal standby footprint</td>
+                    <td>10-15 min</td>
+                    <td>High</td>
+                </tr>
+                <tr>
+                    <td><strong>Active-Active</strong></td>
+                    <td>Mutual Regional Failover</td>
+                    <td>2-4 min</td>
+                    <td>Optimized</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="decision-box">
+        <h2>Final Recommendation: Active-Active Regional Failover</h2>
+        <p>The Active-Active model eliminates the need for idle standby infrastructure, enables fully automated regional failover within minutes, and continuously validates system resilience through real production traffic.</p>
+    </div>
+
+    <h3>Key Advantages</h3>
+    <ul>
+        <li><strong>Automated Failover via Route 53:</strong> Health checks redirect traffic within minutes, achieving an RTO of < 5 mins without human intervention.</li>
+        <li><strong>Continuous Validation:</strong> All regions serve live traffic. Failover paths are always "warm," removing the risk of an untested standby environment.</li>
+        <li><strong>Elastic Scaling:</strong> Instead of pre-paying for idle servers, we use Auto Scaling to expand healthy regions only when needed.</li>
+    </ul>
+
+    <h3>Trade-offs & Mitigation</h3>
+    <p>While performance may briefly dip during a regional scale-up event, this is an accepted trade-off for the massive gains in cost efficiency and operational simplicity. To mitigate systemic failures, we use <strong>staged CI/CD deployments</strong> and <strong>environment isolation</strong>.</p>
+</article>
