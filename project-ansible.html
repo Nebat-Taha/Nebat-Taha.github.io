@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Ansible CICD</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <div style="font-weight: 900; letter-spacing: -1px;">NT</div>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="projects.html" style="color: var(--accent);">PROJECTS</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h1 style="margin-top: 40px;"> Documentation & Case Studies</h1>
+        <p>A deep dive into the technical decisions, trade-offs, and architectures I have implemented.</p>
+<article style="margin-top:40px;">
+    <a href="projects.html" style="color: var(--accent); text-decoration: none;">← Back to Projects</a>
+    <h1>Multi-Region Configuration & Multi-Cloud Recovery Framework</h1>
+    
+    <div class="project-meta" style="margin: 20px 0;">
+        <span class="tag">Ansible</span>
+        <span class="tag">GitHub Actions</span>
+        <span class="tag">AWS</span>
+        <span class="tag">Backblaze B2 (DR)</span>
+        <span class="tag">DevSecOps</span>
+    </div>
+
+    <section>
+        <h3>The Mission</h3>
+        <p>To provide consistent configuration management, security hardening, and database durability across a multi-region AWS footprint, ensuring zero dependency on a single cloud provider for critical backups.</p>
+    </section>
+
+    <h3>Design Decisions</h3>
+
+    <div class="decision-box">
+        <strong>Decision: Decoupled Provisioning vs. Configuration</strong>
+        <p>While many teams use Terraform for everything, I enforced a strict <strong>Separation of Responsibilities</strong>: Terraform manages the <em>Infrastructure</em>, while Ansible manages the <em>State</em>.
+        <br><em>Why?</em> This reduces coupling and allows the configuration lifecycle (e.g., patching, user management) to move faster than the underlying infrastructure lifecycle.</p>
+    </div>
+
+    <div class="decision-box">
+        <strong>Decision: Multi-Cloud Resilience (AWS to Backblaze B2)</strong>
+        <p>Database backups (MongoDB/Redis) are exported from AWS and stored in Backblaze B2.
+        <br><em>Why?</em> In a "Worst Case" banking scenario (account lockout or provider-wide outage), having a secondary cloud for recovery is a critical compliance requirement for Cyber Resilience.</p>
+    </div>
+
+    <div class="decision-box">
+        <strong>Decision: Manual Approval Gates for Database Restore</strong>
+        <p>I designed a <strong>manually triggered</strong> pipeline for database restores, requiring explicit operator input for the target host and backup identifier.
+        <br><em>Why?</em> Automated restores in production are dangerous. This "Human-in-the-loop" design ensures deterministic recovery and prevents accidental data overwrites.</p>
+    </div>
+
+    <h3>Operational Architecture</h3>
+    <p>The framework utilizes a dynamic AWS inventory to discover hosts in real-time across regions, ensuring that configuration management scales automatically as Terraform adds new compute resources.</p>
+    
+    
+
+    <h3>Key Outcomes</h3>
+    <ul>
+        <li><strong>Security Hardening:</strong> Automated S3 bucket policy enforcement (private ACLs, versioning) across all global resources.</li>
+        <li><strong>Operational Agility:</strong> Single-command regional expansion—adding a region to the Ansible matrix requires zero logic changes.</li>
+        <li><strong>Disaster Recovery:</strong> Proven cross-cloud restore workflow for MongoDB and Redis workloads.</li>
+    </ul>
+
+    <p>Explore the automation logic: 
+    <a href="https://github.com/Nebat-Taha/savi-ansible" target="_blank" style="color: var(--accent); font-weight: bold;">savi-ansible Repository →</a></p>
+</article>
+<hr style="margin: 60px 0; border: 0; border-top: 1px solid var(--border);">
+
+        </main>
+
+    <footer>
+        <p style="text-align: center; color: #888; font-size: 0.8rem; margin-top: 100px;">
+            &copy; 2026 | Built with focus on Clarity and Performance.
+        </p>
+    </footer>
+
+</body>
+</html>
