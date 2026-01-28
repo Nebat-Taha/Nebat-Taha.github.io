@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects | Architecture Evolution Roadmap </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<article style="margin-top:40px;">
+    <a href="projects.html" style="color: var(--accent); text-decoration: none;">← Back to Projects</a>
+    <h1>Scaling Globally: A Phased Architecture Evolution</h1>
+    
+    <p class="about-text">
+        Scaling a platform globally requires more than just deploying code in new regions. It requires a careful balance of <strong>User Experience (Latency)</strong>, <strong>Operational Complexity</strong>, and <strong>Data Residency</strong>.
+    </p>
+
+    <h2>The Three-Phase Approach</h2>
+
+    <section class="decision-box">
+        <h3>Phase 1: Proximity Hybrid (Mexico Focused)</h3>
+        <p><strong>Goal:</strong> Fast market entry with minimal complexity.</p>
+        <p>By leveraging the AWS Global Backbone and VPC Peering, we serve the Mexico region from <code>us-east-1</code>. Initial connection setup is local, while database operations travel over private fiber to ensure reliability and sub-millisecond packet loss.</p>
+        
+    </section>
+
+    <section class="decision-box">
+        <h3>Phase 2: Regional Read Replicas (EU/AU Expansion)</h3>
+        <p><strong>Goal:</strong> Optimize global performance while maintaining a Single Source of Truth.</p>
+        <p>As we expand to Frankfurt and Sydney, we introduce <strong>Asynchronous Read Replicas</strong>. This achieves local read speeds for 90% of user interactions, while routing writes back to the US primary via a "One-Trip" write model over the private AWS backbone.</p>
+        
+    </section>
+
+    <section class="decision-box">
+        <h3>Phase 3: Geographic Partitioning (Sharding)</h3>
+        <p><strong>Goal:</strong> Regulatory compliance (GDPR) and ultra-low latency.</p>
+        <p>The final evolution involves full data sharding. User data lives exclusively in their home region. This maximizes performance and satisfies strict data residency laws, though it increases the operational overhead of shard management.</p>
+        
+    </section>
+
+    <h2>Architecture Comparison</h2>
+    <div class="evolution-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Centralized (P1)</th>
+                    <th>Read-Replicas (P2)</th>
+                    <th>Sharded (P3)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Read Latency</strong></td>
+                    <td>High (Excl. MX)</td>
+                    <td>Low (Global)</td>
+                    <td>Minimal</td>
+                </tr>
+                <tr>
+                    <td><strong>Write Latency</strong></td>
+                    <td>High</td>
+                    <td>High (Backbone)</td>
+                    <td>Minimal</td>
+                </tr>
+                <tr>
+                    <td><strong>Complexity</strong></td>
+                    <td>Low</td>
+                    <td>Medium</td>
+                    <td>High</td>
+                </tr>
+                <tr>
+                    <td><strong>Compliance</strong></td>
+                    <td>Standard</td>
+                    <td>Standard</td>
+                    <td>GDPR Ready</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Final Recommendation</h3>
+    <p>Success lies in the <strong>Evolution</strong>. Starting with Option 1 allows for rapid learning, while the modularity of Terraform and Ansible ensures the platform is "Phase 3 Ready" when the business scale justifies the complexity.</p>
+</article>
+</body>
+</html>
