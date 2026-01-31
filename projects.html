@@ -6,49 +6,67 @@
     <title>Projects | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        /* Essential Inline Styles for the Grid and Tabs */
-        .project-grid, .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            margin-top: 20px;
+  <style>
+    /* Ensure buttons are on top and clickable */
+    .project-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 50px 0;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        z-index: 10;
+    }
+
+    .tab-btn {
+        background: none;
+        border: none;
+        padding: 15px 25px;
+        font-family: 'Fira Code', monospace;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer; /* Makes the 'hand' icon appear */
+        color: #888;
+        border-bottom: 3px solid transparent;
+        transition: 0.3s;
+        pointer-events: auto; /* Ensures the mouse can interact with it */
+    }
+
+    .tab-btn.active {
+        color: var(--accent) !important;
+        border-bottom: 3px solid var(--accent) !important;
+    }
+
+    .hidden { 
+        display: none !important; 
+    }
+</style>
+
+<script>
+    function showSection(sectionId) {
+        const casesSection = document.getElementById('cases-section');
+        const researchSection = document.getElementById('research-section');
+        const buttons = document.querySelectorAll('.tab-btn');
+
+        if (sectionId === 'cases') {
+            // Show Cases, Hide Research
+            casesSection.classList.remove('hidden');
+            researchSection.classList.add('hidden');
+            
+            // Update Buttons
+            buttons[0].classList.add('active');
+            buttons[1].classList.remove('active');
+        } else {
+            // Show Research, Hide Cases
+            researchSection.classList.remove('hidden');
+            casesSection.classList.add('hidden');
+            
+            // Update Buttons
+            buttons[1].classList.add('active');
+            buttons[0].classList.remove('active');
         }
-        .project-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 50px 0;
-            border-bottom: 1px solid #eee;
-        }
-        .tab-btn {
-            background: none;
-            border: none;
-            padding: 15px 25px;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            color: #888;
-            border-bottom: 3px solid transparent;
-            transition: 0.3s;
-        }
-        .tab-btn.active {
-            color: var(--accent);
-            border-bottom: 3px solid var(--accent);
-        }
-        .hidden { display: none; }
-        .section-header { text-align: center; margin-top: 60px; }
-        .blog-card {
-            background: #fff;
-            border: 1px solid #eee;
-            padding: 30px;
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-        }
-        .blog-card:hover { transform: translateY(-5px); border-color: var(--accent); }
-        .blog-category { font-size: 0.7rem; color: var(--accent); font-weight: 700; text-transform: uppercase; }
-    </style>
+    }
+</script>
 </head>
 <body>
 
