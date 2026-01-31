@@ -19,100 +19,58 @@
     </nav>
 
     <article class="project-detail">
-        <header>
-            <a href="projects.html" class="back-link">← Back to Projects</a>
-            <h1>Multi-Region Configuration & Multi-Cloud Disaster Recovery</h1>
-            <p class="subtitle">Orchestrating AWS fleet health and Cross-Cloud data resilience using Ansible & GitHub Actions.</p>
-            <div class="project-meta">
-                <span class="tag">Ansible</span>
-                <span class="tag">GitHub Actions</span>
-                <span class="tag">Backblaze B2</span>
-                <span class="tag">Multi-Cloud</span>
-                <span class="tag">DevSecOps</span>
-            </div>
-        </header>
+    <header>
+        <a href="projects.html" class="back-link">← Back to Projects</a>
+        <h1>Multi-Region Configuration & Multi-Cloud Disaster Recovery</h1>
+        <div class="project-meta">
+            <span class="tag">Ansible</span>
+            <span class="tag">GitHub Actions</span>
+            <span class="tag">Backblaze B2</span>
+            <span class="tag">Multi-Cloud</span>
+        </div>
+    </header>
 
-        <section class="intro-section">
-            <div class="split-view">
-                <div class="text-col">
-                    <h2>01. The "Serverless" Control Plane</h2>
-                    <p>
-                        Most Ansible setups rely on a "Master Server" that stays on 24/7. My architecture replaces this with **Ephemeral Runner Nodes**. 
-                    </p>
-                    <ul>
-                        <li><strong>Zero Cost:</strong> No standing EC2 instances for management.</li>
-                        <li><strong>Zero Drift:</strong> Every run starts with a fresh <code>pip install</code>, ensuring the environment is never "polluted" by old configs.</li>
-                        <li><strong>Security:</strong> Credentials (AWS/B2 keys) never live on a server; they are injected as <strong>GitHub Secrets</strong> at runtime.</li>
-                    </ul>
-                </div>
-                <div class="stat-box">
-                    <h3>Impact</h3>
-                    <p><strong>$0</strong> Monthly Management Cost</p>
-                    <p><strong>100%</strong> Clean-State Execution</p>
-                </div>
-            </div>
-        </section>
+    <section>
+        <h2>01. Ephemeral Control Plane</h2>
+        <div class="decision-box">
+            <h3>Architectural Goal: Cost & Clean State</h3>
+            <p>Instead of a standing Ansible server, the <strong>GitHub Runner</strong> acts as a temporary node. This eliminates monthly EC2 costs and ensures every deployment starts from a 100% "known good" environment with fresh dependencies, preventing configuration drift on the management side.</p>
+        </div>
+    </section>
 
-        <hr>
+    <section>
+        <h2>02. Dynamic Inventory & Multi-Region Matrix</h2>
+        
+        <div class="decision-box">
+            <h3>Architectural Goal: Avoiding Static Overhead</h3>
+            <p>I utilized <strong>AWS Dynamic Inventory</strong> and <strong>EC2 Tags</strong> to group servers. This removes the manual headache of updating IP addresses; if an instance scales or changes, Ansible discovers it automatically. The CI/CD uses a matrix strategy to target multiple regions in parallel.</p>
+        </div>
+    </section>
 
-        <section>
-            <h2>02. Dynamic Inventory & Multi-Region Matrix</h2>
-            <p>Managing static IP lists is a recipe for failure in the cloud. I implemented a <strong>Dynamic Inventory</strong> system using the <code>aws_ec2</code> plugin.</p>
-            
-            
+    <section>
+        <h2>03. Multi-Cloud Backup Strategy</h2>
+        <div class="decision-box">
+            <h3>Architectural Goal: Resiliency via Backblaze B2</h3>
+            <p>To avoid "Single Cloud Failure," backups are streamed to <strong>Backblaze B2</strong> using keys stored in GitHub Secrets. For security and performance, backups are staged in a local temporary folder and immediately destroyed after the upload to save disk space and minimize the data footprint.</p>
+        </div>
+    </section>
 
-            <div class="decision-box">
-                <h3>The Parallel Matrix Strategy</h3>
-                <p>Using GitHub Actions' <code>strategy.matrix</code>, I execute configuration playbooks across multiple AWS regions (us-east-1, eu-central-1) simultaneously. The system uses <strong>AWS Tags</strong> to group servers, allowing for "Targeted Configuration" without ever knowing an IP address beforehand.</p>
-            </div>
-        </section>
+    <section>
+        <h2>04. Precision Restore (RPO Control)</h2>
+        <div class="decision-box">
+            <h3>Architectural Goal: Corruption Avoidance</h3>
+            <p>The Restore CI/CD is a separate, manual-trigger workflow. It generates an <strong>ephemeral inventory</strong> file at runtime for a single target host. By requiring the operator to specify the exact filename in B2, we avoid the risk of accidentally restoring a corrupted "latest" backup.</p>
+        </div>
+    </section>
 
-        <section>
-            <h2>03. Multi-Cloud Resilience (Backblaze B2)</h2>
-            <p>True Disaster Recovery requires getting data <em>out</em> of the primary cloud provider. I engineered a backup pipeline that bridges **AWS** and **Backblaze B2**.</p>
-            
-            <div class="process-flow">
-                <div class="step">
-                    <h4>1. Local Dump</h4>
-                    <p>Database (Mongo/Redis) is backed up to a temporary local folder.</p>
-                </div>
-                <div class="step">
-                    <h4>2. Multi-Cloud Upload</h4>
-                    <p>The file is streamed to Backblaze B2. No public ports are exposed; all traffic is handled via SSH/API.</p>
-                </div>
-                <div class="step">
-                    <h4>3. Self-Cleaning</h4>
-                    <p>The local backup is immediately destroyed to save disk space and reduce the security footprint.</p>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2>04. Precision Restore (RPO Management)</h2>
-            <p>Restoring the "latest" backup is a common mistake—the latest backup might be the one that is corrupted. My **Restore Pipeline** is built for human-in-the-loop precision.</p>
-            
-            <blockquote>
-                <strong>Architectural Note:</strong> The restore CICD generates an <strong>ephemeral inventory</strong> file at runtime. It targets a single, specific host and requires the operator to input the exact <code>backup_filename</code> from B2, ensuring we restore a known-good state.
-            </blockquote>
-        </section>
-
-        <section>
-            <h2>05. Policy Enforcement (The Untracked Guard)</h2>
-            <p>While Terraform manages the "Infrastructure as Code," Ansible acts as the **Policy Enforcer** for resources created via the Console or CLI. </p>
-            <ul>
-                <li><strong>Security Hardening:</strong> Enforcing SSH-only access and disabling unused services.</li>
-                <li><strong>Compliance:</strong> Automatically correcting S3 bucket policies or IAM roles that deviate from the standard, acting as a secondary safety net for "untracked" resources.</li>
-            </ul>
-        </section>
-
-        <section class="project-footer">
-            <div class="cta-box">
-                <h2>Explore the Playbooks</h2>
-                <p>Check out the YAML structures for the Multi-Region CI/CD and the Precision Restore logic.</p>
-                <a href="https://github.com/Nebat-Taha/ansible-infrastructure" target="_blank" class="read-more">View GitHub Repository →</a>
-            </div>
-        </section>
-    </article>
+    <section>
+        <h2>05. Security & Policy Enforcement</h2>
+        <div class="decision-box">
+            <h3>Architectural Goal: The "Untracked" Safety Net</h3>
+            <p>While Terraform handles the primary IaC, Ansible acts as the <strong>Post-Provisioning Guard</strong>. It enforces security policies on resources created via the Console or CLI, ensuring that even "manual" resources are hardened and brought into compliance automatically.</p>
+        </div>
+    </section>
+</article>
 
     <footer>
         <p>&copy; 2026 Nebat Taha | Built for Resilience.</p>
