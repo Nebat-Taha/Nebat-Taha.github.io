@@ -107,3 +107,21 @@ th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border)
 .project-card .tag:hover {
     background: #e0e0e0;
 }
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 0.9rem;
+}
+
+.comparison-table th, .comparison-table td {
+    border: 1px solid rgba(0, 115, 230, 0.2);
+    padding: 12px;
+    text-align: left;
+}
+
+.comparison-table th {
+    background: rgba(0, 115, 230, 0.05);
+    color: var(--accent);
+}
