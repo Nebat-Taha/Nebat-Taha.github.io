@@ -75,15 +75,35 @@ th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border)
     margin-bottom: 30px;
 }
 
-.tag {
-    background: rgba(0, 115, 230, 0.1); /* Light blue tint */
-    color: var(--accent); /* Your brand color */
+/* --- 1. Hero Tags (For the individual project pages) --- */
+.project-meta .tag {
+    background: rgba(0, 115, 230, 0.1);
+    color: var(--accent);
     border: 1px solid rgba(0, 115, 230, 0.3);
     padding: 6px 14px;
-    border-radius: 4px; /* Slightly rounded edges for a technical feel */
+    border-radius: 4px;
     font-size: 0.85rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
     display: inline-block;
+}
+
+/* --- 2. Card Tags (For the projects.html gallery) --- */
+.project-card .tag {
+    background: #f4f4f4; /* Subtle grey */
+    color: #555; /* Muted text */
+    border: none;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 0.7rem; /* Smaller font */
+    font-weight: 500;
+    text-transform: none; /* Normal case looks cleaner in small cards */
+    margin-right: 5px;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+/* Optional: hover effect for card tags if they link somewhere */
+.project-card .tag:hover {
+    background: #e0e0e0;
 }
