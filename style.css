@@ -66,3 +66,24 @@ th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border)
     line-height: 1.6;
 }
 
+/* Project Meta Tags Layout */
+.project-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Space between tags */
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.tag {
+    background: rgba(0, 115, 230, 0.1); /* Light blue tint */
+    color: var(--accent); /* Your brand color */
+    border: 1px solid rgba(0, 115, 230, 0.3);
+    padding: 6px 14px;
+    border-radius: 4px; /* Slightly rounded edges for a technical feel */
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
