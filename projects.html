@@ -3,102 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects |Project Gallery</title>
-     <link rel="stylesheet" href="style.css">
+    <title>Projects | Nebat Taha Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <nav>
-        <div style="font-weight: 900; letter-spacing: -1px;">NT</div>
+        <div class="logo">NT</div>
         <ul>
             <li><a href="index.html">HOME</a></li>
             <li><a href="projects.html" style="color: var(--accent);">PROJECTS</a></li>
+            <li><a href="assets/Nebat_Taha_Resume.pdf" class="nav-resume" target="_blank" download>RESUME</a></li>
         </ul>
     </nav>
 
-    <main>
-        <h2 class="section-title">Case Studies</h2>
-            <div class="project-grid">
-        </div>
-    <h1 style="margin-top: 40px;"> Engineering Case Studies</h1>
-    
-    <div class="project-grid">
-        <div class="project-card">
-            <h3>Multi-Region Terraform</h3>
-            <p>Scalable AWS infrastructure using GitHub Actions Matrix strategies and remote state locking.</p>
-            <div class="tags">
-                <span class="tag">Terraform</span> <span class="tag">AWS</span>
-            </div>
-            <a href="project-terraform.html" class="read-more">Read Case Study →</a>
-        </div>
+    <main class="container">
+        <header class="section-header">
+            <h2 class="section-title">Engineering Case Studies</h2>
+            <p class="section-subtitle">Production-ready implementations focused on automation, security, and scalability.</p>
+        </header>
 
-        <div class="project-card">
-            <h3>Ansible CI/CD Pipeline</h3>
-            <p>Automated configuration management and server hardening using Ansible Playbooks and GitHub Actions.</p>
-            <div class="tags">
-                <span class="tag">Ansible</span> <span class="tag">Automation</span>
+        <div class="project-grid">
+            <div class="project-card">
+                <h3>Multi-Region Terraform</h3>
+                <p>Scalable AWS infrastructure using GitHub Actions Matrix strategies and remote state locking with S3/DynamoDB.</p>
+                <div class="tags">
+                    <span class="tag">Terraform</span> 
+                    <span class="tag">AWS</span>
+                    <span class="tag">GitHub Actions</span>
+                </div>
+                <a href="project-terraform.html" class="read-more">Read Case Study →</a>
             </div>
-            <a href="project-ansible.html" class="read-more">Read Case Study →</a>
-        </div>
-    </div>
-        <h1 style="margin-top: 60px;"> Architecture & Strategy</h1>
-<p>Deep dives into infrastructure design patterns, resilience strategies, and cost-optimization frameworks.</p>
 
-<div class="project-grid">
-    <div class="project-card">
-        <h3>Active-Active Resilience Strategy</h3>
-        <p>A comparative analysis of Disaster Recovery models and why Active-Active is the gold standard for modern Cloud-Native banking.</p>
-        <div class="tags">
-            <span class="tag">Architecture</span> <span class="tag">Resilience</span> <span class="tag">DR</span>
+            <div class="project-card">
+                <h3>Ansible CI/CD Pipeline</h3>
+                <p>Automated configuration management and multi-cloud disaster recovery using Backblaze B2 and ephemeral runners.</p>
+                <div class="tags">
+                    <span class="tag">Ansible</span> 
+                    <span class="tag">Backblaze</span>
+                    <span class="tag">DR Strategy</span>
+                </div>
+                <a href="project-ansible.html" class="read-more">Read Case Study →</a>
+            </div>
+
+            <div class="project-card">
+                <h3>Enterprise Observability</h3>
+                <p>A GitOps-managed monitoring platform for AWS SQS and EKS utilizing Prometheus, Grafana, and custom Python exporters.</p>
+                <div class="tags">
+                    <span class="tag">Prometheus</span> 
+                    <span class="tag">Grafana</span> 
+                    <span class="tag">Python</span>
+                </div>
+                <a href="project-observability.html" class="read-more">Read Case Study →</a>
+            </div>
         </div>
-        <a href="arch-disaster-recovery.html" class="read-more">Read Whitepaper →</a>
-    </div>
- 
-    <div class="project-card">
-    <h3>Global Expansion: Multi-Region Evolution</h3>
-    <p>A phased roadmap for scaling infrastructure from a centralized database to a fully regionalized, sharded architecture.</p>
-    <div class="tags">
-        <span class="tag">Global Scaling</span> <span class="tag">Data Residency</span> <span class="tag">VPC Peering</span>
-    </div>
-    <a href="arch-global-evolution.html" class="read-more">View Roadmap →</a>
-</div>
-</div>
-      <div class="project-grid">
-    <div class="project-card">
-        <h3>Enterprise Observability: Prometheus & Grafana</h3>
-    <p>From single-server monitoring to a GitOps-managed collaborative observability platform for AWS SQS and CloudWatch.</p>
-    <div class="tags">
-        <span class="tag">Prometheus</span> <span class="tag">Grafana</span> <span class="tag">Python</span> <span class="tag">GitOps</span>
-    </div>
-    <a href="project-observability.html" class="read-more">Read Case Study →</a>
-</div>
-    </div>
 
         <hr class="section-divider">
 
-<h2 class="section-title">Strategy & Research</h2>
-<p class="section-subtitle">In-depth technical analysis and architectural decision records.</p>
-<div class="blog-grid">
-    <div class="blog-card">
-        <span class="blog-date">Oct 2025</span>
-        <h3>Monitoring Strategy: Prometheus vs. The World</h3>
-        <p>A 14-minute deep dive into the cost-benefit analysis of AWS CloudWatch, ELK, and Datadog.</p>
-        <a href="blog-observability-research.html" class="read-more">Read Whitepaper →</a>
-    </div>
+        <header class="section-header">
+            <h2 class="section-title">Technical Strategy & Research</h2>
+            <p class="section-subtitle">Deep dives into infrastructure design patterns, whitepapers, and cost-optimization frameworks.</p>
+        </header>
 
-    <div class="blog-card">
-        <span class="blog-date">Nov 2025</span>
-        <h3>Architecture: Scaling to a Global Footprint</h3>
-        <p>A roadmap for sharding infrastructure and managing multi-region latency.</p>
-        <a href="blog-global-scaling.html" class="read-more">Read Architecture Plan →</a>
-    </div>
-</div>
-</main>
+        <div class="blog-grid">
+            <div class="blog-card">
+                <div class="blog-card-content">
+                    <span class="blog-date">Oct 2025 • Research Paper</span>
+                    <h3>Monitoring Strategy: Prometheus vs. The World</h3>
+                    <p>A 14-minute deep dive into the cost-benefit analysis of AWS CloudWatch, ELK, and Datadog for enterprise scale.</p>
+                    <a href="blog-observability-research.html" class="read-more">Read Whitepaper →</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-card-content">
+                    <span class="blog-date">Nov 2025 • Roadmap</span>
+                    <h3>Architecture: Scaling to a Global Footprint</h3>
+                    <p>A phased roadmap for sharding infrastructure and managing multi-region latency for high-compliance data residency.</p>
+                    <a href="blog-global-scaling.html" class="read-more">Read Architecture Plan →</a>
+                </div>
+            </div>
+
+            <div class="blog-card">
+                <div class="blog-card-content">
+                    <span class="blog-date">Dec 2025 • Analysis</span>
+                    <h3>Active-Active Resilience Strategy</h3>
+                    <p>Why Active-Active is the gold standard for modern Cloud-Native banking compared to traditional DR models.</p>
+                    <a href="arch-disaster-recovery.html" class="read-more">View Strategy →</a>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <footer>
-        <p style="text-align: center; color: #888; font-size: 0.8rem; margin-top: 100px;">
-            &copy; 2026 | Built with focus on Clarity and Performance.
-        </p>
+        <p>&copy; 2026 Nebat Taha | Built for Clarity and Performance.</p>
     </footer>
 
 </body>
