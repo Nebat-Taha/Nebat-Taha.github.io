@@ -1,32 +1,131 @@
-<article class="blog-container">
-    <header class="blog-header">
-        <a href="projects.html" class="back-link">← Back to Gallery</a>
-        <h1>Monitoring Strategy: A Comparative Analysis of Cloud-Native vs. Third-Party Observability</h1>
-        <p class="blog-meta">By Nebat Taha • 14 Min Read • Oct 2025</p>
-    </header>
-
-    <div class="toc-box">
-        <h4>Executive Summary</h4>
-        <p>This paper explores the cost-performance trade-offs between AWS-native monitoring (CloudWatch) and Open Source alternatives (Prometheus/Grafana). Based on my research, our organization adopted a hybrid Prometheus model to cap operational costs while maintaining deep EKS visibility.</p>
-    </div>
-
-    <div class="blog-content">
-        <h2>01. CloudWatch Alarms with SNS</h2>
-        <p>Amazon CloudWatch Alarms are specifically designed to monitor AWS resources... [Paste your section here]</p>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring Strategy Analysis | Nebat Taha</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Blog-Specific Styles */
+        .blog-container { max-width: 850px; margin: 0 auto; padding: 80px 20px; }
+        .blog-content { line-height: 1.8; color: #333; font-size: 1.1rem; }
+        .blog-content h2 { margin-top: 50px; color: var(--accent); border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .blog-content h3 { margin-top: 30px; color: #444; }
+        .blog-content p { margin-bottom: 20px; }
         
+        .research-summary { 
+            background: #f8f9fa; 
+            border-left: 4px solid var(--accent); 
+            padding: 30px; 
+            margin: 40px 0; 
+            border-radius: 0 8px 8px 0;
+        }
 
-        <h2>02. The Fluent Bit vs. CloudWatch Agent Debate</h2>
-        <p>Fluent Bit is a lightweight, efficient, open-source log processor... [Paste your section here]</p>
-
-        <blockquote>
-            "For Amazon EKS, a hybrid approach can often be optimal, using CloudWatch Agent for metric collection and Fluent Bit for log processing."
-        </blockquote>
-
-        <h2>03. Prometheus with Grafana and Alertmanager</h2>
-        <p>Using Prometheus with Grafana provides a powerful, flexible solution... [Paste your section here]</p>
-
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 30px 0;
+        }
         
+        .tool-card {
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 20px;
+            border-radius: 8px;
+        }
 
+        .tool-card h4 { margin-top: 0; color: var(--accent); }
+        
+        .sticky-toc {
+            position: fixed;
+            left: 50px;
+            top: 150px;
+            width: 200px;
+            display: none; /* Hidden on small screens */
+        }
+
+        @media (min-width: 1200px) { .sticky-toc { display: block; } }
+        
+        .toc-link { display: block; font-size: 0.8rem; color: #888; text-decoration: none; margin-bottom: 10px; }
+        .toc-link:hover { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">NT</div>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="projects.html">PROJECTS</a></li>
+        </ul>
+    </nav>
+
+    <aside class="sticky-toc">
+        <p style="font-weight: 900; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 20px;">On this page</p>
+        <a href="#cloudwatch" class="toc-link">CloudWatch & SNS</a>
+        <a href="#fluentbit" class="toc-link">Fluent Bit vs Agent</a>
+        <a href="#prometheus" class="toc-link">Prometheus & Grafana</a>
+        <a href="#managed" class="toc-link">AMP & Managed Services</a>
+        <a href="#elk" class="toc-link">ELK Stack</a>
+        <a href="#thirdparty" class="toc-link">Datadog & PagerDuty</a>
+    </aside>
+
+    <article class="blog-container">
+        <header style="text-align: center; margin-bottom: 60px;">
+            <a href="projects.html" class="back-link">← Back to Projects</a>
+            <h1 style="font-size: 2.5rem; margin-top: 20px;">Alarm and Notification Strategy</h1>
+            <p style="color: #666;">A Comparative Technical Analysis of AWS Native vs. Open Source Observability</p>
+            <p style="font-size: 0.9rem; margin-top: 10px;"><strong>By Nebat Taha</strong> • 14 Min Read • Strategy Document</p>
+        </header>
+
+        <section class="research-summary">
+            <h3>Executive Summary</h3>
+            <p>Modern cloud infrastructure requires a balance between <strong>observability depth</strong> and <strong>cost efficiency</strong>. This research evaluates the trade-offs between AWS-native monitoring (CloudWatch) and third-party/open-source ecosystems (Prometheus, ELK, Datadog) to determine the most resilient and cost-effective alerting framework for enterprise EKS workloads.</p>
+        </section>
+
+        <div class="blog-content">
+            <h2 id="cloudwatch">01. CloudWatch Alarms with SNS</h2>
+            <p>Amazon CloudWatch Alarms are specifically designed to monitor AWS resources and trigger notifications when certain thresholds are reached. They integrate seamlessly with Amazon Simple Notification Service (SNS) to automate responses.</p>
+            <p><strong>The Cost Factor:</strong> Basic monitoring is included, but detailed monitoring, custom metrics, and high-frequency log ingestion can lead to unpredictable costs. Each custom metric and alarm adds to the monthly bill, requiring regular optimization of usage patterns.</p>
+
+            <h2 id="fluentbit">02. Fluent Bit vs. Amazon CloudWatch Agent</h2>
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <h4>CloudWatch Agent</h4>
+                    <p>Optimized for AWS-native environments. Handles both logs and metrics but can be resource-intensive in high-performance containerized setups.</p>
+                </div>
+                <div class="tool-card">
+                    <h4>Fluent Bit</h4>
+                    <p>Lightweight, open-source processor. Excels in high-volume log aggregation and advanced routing for EKS/Kubernetes workloads.</p>
+                </div>
+            </div>
+            <p>For Amazon EKS, a <strong>hybrid approach</strong> is often optimal: using CloudWatch Agent for infrastructure metrics and Fluent Bit for efficient log processing.</p>
+
+            <h2 id="prometheus">03. Prometheus, Grafana, and Alertmanager</h2>
+            <p>This stack provides a powerful, flexible solution for centralized monitoring. Prometheus stores metrics in a time-series database optimized for high performance, while Grafana leverages <strong>PromQL</strong> to create sophisticated, interactive visualizations.</p>
+            <blockquote>
+                "Alertmanager consolidates similar alerts and prevents alert floods—a critical feature for dynamic environments like EKS where pod turnover is frequent."
+            </blockquote>
+
+            <h2 id="managed">04. Amazon Managed Prometheus (AMP)</h2>
+            <p>AMP reduces operational overhead by handling the scaling and maintenance of the Prometheus server. However, it does not scrape metrics directly; it requires a collector like the AWS Distro for OpenTelemetry (ADOT) to push metrics to the managed service.</p>
+
+            <h2 id="elk">05. The Elastic (ELK) Stack</h2>
+            <p>Comprised of Elasticsearch, Logstash, and Kibana, this stack is the industry standard for log-heavy analysis. While it offers unparalleled search capabilities, the costs related to data nodes, memory, and storage can be significant, especially when leveraging paid tiers for advanced alerting.</p>
+
+            <h2 id="thirdparty">06. Third-Party Ecosystem: Datadog & PagerDuty</h2>
+            <p>Datadog provides an "all-in-one" observability platform with intuitive auto-discovery, though it uses a host-based pricing model that scales with infrastructure size. PagerDuty acts as the critical incident response layer, managing on-call schedules and escalation policies to ensure real-time response to AWS-triggered events.</p>
+
+            <h2>Conclusion</h2>
+            <p>The choice of monitoring tool depends on the scale of the environment and the technical maturity of the team. For cost-conscious, highly dynamic EKS environments, the <strong>Prometheus-Grafana-Alertmanager</strong> stack remains the gold standard for flexibility and performance.</p>
         </div>
-</article>
+    </article>
+
+    <footer style="margin-top: 100px; padding: 40px; text-align: center; background: #f9f9f9;">
+        <p>&copy; 2026 Nebat Taha | Technical Strategy</p>
+    </footer>
+
+</body>
+</html>
