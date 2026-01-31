@@ -3,9 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects | Nebat Taha Portfolio</title>
+    <title>Projects | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Essential Inline Styles for the Grid and Tabs */
+        .project-grid, .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        .project-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 50px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 15px 25px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #888;
+            border-bottom: 3px solid transparent;
+            transition: 0.3s;
+        }
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
+        }
+        .hidden { display: none; }
+        .section-header { text-align: center; margin-top: 60px; }
+        .blog-card {
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 30px;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        .blog-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .blog-category { font-size: 0.7rem; color: var(--accent); font-weight: 700; text-transform: uppercase; }
+    </style>
 </head>
 <body>
 
@@ -20,85 +63,60 @@
 
     <main class="container">
         <header class="section-header">
-            <h2 class="section-title">Engineering Case Studies</h2>
-            <p class="section-subtitle">Production-ready implementations focused on automation, security, and scalability.</p>
+            <h1 class="section-title">Portfolio & Research</h1>
+            <p class="section-subtitle">A collection of engineering implementations and architectural strategy papers.</p>
         </header>
 
-        <div class="project-grid">
-            <div class="project-card">
-                <h3>Multi-Region Terraform</h3>
-                <p>Scalable AWS infrastructure using GitHub Actions Matrix strategies and remote state locking with S3/DynamoDB.</p>
-                <div class="tags">
-                    <span class="tag">Terraform</span> 
-                    <span class="tag">AWS</span>
-                    <span class="tag">GitHub Actions</span>
-                </div>
-                <a href="project-terraform.html" class="read-more">Read Case Study →</a>
-            </div>
-
-            <div class="project-card">
-                <h3>Ansible CI/CD Pipeline</h3>
-                <p>Automated configuration management and multi-cloud disaster recovery using Backblaze B2 and ephemeral runners.</p>
-                <div class="tags">
-                    <span class="tag">Ansible</span> 
-                    <span class="tag">Backblaze</span>
-                    <span class="tag">DR Strategy</span>
-                </div>
-                <a href="project-ansible.html" class="read-more">Read Case Study →</a>
-            </div>
-
-            <div class="project-card">
-                <h3>Enterprise Observability</h3>
-                <p>A GitOps-managed monitoring platform for AWS SQS and EKS utilizing Prometheus, Grafana, and custom Python exporters.</p>
-                <div class="tags">
-                    <span class="tag">Prometheus</span> 
-                    <span class="tag">Grafana</span> 
-                    <span class="tag">Python</span>
-                </div>
-                <a href="project-observability.html" class="read-more">Read Case Study →</a>
-            </div>
+        <div class="project-tabs">
+            <button class="tab-btn active" onclick="showSection('cases')">CASE STUDIES</button>
+            <button class="tab-btn" onclick="showSection('research')">STRATEGY & RESEARCH</button>
         </div>
 
-        <hr class="section-divider">
+        <section id="cases-section">
+            <div class="project-grid">
+                
+                <div class="project-card">
+                    <h3>Multi-Region Terraform</h3>
+                    <p>Scalable AWS infrastructure using GitHub Actions Matrix strategies and remote state locking with S3/DynamoDB.</p>
+                    <div class="tags">
+                        <span class="tag">Terraform</span> <span class="tag">AWS</span> <span class="tag">CI/CD</span>
+                    </div>
+                    <a href="project-terraform.html" class="read-more">Read Case Study →</a>
+                </div>
 
-        <header class="section-header">
-            <h2 class="section-title">Technical Strategy & Research</h2>
-            <p class="section-subtitle">Deep dives into infrastructure design patterns, whitepapers, and cost-optimization frameworks.</p>
-        </header>
+                <div class="project-card">
+                    <h3>Ansible CI/CD Pipeline</h3>
+                    <p>Automated configuration management and multi-cloud disaster recovery using Backblaze B2 and ephemeral runners.</p>
+                    <div class="tags">
+                        <span class="tag">Ansible</span> <span class="tag">Backblaze</span> <span class="tag">Automation</span>
+                    </div>
+                    <a href="project-ansible.html" class="read-more">Read Case Study →</a>
+                </div>
 
-        <div class="blog-grid">
-            <div class="blog-card">
-                <div class="blog-card-content">
-                    <span class="blog-date">Oct 2025 • Research Paper</span>
+                <div class="project-card">
+                    <h3>Enterprise Observability</h3>
+                    <p>GitOps-managed monitoring for SQS and EKS utilizing Prometheus, Grafana, and custom Python Boto3 exporters.</p>
+                    <div class="tags">
+                        <span class="tag">Prometheus</span> <span class="tag">Grafana</span> <span class="tag">Python</span>
+                    </div>
+                    <a href="project-observability.html" class="read-more">Read Case Study →</a>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="research-section" class="hidden">
+            <div class="blog-grid">
+                
+                <div class="blog-card">
+                    <span class="blog-category">Research Paper</span>
                     <h3>Monitoring Strategy: Prometheus vs. The World</h3>
                     <p>A 14-minute deep dive into the cost-benefit analysis of AWS CloudWatch, ELK, and Datadog for enterprise scale.</p>
                     <a href="blog-observability-research.html" class="read-more">Read Whitepaper →</a>
                 </div>
-            </div>
 
-            <div class="blog-card">
-                <div class="blog-card-content">
-                    <span class="blog-date">Nov 2025 • Roadmap</span>
-                    <h3>Architecture: Scaling to a Global Footprint</h3>
-                    <p>A phased roadmap for sharding infrastructure and managing multi-region latency for high-compliance data residency.</p>
-                    <a href="blog-global-scaling.html" class="read-more">Read Architecture Plan →</a>
-                </div>
-            </div>
-
-            <div class="blog-card">
-                <div class="blog-card-content">
-                    <span class="blog-date">Dec 2025 • Analysis</span>
-                    <h3>Active-Active Resilience Strategy</h3>
-                    <p>Why Active-Active is the gold standard for modern Cloud-Native banking compared to traditional DR models.</p>
-                    <a href="arch-disaster-recovery.html" class="read-more">View Strategy →</a>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 Nebat Taha | Built for Clarity and Performance.</p>
-    </footer>
-
-</body>
-</html>
+                <div class="blog-card">
+                    <span class="blog-category">Roadmap</span>
+                    <h3>Global Expansion: Multi-Region Evolution</h3>
+                    <p>A phased roadmap for scaling infrastructure from a centralized database to a fully regionalized, sharded architecture.</p>
+                    <a href="blog-global-scaling.html" class="read-
