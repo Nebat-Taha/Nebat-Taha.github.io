@@ -43,5 +43,26 @@ th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border)
 .project-card { border: 1px solid var(--border); padding: 20px; border-radius: 8px; transition: transform 0.2s; }
 .project-card:hover { transform: translateY(-5px); border-color: var(--accent); }
 
-/* Decision Boxes for Project Pages */
-.decision-box { background: #f1f5f9; padding: 20px; border-radius: 8px; border-left: 5px solid var(--accent); margin: 20px 0; }
+/* Standardized Decision Box for all project pages */
+.decision-box {
+    background: rgba(0, 115, 230, 0.05); /* Soft blue tint */
+    border-left: 4px solid var(--accent); /* Your brand color */
+    padding: 20px;
+    margin: 25px 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.decision-box h3 {
+    margin-top: 0;
+    color: var(--accent);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.decision-box p {
+    margin-bottom: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
