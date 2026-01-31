@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Expansion Roadmap | Nebat Taha</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        .blog-container { max-width: 850px; margin: 0 auto; padding: 60px 20px; }
+        .blog-content { line-height: 1.8; color: #333; font-size: 1.1rem; }
+        
+        /* Subtle Download Link instead of big button */
+        .download-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            border-bottom: 1px solid transparent;
+            transition: 0.3s;
+        }
+        .download-link:hover { border-bottom: 1px solid var(--accent); }
+
+        /* Roadmap Timeline Styling */
+        .roadmap { margin: 40px 0; border-left: 2px solid #eee; padding-left: 30px; }
+        .phase { position: relative; margin-bottom: 50px; }
+        .phase::before {
+            content: '';
+            position: absolute;
+            left: -37px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+        .phase-meta { font-family: 'Fira Code', monospace; font-size: 0.8rem; color: var(--accent); text-transform: uppercase; font-weight: 700; }
+        .phase h3 { margin: 5px 0 15px 0; color: #111; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">NT</div>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="projects.html">PROJECTS</a></li>
+        </ul>
+    </nav>
+
+    <article class="blog-container">
+        <header style="text-align: center; margin-bottom: 60px;">
+            <a href="projects.html" class="back-link">← Back to Portfolio</a>
+            <h1 style="font-size: 2.5rem; margin-top: 20px; letter-spacing: -1px;">Global Expansion: Multi-Region Evolution</h1>
+            <p style="color: #666;">A Phased Roadmap for Scaling Infrastructure & Data Residency</p>
+            
+            <a href="assets/Global_Scaling_Roadmap.pdf" class="download-link" download>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                Download Roadmap PDF
+            </a>
+        </header>
+
+        <section class="blog-content">
+            <h2>The Challenge: Outgrowing the Single Region</h2>
+            <p>Most platforms begin in a single AWS region (e.g., <code>us-east-1</code>). However, as the user base expands to Europe and Asia, two critical issues emerge: <strong>Latency</strong> and <strong>Data Residency Compliance</strong> (GDPR/APRA). This roadmap outlines the shift from a monolithic regional presence to a globally distributed architecture.</p>
+
+            <div class="roadmap">
+                <div class="phase">
+                    <span class="phase-meta">Phase 1: Performance Optimization</span>
+                    <h3>Edge Acceleration & Read Replicas</h3>
+                    <p>Before moving full compute to other regions, we implement <strong>Amazon CloudFront</strong> for global content delivery and deploy <strong>Cross-Region Read Replicas</strong> for RDS. This reduces latency for global users without the complexity of multi-master writes.</p>
+                </div>
+
+                <div class="phase">
+                    <span class="phase-meta">Phase 2: Regional Isolation</span>
+                    <h3>Active-Passive Compute</h3>
+                    <p>Deploying a full stack (VPC, EKS, Application) in a second region. At this stage, the second region acts as a "Hot Standby" for Disaster Recovery. Traffic is routed via <strong>Route 53 Latency Policies</strong>.</p>
+                </div>
+
+                <div class="phase">
+                    <span class="phase-meta">Phase 3: The Global Mesh</span>
+                    <h3>Multi-Region Sharding & Data Sovereignty</h3>
+                    <p>The final evolution: Sharding the database so European user data stays in <code>eu-central-1</code> while US data stays in <code>us-east-1</code>. We utilize <strong>Transit Gateway Peering</strong> for cross-region service communication and <strong>Global Accelerator</strong> for a single entry point.</p>
+                </div>
+            </div>
+
+            
+
+            <h2>Key Strategic Considerations</h2>
+            <ul>
+                <li><strong>State Management:</strong> Moving from a single source of truth to a distributed state requires careful handling of eventual consistency.</li>
+                <li><strong>CI/CD Complexity:</strong> Transitioning from simple pipelines to the <strong>Terraform Matrix Strategy</strong> we implemented in the Terraform Case Study.</li>
+                <li><strong>Observability:</strong> Centralizing logs from all regions into a single Grafana dashboard for a "Global Command Center" view.</li>
+            </ul>
+        </section>
+    </article>
+
+    <footer style="margin-top: 80px; padding: 40px; text-align: center; border-top: 1px solid #eee;">
+        <p>&copy; 2026 Nebat Taha | Global Infrastructure Strategy</p>
+    </footer>
+
+</body>
+</html>
