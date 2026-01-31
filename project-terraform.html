@@ -3,125 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects | Terraform CICD</title>
+    <title>Multi-Region Terraform | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <nav>
-        <div style="font-weight: 900; letter-spacing: -1px;">NT</div>
+        <div class="logo">NT</div>
         <ul>
             <li><a href="index.html">HOME</a></li>
             <li><a href="projects.html" style="color: var(--accent);">PROJECTS</a></li>
+            <li><a href="assets/Nebat_Taha_Resume.pdf" class="nav-resume" target="_blank" download>RESUME</a></li>
         </ul>
     </nav>
 
-    <main>
-        <h1 style="margin-top: 40px;"> Documentation & Case Studies</h1>
-        <p>A deep dive into the technical decisions, trade-offs, and architectures I have implemented.</p>
-<article class="project-case-study">
-    <h2>Multi-Region Infrastructure Framework with GitHub Actions</h2>
-    <div class="project-meta">
-        <span class="tag">Terraform</span>
-        <span class="tag">GitHub Actions</span>
-        <span class="tag">AWS</span>
-        <span class="tag">S3/DynamoDB (State)</span>
-    </div>
+    <article class="project-detail">
+        <header>
+            <a href="projects.html" class="back-link">← Back to Projects</a>
+            <h1>Multi-Region Terraform: Infrastructure as Code at Scale</h1>
+            <p class="subtitle">Automating global AWS footprints with GitHub Actions Matrix strategies and Shift-Left security gates.</p>
+            <div class="project-meta">
+                <span class="tag">Terraform</span>
+                <span class="tag">AWS</span>
+                <span class="tag">GitHub Actions</span>
+                <span class="tag">DevSecOps</span>
+            </div>
+        </header>
 
-    <p>
-        Managed a scalable multi-region AWS architecture using a modular Terraform structure and automated CI/CD pipelines. 
-        Designed to support rapid expansion into new regions with zero changes to the underlying deployment logic.
-    </p>
+        <section>
+            <h2>01. Scaling via Matrix Strategy</h2>
+            
+            <div class="decision-box">
+                <h3>Architectural Goal: Parallelism & Execution Speed</h3>
+                <p>To avoid the "bottleneck" of sequential deployments, I implemented a <strong>GitHub Actions Matrix Strategy</strong>. This allows the pipeline to trigger concurrent jobs for North America, Europe, and Asia-Pacific. Each job is isolated, significantly reducing the total deployment time for global updates.</p>
+            </div>
+        </section>
 
-    <h3>Design Decisions</h3>
+        <section>
+            <h2>02. State Isolation & Dynamic Backend</h2>
+            <div class="decision-box">
+                <h3>Architectural Goal: Preventing Global State Corruption</h3>
+                <p>A major risk in multi-region setups is a "Corrupted State." My pipeline uses <code>terraform init -reconfigure</code> and dynamic working directories (<code>./terraform-mr/regions/${{ matrix.region }}</code>). This ensures that each region maintains its own isolated state file, preventing a failure in one region from impacting the others.</p>
+            </div>
+        </section>
 
-    <div class="decision-box">
-        <strong>Decision: GitHub Actions Matrix Strategy for Regional Deployment</strong>
-        <p>Instead of sequential deployments, I implemented a <code>strategy: matrix</code> in GitHub Actions.
-        <br><em>Why?</em> This allows for parallel execution across regions (ap-southeast-2, eu-central-1, etc.). It ensures consistency while significantly reducing total build time as the regional footprint grows.</p>
-    </div>
+        <section>
+            <h2>03. Shift-Left Security Gates</h2>
+            
+            <div class="decision-box">
+                <h3>Architectural Goal: Automated Compliance</h3>
+                <p>Security is not an afterthought; it is integrated into the runner. Before <code>terraform apply</code> can execute, the code must pass <strong>TFLint</strong> (code quality), <strong>tfsec</strong> (security misconfigurations), and <strong>Checkov</strong> (industry-standard compliance). This "Shift-Left" approach catches risks like unencrypted volumes or public S3 buckets before they ever touch AWS.</p>
+            </div>
+        </section>
 
-    <div class="decision-box">
-        <strong>Decision: Decoupled Global vs. Regional State</strong>
-        <p>I split the infrastructure into <code>terraform-mr/global</code> and <code>terraform-mr/regions/</code>.
-        <br><em>Why?</em> Banking-grade stability requires minimizing the "blast radius." Changes to regional compute shouldn't risk the global IAM or Networking backbone. Each region operates on its own independent state file with S3 versioning and DynamoDB locking.</p>
-    </div>
+        <section>
+            <h2>04. Deterministic Deployments</h2>
+            <div class="decision-box">
+                <h3>Architectural Goal: Eliminating "Human Error"</h3>
+                <p>The pipeline uses <code>-input=false</code> and <code>-auto-approve</code> within a strictly controlled <code>workflow_dispatch</code> trigger. By removing manual prompts, I ensure that deployments are deterministic and repeatable. Trace logging (<code>TF_LOG: TRACE</code>) is enabled to provide full auditability during complex regional updates.</p>
+            </div>
+        </section>
 
-    <div class="decision-box">
-        <strong>Decision: Separate Drift Detection Pipeline</strong>
-        <p>Created a standalone workflow for drift detection, separate from the main deployment pipeline.
-        <br><em>Why?</em> This enforces a clear separation between <strong>Change Execution</strong> and <strong>Change Detection</strong>. It allows for continuous monitoring of infrastructure health without the risk of an accidental 'apply' during a detection run.</p>
-    </div>
-
-    <h3>Infrastructure Architecture</h3>
-    <p>The project follows a "Golden Path" for regional expansion. Adding a region requires only two steps: creating a new folder and updating the matrix list.</p>
-    
-    
-
-    <h3>Key Outcomes</h3>
-    <ul>
-        <li><strong>Scalability:</strong> Successfully automated parallel deployments across 3+ AWS regions.</li>
-        <li><strong>Security:</strong> Implemented encrypted remote state with strictly scoped IAM policies and MFA protection.</li>
-        <li><strong>Maintainability:</strong> Reduced code duplication by 70% through a centralized <code>/modules</code> library consumed by all regions.</li>
-    </ul>
-
-    <a href="https://github.com/Nebat-Taha/regional-terraform" target="_blank" style="color: var(--accent); font-weight: bold;">View Repository on GitHub →</a>
-<article class="project-case-study">
-    <h2>Multi-Region Infrastructure Framework with GitHub Actions</h2>
-    <div class="project-meta">
-        <span class="tag">Terraform</span>
-        <span class="tag">GitHub Actions</span>
-        <span class="tag">AWS</span>
-        <span class="tag">S3/DynamoDB (State)</span>
-    </div>
-
-    <p>
-        Managed a scalable multi-region AWS architecture using a modular Terraform structure and automated CI/CD pipelines. 
-        Designed to support rapid expansion into new regions with zero changes to the underlying deployment logic.
-    </p>
-
-    <h3>Design Decisions</h3>
-
-    <div class="decision-box">
-        <strong>Decision: GitHub Actions Matrix Strategy for Regional Deployment</strong>
-        <p>Instead of sequential deployments, I implemented a <code>strategy: matrix</code> in GitHub Actions.
-        <br><em>Why?</em> This allows for parallel execution across regions (ap-southeast-2, eu-central-1, etc.). It ensures consistency while significantly reducing total build time as the regional footprint grows.</p>
-    </div>
-
-    <div class="decision-box">
-        <strong>Decision: Decoupled Global vs. Regional State</strong>
-        <p>I split the infrastructure into <code>terraform-mr/global</code> and <code>terraform-mr/regions/</code>.
-        <br><em>Why?</em> Banking-grade stability requires minimizing the "blast radius." Changes to regional compute shouldn't risk the global IAM or Networking backbone. Each region operates on its own independent state file with S3 versioning and DynamoDB locking.</p>
-    </div>
-
-    <div class="decision-box">
-        <strong>Decision: Separate Drift Detection Pipeline</strong>
-        <p>Created a standalone workflow for drift detection, separate from the main deployment pipeline.
-        <br><em>Why?</em> This enforces a clear separation between <strong>Change Execution</strong> and <strong>Change Detection</strong>. It allows for continuous monitoring of infrastructure health without the risk of an accidental 'apply' during a detection run.</p>
-    </div>
-
-    <h3>Infrastructure Architecture</h3>
-    <p>The project follows a "Golden Path" for regional expansion. Adding a region requires only two steps: creating a new folder and updating the matrix list.</p>
-    
-    
-
-    <h3>Key Outcomes</h3>
-    <ul>
-        <li><strong>Scalability:</strong> Successfully automated parallel deployments across 3+ AWS regions.</li>
-        <li><strong>Security:</strong> Implemented encrypted remote state with strictly scoped IAM policies and MFA protection.</li>
-        <li><strong>Maintainability:</strong> Reduced code duplication by 70% through a centralized <code>/modules</code> library consumed by all regions.</li>
-    </ul>
-
-    <a href="https://github.com/Nebat-Taha/regional-terraform" target="_blank" style="color: var(--accent); font-weight: bold;">View Repository on GitHub →</a>
-</article>
-<hr style="margin: 60px 0; border: 0; border-top: 1px solid var(--border);">
-
-        </main>
+        <section class="project-footer">
+            <div class="cta-box">
+                <h2>Explore the HCL & Pipelines</h2>
+                <p>See how the modules are structured to support this multi-region concurrent flow.</p>
+                <a href="https://github.com/Nebat-Taha/terraform-multi-region" target="_blank" class="read-more">View GitHub Repository →</a>
+            </div>
+        </section>
+    </article>
 
     <footer>
-        <p style="text-align: center; color: #888; font-size: 0.8rem; margin-top: 100px;">
-            &copy; 2026 | Built with focus on Clarity and Performance.
-        </p>
+        <p>&copy; 2026 Nebat Taha | Infrastructure as Code Expert.</p>
     </footer>
 
 </body>
