@@ -7,20 +7,18 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        .page-wrapper {
-            display: flex;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        /* 1. Sidebar is fixed to the left and doesn't push the content */
+        .sticky-toc {
+            position: fixed;
+            left: 40px;
+            top: 150px;
+            width: 180px;
+            display: none; /* Hidden on mobile */
+            z-index: 10;
         }
 
-        .sticky-toc {
-            position: sticky;
-            top: 100px;
-            height: fit-content;
-            width: 200px;
-            flex-shrink: 0;
-            padding-top: 40px;
+        @media (min-width: 1200px) {
+            .sticky-toc { display: block; }
         }
 
         .toc-link {
@@ -34,17 +32,25 @@
         }
         .toc-link:hover { color: var(--accent); }
 
+        /* 2. Article is perfectly centered on the page */
         .article-container {
-            flex-grow: 1;
             max-width: 800px;
-            padding: 40px 20px 40px 40px;
-            border-left: 1px solid #eee;
+            margin: 0 auto; /* This centers it perfectly */
+            padding: 60px 20px;
         }
 
-        @media (max-width: 768px) {
-            .page-wrapper { flex-direction: column; }
-            .sticky-toc { position: relative; top: 0; width: 100%; border-bottom: 1px solid #eee; margin-bottom: 20px; padding-bottom: 20px; }
-            .article-container { padding: 20px 0; border-left: none; }
+        /* Responsive: On smaller screens, sidebar goes to top */
+        @media (max-width: 1199px) {
+            .sticky-toc {
+                position: relative;
+                top: 0;
+                left: 0;
+                width: 100%;
+                margin: 20px 0;
+                padding: 20px;
+                border-bottom: 1px solid #eee;
+                display: block;
+            }
         }
 
         .project-meta { margin: 25px 0; display: flex; gap: 10px; flex-wrap: wrap; }
@@ -64,26 +70,68 @@
         </ul>
     </nav>
 
-    <div class="page-wrapper">
-        <aside class="sticky-toc">
-            <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
-            <a href="#lifecycles" class="toc-link">01. Lifecycles</a>
-            <a href="#governance" class="toc-link">02. Governance</a>
-            <a href="#state" class="toc-link">03. State & Locking</a>
-            <a href="#drift" class="toc-link">04. Drift Detection</a>
-            <a href="#security" class="toc-link">05. Security Gates</a>
-            <a href="#summary" class="toc-link">06. Comparison</a>
-        </aside>
+    <aside class="sticky-toc">
+        <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
+        <a href="#lifecycles" class="toc-link">01. Lifecycles</a>
+        <a href="#governance" class="toc-link">02. Governance</a>
+        <a href="#state" class="toc-link">03. State & Locking</a>
+        <a href="#drift" class="toc-link">04. Drift Detection</a>
+        <a href="#security" class="toc-link">05. Security Gates</a>
+        <a href="#summary" class="toc-link">06. Comparison</a>
+    </aside>
 
-        <article class="article-container">
-            <header>
-                <a href="projects.html" class="back-link">← Back to Projects</a>
-                <h1 style="margin-top: 20px;">Enterprise Terraform: Multi-Region Architecture</h1>
-                <div class="project-meta">
-                    <span class="tag">TERRAFORM</span><span class="tag">AWS</span><span class="tag">GOVERNANCE</span>
-                </div>
-            </header>
+    <article class="article-container">
+        <header>
+            <a href="projects.html" class="back-link">← Back to Projects</a>
+            <h1 style="margin-top: 20px;">Enterprise Terraform: Multi-Region Architecture & Governance</h1>
+            <div class="project-meta">
+                <span class="tag">TERRAFORM</span><span class="tag">AWS</span><span class="tag">GOVERNANCE</span>
+            </div>
+            <p class="about-text">
+                Architecting isolated Global vs. Regional lifecycles with S3 Backend Locking and Proactive Drift Detection.
+            </p>
+        </header>
 
-            <section id="lifecycles" class="decision-box" style="margin-top: 40px;">
-                <h3>01. Decoupled Resource Lifecycles</h3>
-                <p>Infrastructure is split into two distinct CI/CD pipelines to ensure that changes to
+        <section id="lifecycles" class="decision-box" style="margin-top: 40px;">
+            <h3>01. Decoupled Resource Lifecycles</h3>
+            <p>Infrastructure is split into two distinct CI/CD pipelines to ensure that changes to global identity (IAM) do not interfere with regional compute resources.</p>
+        </section>
+
+        <section id="governance" class="decision-box">
+            <h3>02. CI/CD Governance & Human Gates</h3>
+            <p>By splitting the workflow into <code>plan</code> and <code>apply</code>, I introduced an Environment Gate requiring manual review before execution.</p>
+            <a href="https://github.com/Nebat-Taha/terraform-plan-apply" target="_blank" style="font-size: 0.8rem; color: var(--accent);">View Safety-First Repo →</a>
+        </section>
+
+        
+
+        <section id="state" class="decision-box">
+            <h3>03. Collaborative State & Locking</h3>
+            <p>Utilizing <strong>S3</strong> for state storage and <strong>DynamoDB</strong> for locking to prevent concurrent deployment conflicts.</p>
+        </section>
+
+        <section id="drift" class="decision-box">
+            <h3>04. Proactive Drift Detection</h3>
+            <p>Automated cron-checks using <code>detailed-exitcode</code> to alert if manual AWS console changes deviate from the code.</p>
+        </section>
+
+        <section id="security" class="decision-box">
+            <h3>05. Shift-Left Security Gates</h3>
+            <p>Static analysis via <code>tfsec</code> and <code>Checkov</code> is integrated into the PR process to block insecure resource provisioning.</p>
+        </section>
+
+        <section id="summary">
+            <h2>06. Evolution Summary</h2>
+            <table class="comparison-table">
+                <tr style="background:#f9f9f9;"><th>Feature</th><th>Standard Model</th><th>Governance Model</th></tr>
+                <tr><td>Execution</td><td>Auto-Apply</td><td>Plan-Review-Apply</td></tr>
+                <tr><td>State Source</td><td>Runtime</td><td>Immutable Artifact</td></tr>
+            </table>
+        </section>
+
+        <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
+            <p>&copy; 2026 Nebat Taha | Terraform Architect</p>
+        </footer>
+    </article>
+</body>
+</html>
