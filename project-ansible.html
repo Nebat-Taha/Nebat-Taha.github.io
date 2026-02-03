@@ -7,42 +7,19 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Sidebar sits outside the main flow to avoid 'indentation' look */
-        .sticky-toc {
-            position: fixed;
-            left: 5%;
-            top: 150px;
-            width: 180px;
-            display: none;
-        }
-
-        @media (min-width: 1300px) {
-            .sticky-toc { display: block; }
-        }
-
-        .toc-link {
-            display: block;
-            font-size: 0.75rem;
-            color: #999;
-            text-decoration: none;
-            margin-bottom: 12px;
-            font-family: 'Fira Code', monospace;
-            transition: 0.3s;
-        }
+        .page-wrapper { display: flex; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .sticky-toc { position: sticky; top: 100px; height: fit-content; width: 200px; flex-shrink: 0; padding-top: 40px; }
+        .toc-link { display: block; font-size: 0.75rem; color: #999; text-decoration: none; margin-bottom: 15px; font-family: 'Fira Code', monospace; transition: 0.3s; }
         .toc-link:hover { color: var(--accent); }
-
-        /* Match the White Paper width and centering */
-        .article-container {
-            max-width: 850px;
-            margin: 40px auto;
-            padding: 0 20px;
+        .article-container { flex-grow: 1; max-width: 800px; padding: 40px 20px 40px 40px; border-left: 1px solid #eee; }
+        @media (max-width: 768px) {
+            .page-wrapper { flex-direction: column; }
+            .sticky-toc { position: relative; top: 0; width: 100%; border-bottom: 1px solid #eee; margin-bottom: 20px; padding-bottom: 20px; }
+            .article-container { padding: 20px 0; border-left: none; }
         }
-
-        .project-meta { margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap; }
-        .tag { font-size: 0.7rem; font-weight: 700; color: var(--accent); border: 1px solid #eee; padding: 4px 10px; border-radius: 4px; }
-        
-        pre { background: #f9f9f9; padding: 20px; border-radius: 8px; overflow-x: auto; border: 1px solid #eee; }
-        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; }
+        .project-meta { margin: 25px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+        .tag { font-size: 0.7rem; font-weight: 700; color: var(--accent); border: 1px solid #eee; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; }
+        pre { background: #f9f9f9; padding: 25px; border-radius: 8px; overflow-x: auto; border: 1px solid #eee; }
     </style>
 </head>
 <body>
@@ -55,77 +32,56 @@
         </ul>
     </nav>
 
-    <aside class="sticky-toc">
-        <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
-        <a href="#control-plane" class="toc-link">01. Control Plane</a>
-        <a href="#inventory" class="toc-link">02. Dynamic Inventory</a>
-        <a href="#backup" class="toc-link">03. Cloud Backup</a>
-        <a href="#restore" class="toc-link">04. Precision Restore</a>
-        <a href="#security" class="toc-link">05. Policy Enforcement</a>
-    </aside>
+    <div class="page-wrapper">
+        <aside class="sticky-toc">
+            <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
+            <a href="#control-plane" class="toc-link">01. Control Plane</a>
+            <a href="#inventory" class="toc-link">02. Dynamic Inventory</a>
+            <a href="#backup" class="toc-link">03. Cloud Backup</a>
+            <a href="#restore" class="toc-link">04. Precision Restore</a>
+            <a href="#security" class="toc-link">05. Policy Enforcement</a>
+        </aside>
 
-    <article class="article-container">
-        <header>
-            <a href="projects.html" class="back-link">← Back to Projects</a>
-            <h1 style="margin-top: 20px;">Multi-Region Configuration & Multi-Cloud Disaster Recovery</h1>
+        <article class="article-container">
+            <header>
+                <a href="projects.html" class="back-link">← Back to Projects</a>
+                <h1 style="margin-top: 20px;">Multi-Region Configuration & Multi-Cloud DR</h1>
+                <div class="project-meta">
+                    <span class="tag">ANSIBLE</span><span class="tag">MULTI-CLOUD</span><span class="tag">BACKBLAZE B2</span>
+                </div>
+            </header>
+
+            <section id="control-plane" class="decision-box" style="margin-top: 40px;">
+                <h3>01. Ephemeral Control Plane</h3>
+                <p>Utilizing GitHub Runners as temporary management nodes to eliminate standing EC2 costs and ensure a clean execution environment.</p>
+            </section>
+
+            <section id="inventory" class="decision-box">
+                <h3>02. Dynamic Inventory & Matrix</h3>
+                <p>AWS Dynamic Inventory discoveries targets via tags, allowing the pipeline to scale across regions automatically.</p>
+            </section>
+
             
-            <div class="project-meta">
-                <span class="tag">ANSIBLE</span>
-                <span class="tag">GITHUB ACTIONS</span>
-                <span class="tag">MULTI-CLOUD</span>
-                <span class="tag">BACKBLAZE B2</span>
-            </div>
-            
-            <p class="about-text" style="margin-top: 20px;">
-                Automating post-provisioning state and off-site resilience using ephemeral Ansible runners. This ensures that infrastructure is not just provisioned, but actively managed and backed up across cloud providers.
-            </p>
-        </header>
 
-        <section id="control-plane" class="decision-box" style="margin-top: 40px;">
-            <h3>01. Ephemeral Control Plane</h3>
-            <p><strong>Goal: Cost & Clean State.</strong></p>
-            <p>Instead of a standing Ansible server, the <strong>GitHub Runner</strong> acts as a temporary node. This eliminates monthly EC2 costs and ensures every deployment starts from a 100% "known good" environment with fresh dependencies, preventing configuration drift on the management side.</p>
-        </section>
+            <section id="backup" class="decision-box">
+                <h3>03. Multi-Cloud Backup Strategy</h3>
+                <p>Resiliency through data duplication to <strong>Backblaze B2</strong>, ensuring recovery is possible even if a primary cloud provider is unavailable.</p>
+            </section>
 
-        <section id="inventory" class="decision-box">
-            <h3>02. Dynamic Inventory & Multi-Region Matrix</h3>
-            <p><strong>Goal: Avoiding Static Overhead.</strong></p>
-            <p>I utilized <strong>AWS Dynamic Inventory</strong> and <strong>EC2 Tags</strong> to group servers. This removes the manual headache of updating IP addresses; if an instance scales or changes, Ansible discovers it automatically. The CI/CD uses a matrix strategy to target multiple regions in parallel.</p>
-        </section>
+            <section id="#restore" class="decision-box">
+                <h3>04. Precision Restore (RPO)</h3>
+                <p>Separate manual-trigger workflows ensure operators specify exact file versions, preventing accidental corruption during restoration.</p>
+            </section>
 
-        
+            <section id="security" class="decision-box">
+                <h3>05. Security Policy Enforcement</h3>
+                <p>Ansible acts as the post-provisioning guard, hardening servers and ensuring compliance for all resources.</p>
+            </section>
 
-        <section id="backup" class="decision-box">
-            <h3>03. Multi-Cloud Backup Strategy</h3>
-            <p><strong>Goal: Resiliency via Backblaze B2.</strong></p>
-            <p>To avoid "Single Cloud Failure," backups are streamed to <strong>Backblaze B2</strong> using keys stored in GitHub Secrets. For security and performance, backups are staged in a local temporary folder and immediately destroyed after the upload to save disk space.</p>
-        </section>
-
-        <section id="restore" class="decision-box">
-            <h3>04. Precision Restore (RPO Control)</h3>
-            <p><strong>Goal: Corruption Avoidance.</strong></p>
-            <p>The Restore CI/CD is a separate, manual-trigger workflow. By requiring the operator to specify the exact filename in B2, we avoid the risk of accidentally restoring a corrupted "latest" backup.</p>
-
-<pre><code>
-# Ansible B2 Download Snippet
-- name: Download specific backup from B2
-  b2_download_file:
-    bucket: "{{ backup_bucket }}"
-    file_name: "{{ target_restore_file }}"
-    dest: /tmp/restore.tar.gz
-</code></pre>
-        </section>
-
-        <section id="security" class="decision-box">
-            <h3>05. Security & Policy Enforcement</h3>
-            <p><strong>Goal: The "Untracked" Safety Net.</strong></p>
-            <p>While Terraform handles the primary IaC, Ansible acts as the <strong>Post-Provisioning Guard</strong>. It enforces security policies on resources created via the Console or CLI, ensuring that even "manual" resources are hardened and brought into compliance automatically.</p>
-        </section>
-
-        <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
-            <p>&copy; 2026 Nebat Taha | Built for Resilience.</p>
-        </footer>
-    </article>
-
+            <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
+                <p>&copy; 2026 Nebat Taha | Resilience Engineer</p>
+            </footer>
+        </article>
+    </div>
 </body>
 </html>
