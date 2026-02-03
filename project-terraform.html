@@ -7,16 +7,16 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Floating Sidebar (Fixed to the left of the viewport) */
+        /* Floating Sidebar - Positioned fixed to the left */
         .sticky-toc {
             position: fixed;
-            left: 5%;
+            left: 3%;
             top: 150px;
             width: 180px;
-            display: none; /* Hidden on small screens */
+            display: none; /* Hidden on smaller screens to prevent overlap */
         }
 
-        @media (min-width: 1400px) {
+        @media (min-width: 1350px) {
             .sticky-toc { display: block; }
         }
 
@@ -25,7 +25,7 @@
             font-size: 0.75rem;
             color: #999;
             text-decoration: none;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             font-family: 'Fira Code', monospace;
             transition: 0.3s;
         }
@@ -44,7 +44,6 @@
         pre { background: #f9f9f9; padding: 25px; border-radius: 8px; overflow-x: auto; border: 1px solid #eee; margin: 20px 0; }
         code { font-family: 'Fira Code', monospace; font-size: 0.9rem; }
 
-        /* Table Styling for Comparison Section */
         .comparison-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9rem; }
         .comparison-table th, .comparison-table td { padding: 15px; border: 1px solid #eee; text-align: left; }
         .comparison-table th { background: #f9f9f9; color: var(--accent); font-weight: 900; }
@@ -88,65 +87,4 @@
             </p>
         </header>
 
-        <section id="lifecycles" class="decision-box" style="margin-top: 40px;">
-            <h3>01. Decoupled Resource Lifecycles</h3>
-            <p><strong>The Strategy:</strong> Split pipelines to ensure global identity (IAM) or DNS (Route53) changes never bottleneck regional compute operations.</p>
-            <p>By executing global resources in <code>us-east-1</code> and regional resources via a matrix across <code>eu-central-1</code> and <code>ap-southeast-2</code>, the architecture achieves maximum failure isolation.</p>
-        </section>
-
-        <section id="governance" class="decision-box">
-            <h3>02. CI/CD Governance & Human Gates</h3>
-            <p><strong>The Evolution:</strong> Implementation of <strong>Environment Protection</strong> to prevent accidental production deployments.</p>
-            <p>The workflow utilizes <code>terraform_plan</code> to generate an artifact which must be reviewed and approved by a human operator before the <code>terraform_apply</code> job is triggered.</p>
-            
-            <a href="https://github.com/Nebat-Taha/terraform-plan-apply" target="_blank" class="nav-resume" style="padding: 8px 15px; font-size: 0.8rem; display: inline-block; margin-top: 10px;">
-                View Safety-First Repo →
-            </a>
-        </section>
-
-        
-
-        <section id="state" class="decision-box">
-            <h3>03. Collaborative State & Locking</h3>
-            <p><strong>The Architecture:</strong> S3 State storage combined with DynamoDB for atomic locking.</p>
-            <p>This ensures that in a team environment, two engineers cannot modify the same resource simultaneously, preventing state corruption and maintaining a single source of truth across regions.</p>
-        </section>
-
-        <section id="drift" class="decision-box">
-            <h3>04. Proactive Drift Detection</h3>
-            <p><strong>Day 2 Ops:</strong> Automated cron-based checks using <code>terraform plan -detailed-exitcode</code>.</p>
-            <p>The system interprets exit code <strong>2</strong> as a drift alert, triggering a failure notification to the DevOps team, ensuring that manual console changes are caught and reverted to match the code.</p>
-        </section>
-
-        <section id="security" class="decision-box">
-            <h3>05. Shift-Left Security Gates</h3>
-            <p>Every commit is automatically scanned by <code>tfsec</code> and <code>Checkov</code>. Any infrastructure code that violates security best practices (e.g., open S3 buckets or unencrypted EBS volumes) is blocked before it reaches the cloud.</p>
-        </section>
-
-        <section id="summary">
-            <h2>06. Project Evolution Summary</h2>
-            <p>Transitioning from a rapid-delivery model to a safety-first governance model.</p>
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>Feature</th>
-                        <th>Standard Model</th>
-                        <th>Governance Model</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td><strong>Execution</strong></td><td>Auto-Apply on Push</td><td>Plan-Review-Apply</td></tr>
-                    <tr><td><strong>State Source</strong></td><td>Runtime Calculated</td><td>Immutable Artifact</td></tr>
-                    <tr><td><strong>Security Gate</strong></td><td>Post-Provisioning</td><td>Pre-Provisioning (Blocking)</td></tr>
-                </tbody>
-            </table>
-        </section>
-
-        <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
-            <p>&copy; 2026 Nebat Taha | Built for Scalability.</p>
-            <a href="https://github.com/Nebat-Taha/terraform-multi-region" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 700;">View Primary Repository →</a>
-        </footer>
-    </article>
-
-</body>
-</html>
+        <section id="lifecycles" class="decision-box
