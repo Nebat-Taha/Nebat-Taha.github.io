@@ -44,7 +44,48 @@
             </div>
             
         </section>
+<section>
+    <h2>02. CI/CD Governance: Safety at Scale</h2>
+    <p>Infrastructure as Code (IaC) requires more than just automation; it requires <strong>guardrails</strong>. I evolved the deployment pipeline into two distinct security models:</p>
 
+    <div class="tool-grid">
+        <div class="tool-card">
+            <h4>Continuous Deployment (Fast-Track)</h4>
+            <p>Direct automation for dev/staging environments where speed is prioritized.</p>
+        </div>
+        <div class="tool-card">
+            <h4>Governance-First (Production)</h4>
+            <p>Utilizes GitHub Environment protection and Artifact state-passing to ensure human verification.</p>
+        </div>
+    </div>
+
+    <div class="decision-box">
+        <h3>Architectural Evolution: GitHub Environments</h3>
+        <p>By splitting the workflow into <code>terraform_plan</code> and <code>terraform_apply</code>, I introduced an <strong>Environment Gate</strong>. The workflow pauses after the plan is generated, requiring a manual review of the Terraform Artifact before the 'production' environment allows the apply job to run.</p>
+        
+        <a href="https://github.com/Nebat-Taha/terraform-plan-apply" target="_blank" class="nav-resume" style="padding: 8px 15px; font-size: 0.8rem;">
+            View Safety-First Repo →
+        </a>
+    </div>
+</section>
+        <section>
+    <h3>Technical Implementation: Artifact Integrity</h3>
+    <p>To ensure the exact code planned is the code applied, I implemented <strong>Artifact Passing</strong>. This prevents "state-drift" between the time the plan is seen and the time it is executed.</p>
+
+<pre><code>
+# Job 1: Saving the source-of-truth
+- name: Upload Plan Artifact
+  uses: actions/upload-artifact@v4
+  with:
+    name: tfplan-${{ matrix.region }}
+    path: terraform/regions/${{ matrix.region }}/tfplan
+
+# Job 2: The Production Gate
+terraform_apply:
+  needs: terraform_plan
+  environment: production # Requires manual approval in UI
+</code></pre>
+</section>
         <section>
             <h2>02. Collaborative State & Locking</h2>
             <div class="decision-box">
