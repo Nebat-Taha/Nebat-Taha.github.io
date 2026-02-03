@@ -29,7 +29,7 @@
                 <span class="tag">GITHUB ACTIONS</span>
                 <span class="tag">S3 + DynamoDB Locking</span>
                 <span class="tag">Matrix Strategy</span>
-                <span class="tag">Drift Detection</span>
+                <span class="tag">Governance Gates</span>
             </div>
         </header>
 
@@ -42,35 +42,36 @@
                 <p><strong>Global Pipeline:</strong> Manages IAM and Route 53. Executed in <code>us-east-1</code> as the authoritative region.<br>
                 <strong>Regional Pipeline:</strong> Utilizes a <strong>GitHub Actions Matrix</strong> to concurrently deploy VPCs and EC2 instances across <code>us-east-1</code>, <code>eu-central-1</code>, and <code>ap-southeast-2</code>.</p>
             </div>
-            
         </section>
-<section>
-    <h2>02. CI/CD Governance: Safety at Scale</h2>
-    <p>Infrastructure as Code (IaC) requires more than just automation; it requires <strong>guardrails</strong>. I evolved the deployment pipeline into two distinct security models:</p>
 
-    <div class="tool-grid">
-        <div class="tool-card">
-            <h4>Continuous Deployment (Fast-Track)</h4>
-            <p>Direct automation for dev/staging environments where speed is prioritized.</p>
-        </div>
-        <div class="tool-card">
-            <h4>Governance-First (Production)</h4>
-            <p>Utilizes GitHub Environment protection and Artifact state-passing to ensure human verification.</p>
-        </div>
-    </div>
-
-    <div class="decision-box">
-        <h3>Architectural Evolution: GitHub Environments</h3>
-        <p>By splitting the workflow into <code>terraform_plan</code> and <code>terraform_apply</code>, I introduced an <strong>Environment Gate</strong>. The workflow pauses after the plan is generated, requiring a manual review of the Terraform Artifact before the 'production' environment allows the apply job to run.</p>
-        
-        <a href="https://github.com/Nebat-Taha/terraform-plan-apply" target="_blank" class="nav-resume" style="padding: 8px 15px; font-size: 0.8rem;">
-            View Safety-First Repo →
-        </a>
-    </div>
-</section>
         <section>
-    <h3>Technical Implementation: Artifact Integrity</h3>
-    <p>To ensure the exact code planned is the code applied, I implemented <strong>Artifact Passing</strong>. This prevents "state-drift" between the time the plan is seen and the time it is executed.</p>
+            <h2>02. CI/CD Governance: Safety at Scale</h2>
+            <p>Infrastructure as Code (IaC) requires more than just automation; it requires <strong>guardrails</strong>. I evolved the deployment pipeline into two distinct security models to handle production environments safely.</p>
+
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <h4>Continuous Deployment</h4>
+                    <p>Direct automation for dev/staging environments where rapid iteration and speed are prioritized.</p>
+                </div>
+                <div class="tool-card">
+                    <h4>Governance-First</h4>
+                    <p>Utilizes GitHub Environment protection and Artifact state-passing to ensure human verification before changes.</p>
+                </div>
+            </div>
+
+            <div class="decision-box">
+                <h3>The Production Gate: Plan & Apply Split</h3>
+                <p>By splitting the workflow into <code>terraform_plan</code> and <code>terraform_apply</code>, I introduced an <strong>Environment Gate</strong>. The workflow pauses after the plan is generated, requiring a manual review of the Terraform Artifact before the 'production' environment allows the execution.</p>
+                
+                <a href="https://github.com/Nebat-Taha/terraform-plan-apply" target="_blank" class="nav-resume" style="padding: 8px 15px; font-size: 0.8rem; display: inline-block; margin-top: 10px;">
+                    View Safety-First Repo →
+                </a>
+            </div>
+
+            <h3>Technical Implementation: Artifact Integrity</h3>
+            <p>To ensure the exact code planned is the code applied, I implemented <strong>Artifact Passing</strong>. This prevents "state-drift" between the time the plan is generated and the time it is executed.</p>
+
+
 
 <pre><code>
 # Job 1: Saving the source-of-truth
@@ -83,11 +84,12 @@
 # Job 2: The Production Gate
 terraform_apply:
   needs: terraform_plan
-  environment: production # Requires manual approval in UI
+  environment: production # Requires manual approval in GitHub UI
 </code></pre>
-</section>
+        </section>
+
         <section>
-            <h2>02. Collaborative State & Locking</h2>
+            <h2>03. Collaborative State & Locking</h2>
             <div class="decision-box">
                 <h3>Architectural Goal: S3 Backend with DynamoDB</h3>
                 <p>To enable a collaborative team environment and prevent state corruption, I implemented a remote backend using <strong>Amazon S3</strong> for state storage and <strong>DynamoDB</strong> for state locking. This ensures that concurrent deployment attempts are safely blocked, maintaining a single source of truth across all regions.</p>
@@ -95,31 +97,29 @@ terraform_apply:
         </section>
 
         <section>
-            <h2>03. Proactive Drift Detection (Day 2 Ops)</h2>
+            <h2>04. Proactive Drift Detection (Day 2 Ops)</h2>
             <p>Infrastructure "drift" occurs when manual changes are made via the AWS Console, breaking the link between code and reality.</p>
             
             <div class="decision-box">
                 <h3>Architectural Goal: Automated Integrity Checks</h3>
-                <p>I engineered two dedicated Drift Detection workflows (Global & Regional) using <code>terraform plan -detailed-exitcode</code>. The CI/CD uses logic gates to interpret exit codes: 
-                <strong>0</strong> (Safe/No Change), <strong>1</strong> (Error), or <strong>2</strong> (Drift Detected). If drift is found, the job intentionally fails and alerts the team for immediate remediation.</p>
+                <p>I engineered dedicated Drift Detection workflows using <code>terraform plan -detailed-exitcode</code>. The CI/CD uses logic gates to interpret exit codes: 
+                <strong>0</strong> (Safe), <strong>1</strong> (Error), or <strong>2</strong> (Drift Detected). If drift is found, the job fails and alerts the team for immediate remediation.</p>
             </div>
-            
         </section>
 
         <section>
-            <h2>04. Shift-Left Security & Secret Management</h2>
+            <h2>05. Shift-Left Security & Secret Management</h2>
             <div class="decision-box">
                 <h3>Architectural Goal: Zero-Trust Deployments</h3>
-                <p>For maximum security, <strong>AWS Access Keys</strong> are stored in GitHub Secrets and injected at runtime. Before any <code>apply</code>, the code must pass <code>tfsec</code> and <code>Checkov</code> gates. This ensures that every resource—whether global IAM or a regional VPC—meets industry security standards before it is provisioned.</p>
+                <p>For maximum security, <strong>AWS Access Keys</strong> are stored in GitHub Secrets and injected at runtime. Before any <code>apply</code>, the code must pass <code>tfsec</code> and <code>Checkov</code> static analysis gates to ensure all resources meet industry security standards.</p>
             </div>
-            
         </section>
 
         <section class="project-footer">
             <div class="cta-box">
                 <h2>Explore the Workflows</h2>
-                <p>View the full GitHub Actions YAML for Global Deployment and Regional Drift Detection.</p>
-                <a href="https://github.com/Nebat-Taha/terraform-multi-region" target="_blank" class="read-more">View GitHub Repository →</a>
+                <p>View the primary repository featuring multi-region architecture and drift detection logic.</p>
+                <a href="https://github.com/Nebat-Taha/terraform-multi-region" target="_blank" class="read-more">View Primary Repository →</a>
             </div>
         </section>
     </article>
