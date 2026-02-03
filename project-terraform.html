@@ -7,17 +7,20 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Floating Sidebar - Positioned fixed to the left */
-        .sticky-toc {
-            position: fixed;
-            left: 3%;
-            top: 150px;
-            width: 180px;
-            display: none; /* Hidden on smaller screens to prevent overlap */
+        .page-wrapper {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
-        @media (min-width: 1350px) {
-            .sticky-toc { display: block; }
+        .sticky-toc {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            width: 200px;
+            flex-shrink: 0;
+            padding-top: 40px;
         }
 
         .toc-link {
@@ -31,22 +34,24 @@
         }
         .toc-link:hover { color: var(--accent); }
 
-        /* Article centering to match White Paper style */
         .article-container {
-            max-width: 850px;
-            margin: 40px auto;
-            padding: 0 20px;
+            flex-grow: 1;
+            max-width: 800px;
+            padding: 40px 20px 40px 40px;
+            border-left: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .page-wrapper { flex-direction: column; }
+            .sticky-toc { position: relative; top: 0; width: 100%; border-bottom: 1px solid #eee; margin-bottom: 20px; padding-bottom: 20px; }
+            .article-container { padding: 20px 0; border-left: none; }
         }
 
         .project-meta { margin: 25px 0; display: flex; gap: 10px; flex-wrap: wrap; }
         .tag { font-size: 0.7rem; font-weight: 700; color: var(--accent); border: 1px solid #eee; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; }
-        
         pre { background: #f9f9f9; padding: 25px; border-radius: 8px; overflow-x: auto; border: 1px solid #eee; margin: 20px 0; }
-        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; }
-
         .comparison-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9rem; }
-        .comparison-table th, .comparison-table td { padding: 15px; border: 1px solid #eee; text-align: left; }
-        .comparison-table th { background: #f9f9f9; color: var(--accent); font-weight: 900; }
+        .comparison-table th, .comparison-table td { padding: 12px; border: 1px solid #eee; text-align: left; }
     </style>
 </head>
 <body>
@@ -59,32 +64,26 @@
         </ul>
     </nav>
 
-    <aside class="sticky-toc">
-        <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
-        <a href="#lifecycles" class="toc-link">01. Lifecycles</a>
-        <a href="#governance" class="toc-link">02. Governance</a>
-        <a href="#state" class="toc-link">03. State & Locking</a>
-        <a href="#drift" class="toc-link">04. Drift Detection</a>
-        <a href="#security" class="toc-link">05. Security Gates</a>
-        <a href="#summary" class="toc-link">06. Comparison</a>
-    </aside>
+    <div class="page-wrapper">
+        <aside class="sticky-toc">
+            <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
+            <a href="#lifecycles" class="toc-link">01. Lifecycles</a>
+            <a href="#governance" class="toc-link">02. Governance</a>
+            <a href="#state" class="toc-link">03. State & Locking</a>
+            <a href="#drift" class="toc-link">04. Drift Detection</a>
+            <a href="#security" class="toc-link">05. Security Gates</a>
+            <a href="#summary" class="toc-link">06. Comparison</a>
+        </aside>
 
-    <article class="article-container">
-        <header>
-            <a href="projects.html" class="back-link">← Back to Projects</a>
-            <h1 style="margin-top: 20px;">Enterprise Terraform: Multi-Region Architecture & Governance</h1>
-            
-            <div class="project-meta">
-                <span class="tag">TERRAFORM</span>
-                <span class="tag">AWS</span>
-                <span class="tag">GITHUB ACTIONS</span>
-                <span class="tag">S3 BACKEND</span>
-                <span class="tag">GOVERNANCE</span>
-            </div>
+        <article class="article-container">
+            <header>
+                <a href="projects.html" class="back-link">← Back to Projects</a>
+                <h1 style="margin-top: 20px;">Enterprise Terraform: Multi-Region Architecture</h1>
+                <div class="project-meta">
+                    <span class="tag">TERRAFORM</span><span class="tag">AWS</span><span class="tag">GOVERNANCE</span>
+                </div>
+            </header>
 
-            <p class="about-text">
-                Architecting isolated Global vs. Regional lifecycles with S3 Backend Locking and Proactive Drift Detection. This project demonstrates the transition from basic automation to enterprise-grade infrastructure governance.
-            </p>
-        </header>
-
-        <section id="lifecycles" class="decision-box
+            <section id="lifecycles" class="decision-box" style="margin-top: 40px;">
+                <h3>01. Decoupled Resource Lifecycles</h3>
+                <p>Infrastructure is split into two distinct CI/CD pipelines to ensure that changes to
