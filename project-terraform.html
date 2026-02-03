@@ -7,17 +7,17 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* 1. Sidebar is fixed to the left and doesn't push the content */
+        /* Sidebar is taken out of the layout flow to allow perfect centering */
         .sticky-toc {
             position: fixed;
-            left: 40px;
+            left: 3%;
             top: 150px;
             width: 180px;
-            display: none; /* Hidden on mobile */
+            display: none;
             z-index: 10;
         }
 
-        @media (min-width: 1200px) {
+        @media (min-width: 1300px) {
             .sticky-toc { display: block; }
         }
 
@@ -32,32 +32,21 @@
         }
         .toc-link:hover { color: var(--accent); }
 
-        /* 2. Article is perfectly centered on the page */
+        /* Perfect Center Alignment matching your White Papers */
         .article-container {
-            max-width: 800px;
-            margin: 0 auto; /* This centers it perfectly */
+            max-width: 850px;
+            margin: 0 auto;
             padding: 60px 20px;
-        }
-
-        /* Responsive: On smaller screens, sidebar goes to top */
-        @media (max-width: 1199px) {
-            .sticky-toc {
-                position: relative;
-                top: 0;
-                left: 0;
-                width: 100%;
-                margin: 20px 0;
-                padding: 20px;
-                border-bottom: 1px solid #eee;
-                display: block;
-            }
         }
 
         .project-meta { margin: 25px 0; display: flex; gap: 10px; flex-wrap: wrap; }
         .tag { font-size: 0.7rem; font-weight: 700; color: var(--accent); border: 1px solid #eee; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; }
         pre { background: #f9f9f9; padding: 25px; border-radius: 8px; overflow-x: auto; border: 1px solid #eee; margin: 20px 0; }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; }
+        
         .comparison-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9rem; }
-        .comparison-table th, .comparison-table td { padding: 12px; border: 1px solid #eee; text-align: left; }
+        .comparison-table th, .comparison-table td { padding: 15px; border: 1px solid #eee; text-align: left; }
+        .comparison-table th { background: #f9f9f9; color: var(--accent); }
     </style>
 </head>
 <body>
@@ -67,6 +56,7 @@
         <ul>
             <li><a href="index.html">HOME</a></li>
             <li><a href="projects.html" style="color: var(--accent);">PROJECTS</a></li>
+            <li><a href="assets/Nebat_Taha_Resume.pdf" class="nav-resume" target="_blank" download>RESUME</a></li>
         </ul>
     </nav>
 
@@ -74,63 +64,132 @@
         <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
         <a href="#lifecycles" class="toc-link">01. Lifecycles</a>
         <a href="#governance" class="toc-link">02. Governance</a>
-        <a href="#state" class="toc-link">03. State & Locking</a>
-        <a href="#drift" class="toc-link">04. Drift Detection</a>
-        <a href="#security" class="toc-link">05. Security Gates</a>
-        <a href="#summary" class="toc-link">06. Comparison</a>
+        <a href="#integrity" class="toc-link">03. Artifact Integrity</a>
+        <a href="#locking" class="toc-link">04. State & Locking</a>
+        <a href="#drift" class="toc-link">05. Drift Detection</a>
+        <a href="#security" class="toc-link">06. Shift-Left Security</a>
+        <a href="#summary" class="toc-link">07. Summary Table</a>
     </aside>
 
     <article class="article-container">
         <header>
             <a href="projects.html" class="back-link">← Back to Projects</a>
             <h1 style="margin-top: 20px;">Enterprise Terraform: Multi-Region Architecture & Governance</h1>
+            <p class="subtitle">Architecting isolated Global vs. Regional lifecycles with S3 Backend Locking and Proactive Drift Detection.</p>
             <div class="project-meta">
-                <span class="tag">TERRAFORM</span><span class="tag">AWS</span><span class="tag">GOVERNANCE</span>
+                <span class="tag">Terraform</span>
+                <span class="tag">AWS</span>
+                <span class="tag">GITHUB ACTIONS</span>
+                <span class="tag">S3 + DynamoDB Locking</span>
+                <span class="tag">Matrix Strategy</span>
+                <span class="tag">Drift Detection</span>
             </div>
-            <p class="about-text">
-                Architecting isolated Global vs. Regional lifecycles with S3 Backend Locking and Proactive Drift Detection.
-            </p>
         </header>
 
-        <section id="lifecycles" class="decision-box" style="margin-top: 40px;">
-            <h3>01. Decoupled Resource Lifecycles</h3>
-            <p>Infrastructure is split into two distinct CI/CD pipelines to ensure that changes to global identity (IAM) do not interfere with regional compute resources.</p>
+        <section id="lifecycles">
+            <h2>01. Decoupled Resource Lifecycles</h2>
+            <p>Infrastructure is split into two distinct CI/CD pipelines to ensure that changes to global identity (IAM) or DNS (Route53) do not interfere with regional compute resources.</p>
+            
+            <div class="decision-box">
+                <h3>Global vs. Regional Pipelines</h3>
+                <p><strong>Global Pipeline:</strong> Manages IAM and Route 53. Executed in <code>us-east-1</code> as the authoritative region.<br>
+                <strong>Regional Pipeline:</strong> Utilizes a <strong>GitHub Actions Matrix</strong> to concurrently deploy VPCs and EC2 instances across <code>us-east-1</code>, <code>eu-central-1</code>, and <code>ap-southeast-2</code>.</p>
+            </div>
         </section>
 
-        <section id="governance" class="decision-box">
-            <h3>02. CI/CD Governance & Human Gates</h3>
-            <p>By splitting the workflow into <code>plan</code> and <code>apply</code>, I introduced an Environment Gate requiring manual review before execution.</p>
-            <a href="https://github.com/Nebat-Taha/terraform-plan-apply" target="_blank" style="font-size: 0.8rem; color: var(--accent);">View Safety-First Repo →</a>
+        <section id="governance">
+            <h2>02. CI/CD Governance: Safety at Scale</h2>
+            <p>Infrastructure as Code (IaC) requires more than just automation; it requires <strong>guardrails</strong>. I evolved the deployment pipeline into two distinct security models:</p>
+
+            <div class="tool-grid">
+                <div class="tool-card">
+                    <h4>Continuous Deployment (Fast-Track)</h4>
+                    <p>Direct automation for dev/staging environments where speed is prioritized.</p>
+                </div>
+                <div class="tool-card">
+                    <h4>Governance-First (Production)</h4>
+                    <p>Utilizes GitHub Environment protection and Artifact state-passing to ensure human verification.</p>
+                </div>
+            </div>
+
+            <div class="decision-box">
+                <h3>Architectural Evolution: GitHub Environments</h3>
+                <p>By splitting the workflow into <code>terraform_plan</code> and <code>terraform_apply</code>, I introduced an <strong>Environment Gate</strong>. The workflow pauses after the plan is generated, requiring a manual review of the Terraform Artifact before the 'production' environment allows the apply job to run.</p>
+                
+                <a href="https://github.com/Nebat-Taha/terraform-plan-apply" target="_blank" class="nav-resume" style="padding: 8px 15px; font-size: 0.8rem; display:inline-block; margin-top:10px;">
+                    View Safety-First Repo →
+                </a>
+            </div>
         </section>
 
-        
+        <section id="integrity">
+            <h2>03. Technical Implementation: Artifact Integrity</h2>
+            <p>To ensure the exact code planned is the code applied, I implemented <strong>Artifact Passing</strong>. This prevents "state-drift" between the time the plan is seen and the time it is executed.</p>
 
-        <section id="state" class="decision-box">
-            <h3>03. Collaborative State & Locking</h3>
-            <p>Utilizing <strong>S3</strong> for state storage and <strong>DynamoDB</strong> for locking to prevent concurrent deployment conflicts.</p>
+
+
+<pre><code>
+# Job 1: Saving the source-of-truth
+- name: Upload Plan Artifact
+  uses: actions/upload-artifact@v4
+  with:
+    name: tfplan-${{ matrix.region }}
+    path: terraform/regions/${{ matrix.region }}/tfplan
+
+# Job 2: The Production Gate
+terraform_apply:
+  needs: terraform_plan
+  environment: production # Requires manual approval in UI
+</code></pre>
         </section>
 
-        <section id="drift" class="decision-box">
-            <h3>04. Proactive Drift Detection</h3>
-            <p>Automated cron-checks using <code>detailed-exitcode</code> to alert if manual AWS console changes deviate from the code.</p>
+        <section id="locking">
+            <h2>04. Collaborative State & Locking</h2>
+            <div class="decision-box">
+                <h3>Architectural Goal: S3 Backend with DynamoDB</h3>
+                <p>To enable a collaborative team environment and prevent state corruption, I implemented a remote backend using <strong>Amazon S3</strong> for state storage and <strong>DynamoDB</strong> for state locking. This ensures that concurrent deployment attempts are safely blocked, maintaining a single source of truth across all regions.</p>
+            </div>
         </section>
 
-        <section id="security" class="decision-box">
-            <h3>05. Shift-Left Security Gates</h3>
-            <p>Static analysis via <code>tfsec</code> and <code>Checkov</code> is integrated into the PR process to block insecure resource provisioning.</p>
+        <section id="drift">
+            <h2>05. Proactive Drift Detection (Day 2 Ops)</h2>
+            <p>Infrastructure "drift" occurs when manual changes are made via the AWS Console, breaking the link between code and reality.</p>
+            
+            <div class="decision-box">
+                <h3>Architectural Goal: Automated Integrity Checks</h3>
+                <p>I engineered two dedicated Drift Detection workflows (Global & Regional) using <code>terraform plan -detailed-exitcode</code>. The CI/CD uses logic gates to interpret exit codes: 
+                <strong>0</strong> (Safe/No Change), <strong>1</strong> (Error), or <strong>2</strong> (Drift Detected). If drift is found, the job intentionally fails and alerts the team for immediate remediation.</p>
+            </div>
+        </section>
+
+        <section id="security">
+            <h2>06. Shift-Left Security & Secret Management</h2>
+            <div class="decision-box">
+                <h3>Architectural Goal: Zero-Trust Deployments</h3>
+                <p>For maximum security, <strong>AWS Access Keys</strong> are stored in GitHub Secrets and injected at runtime. Before any <code>apply</code>, the code must pass <code>tfsec</code> and <code>Checkov</code> gates. This ensures that every resource—whether global IAM or a regional VPC—meets industry security standards before it is provisioned.</p>
+            </div>
         </section>
 
         <section id="summary">
-            <h2>06. Evolution Summary</h2>
+            <h2>07. Comparative Summary</h2>
             <table class="comparison-table">
-                <tr style="background:#f9f9f9;"><th>Feature</th><th>Standard Model</th><th>Governance Model</th></tr>
-                <tr><td>Execution</td><td>Auto-Apply</td><td>Plan-Review-Apply</td></tr>
-                <tr><td>State Source</td><td>Runtime</td><td>Immutable Artifact</td></tr>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Standard (Multi-Region)</th>
+                        <th>Safety-First (Plan-Apply)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Deployment Flow</td><td>Continuous (Auto)</td><td>Staged (Gate)</td></tr>
+                    <tr><td>Governance</td><td>Push-Triggered</td><td>Manual Approval</td></tr>
+                    <tr><td>Risk Level</td><td>Moderate</td><td>Low (Immutable)</td></tr>
+                </tbody>
             </table>
         </section>
 
         <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
-            <p>&copy; 2026 Nebat Taha | Terraform Architect</p>
+            <p>&copy; 2026 Nebat Taha | Built for Scalability.</p>
         </footer>
     </article>
 </body>
