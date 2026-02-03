@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Sidebar is taken out of the layout flow to allow perfect centering */
         .sticky-toc {
             position: fixed;
             left: 3%;
@@ -16,11 +15,8 @@
             display: none;
             z-index: 10;
         }
-
-        @media (min-width: 1300px) {
-            .sticky-toc { display: block; }
-        }
-
+        @media (min-width: 1300px) { .sticky-toc { display: block; } }
+        
         .toc-link {
             display: block;
             font-size: 0.75rem;
@@ -32,7 +28,6 @@
         }
         .toc-link:hover { color: var(--accent); }
 
-        /* Perfect Center Alignment matching your White Papers */
         .article-container {
             max-width: 850px;
             margin: 0 auto;
@@ -64,126 +59,95 @@
         <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
         <a href="#lifecycles" class="toc-link">01. Lifecycles</a>
         <a href="#governance" class="toc-link">02. Governance</a>
-        <a href="#integrity" class="toc-link">03. Artifact Integrity</a>
-        <a href="#locking" class="toc-link">04. State & Locking</a>
-        <a href="#drift" class="toc-link">05. Drift Detection</a>
-        <a href="#security" class="toc-link">06. Shift-Left Security</a>
-        <a href="#summary" class="toc-link">07. Summary Table</a>
+        <a href="#state" class="toc-link">03. State & Locking</a>
+        <a href="#drift" class="toc-link">04. Drift Detection</a>
+        <a href="#security" class="toc-link">05. Security Gates</a>
+        <a href="#summary" class="toc-link">06. Comparison</a>
     </aside>
 
     <article class="article-container">
         <header>
             <a href="projects.html" class="back-link">← Back to Projects</a>
-            <h1 style="margin-top: 20px;">Enterprise Terraform: Multi-Region Architecture & Governance</h1>
+            <h1 style="margin-top: 20px;">Enterprise Terraform: Multi-Region Architecture</h1>
             <p class="subtitle">Architecting isolated Global vs. Regional lifecycles with S3 Backend Locking and Proactive Drift Detection.</p>
             <div class="project-meta">
                 <span class="tag">Terraform</span>
                 <span class="tag">AWS</span>
-                <span class="tag">GITHUB ACTIONS</span>
-                <span class="tag">S3 + DynamoDB Locking</span>
-                <span class="tag">Matrix Strategy</span>
-                <span class="tag">Drift Detection</span>
+                <span class="tag">GitHub Actions</span>
+                <span class="tag">Governance</span>
             </div>
         </header>
 
         <section id="lifecycles">
             <h2>01. Decoupled Resource Lifecycles</h2>
-            <p>Infrastructure is split into two distinct CI/CD pipelines to ensure that changes to global identity (IAM) or DNS (Route53) do not interfere with regional compute resources.</p>
-            
+            <p>Infrastructure is split into two distinct CI/CD pipelines to ensure that global identity (IAM) or DNS (Route53) changes do not interfere with regional compute resources.</p>
             <div class="decision-box">
                 <h3>Global vs. Regional Pipelines</h3>
-                <p><strong>Global Pipeline:</strong> Manages IAM and Route 53. Executed in <code>us-east-1</code> as the authoritative region.<br>
-                <strong>Regional Pipeline:</strong> Utilizes a <strong>GitHub Actions Matrix</strong> to concurrently deploy VPCs and EC2 instances across <code>us-east-1</code>, <code>eu-central-1</code>, and <code>ap-southeast-2</code>.</p>
+                <p><strong>Global:</strong> IAM and Route 53. Executed in <code>us-east-1</code>.<br>
+                <strong>Regional:</strong> EKS, VPC, and EC2 deployed via <strong>GitHub Actions Matrix</strong> across three continents.</p>
             </div>
         </section>
 
         <section id="governance">
             <h2>02. CI/CD Governance: Safety at Scale</h2>
-            <p>Infrastructure as Code (IaC) requires more than just automation; it requires <strong>guardrails</strong>. I evolved the deployment pipeline into two distinct security models:</p>
-
-            <div class="tool-grid">
-                <div class="tool-card">
-                    <h4>Continuous Deployment (Fast-Track)</h4>
-                    <p>Direct automation for dev/staging environments where speed is prioritized.</p>
-                </div>
-                <div class="tool-card">
-                    <h4>Governance-First (Production)</h4>
-                    <p>Utilizes GitHub Environment protection and Artifact state-passing to ensure human verification.</p>
-                </div>
-            </div>
-
+            <p>I evolved the deployment pipeline to include <strong>Governance-First</strong> models for production, utilizing GitHub Environment protection and Artifact state-passing.</p>
+            
             <div class="decision-box">
-                <h3>Architectural Evolution: GitHub Environments</h3>
-                <p>By splitting the workflow into <code>terraform_plan</code> and <code>terraform_apply</code>, I introduced an <strong>Environment Gate</strong>. The workflow pauses after the plan is generated, requiring a manual review of the Terraform Artifact before the 'production' environment allows the apply job to run.</p>
-                
-                <a href="https://github.com/Nebat-Taha/terraform-plan-apply" target="_blank" class="nav-resume" style="padding: 8px 15px; font-size: 0.8rem; display:inline-block; margin-top:10px;">
+                <h3>The Production Gate: Plan & Apply Split</h3>
+                <p>The workflow pauses after the plan is generated, requiring manual review of the <code>tfplan</code> artifact before execution is permitted.</p>
+                <a href="https://github.com/Nebat-Taha/terraform-plan-apply" target="_blank" class="nav-resume" style="padding: 8px 15px; font-size: 0.8rem; display: inline-block; margin-top: 10px;">
                     View Safety-First Repo →
                 </a>
             </div>
-        </section>
-
-        <section id="integrity">
-            <h2>03. Technical Implementation: Artifact Integrity</h2>
-            <p>To ensure the exact code planned is the code applied, I implemented <strong>Artifact Passing</strong>. This prevents "state-drift" between the time the plan is seen and the time it is executed.</p>
-
-
+            
+            
 
 <pre><code>
-# Job 1: Saving the source-of-truth
+# Artifact Passing logic
 - name: Upload Plan Artifact
   uses: actions/upload-artifact@v4
   with:
     name: tfplan-${{ matrix.region }}
     path: terraform/regions/${{ matrix.region }}/tfplan
-
-# Job 2: The Production Gate
-terraform_apply:
-  needs: terraform_plan
-  environment: production # Requires manual approval in UI
 </code></pre>
         </section>
 
-        <section id="locking">
-            <h2>04. Collaborative State & Locking</h2>
+        <section id="state">
+            <h2>03. Collaborative State & Locking</h2>
             <div class="decision-box">
                 <h3>Architectural Goal: S3 Backend with DynamoDB</h3>
-                <p>To enable a collaborative team environment and prevent state corruption, I implemented a remote backend using <strong>Amazon S3</strong> for state storage and <strong>DynamoDB</strong> for state locking. This ensures that concurrent deployment attempts are safely blocked, maintaining a single source of truth across all regions.</p>
+                <p>Remote state storage in <strong>S3</strong> combined with <strong>DynamoDB</strong> state locking prevents concurrent deployments and state corruption in a team environment.</p>
             </div>
         </section>
 
         <section id="drift">
-            <h2>05. Proactive Drift Detection (Day 2 Ops)</h2>
-            <p>Infrastructure "drift" occurs when manual changes are made via the AWS Console, breaking the link between code and reality.</p>
-            
+            <h2>04. Proactive Drift Detection (Day 2 Ops)</h2>
             <div class="decision-box">
                 <h3>Architectural Goal: Automated Integrity Checks</h3>
-                <p>I engineered two dedicated Drift Detection workflows (Global & Regional) using <code>terraform plan -detailed-exitcode</code>. The CI/CD uses logic gates to interpret exit codes: 
-                <strong>0</strong> (Safe/No Change), <strong>1</strong> (Error), or <strong>2</strong> (Drift Detected). If drift is found, the job intentionally fails and alerts the team for immediate remediation.</p>
+                <p>Workflows using <code>terraform plan -detailed-exitcode</code> detect manual changes in the AWS console and alert the team if the state no longer matches the code.</p>
             </div>
         </section>
 
         <section id="security">
-            <h2>06. Shift-Left Security & Secret Management</h2>
-            <div class="decision-box">
-                <h3>Architectural Goal: Zero-Trust Deployments</h3>
-                <p>For maximum security, <strong>AWS Access Keys</strong> are stored in GitHub Secrets and injected at runtime. Before any <code>apply</code>, the code must pass <code>tfsec</code> and <code>Checkov</code> gates. This ensures that every resource—whether global IAM or a regional VPC—meets industry security standards before it is provisioned.</p>
-            </div>
+            <h2>05. Shift-Left Security & Secret Management</h2>
+            <p>Before any resource is provisioned, the code must pass <code>tfsec</code> and <code>Checkov</code> static analysis gates to maintain a Zero-Trust deployment model.</p>
         </section>
 
         <section id="summary">
-            <h2>07. Comparative Summary</h2>
+            <h2>06. Project Evolution: Standard vs. Safety-First</h2>
+            <p>A comparison of the transition from rapid automation to enterprise-grade governance.</p>
             <table class="comparison-table">
                 <thead>
                     <tr>
                         <th>Feature</th>
-                        <th>Standard (Multi-Region)</th>
-                        <th>Safety-First (Plan-Apply)</th>
+                        <th>Standard Repo</th>
+                        <th>Safety-First Repo</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>Deployment Flow</td><td>Continuous (Auto)</td><td>Staged (Gate)</td></tr>
-                    <tr><td>Governance</td><td>Push-Triggered</td><td>Manual Approval</td></tr>
-                    <tr><td>Risk Level</td><td>Moderate</td><td>Low (Immutable)</td></tr>
+                    <tr><td>Governance</td><td>Auto-Apply</td><td>Human-in-the-loop</td></tr>
+                    <tr><td>State Integrity</td><td>Calculated</td><td>Locked Artifact</td></tr>
+                    <tr><td>Risk</td><td>Moderate</td><td>Low</td></tr>
                 </tbody>
             </table>
         </section>
