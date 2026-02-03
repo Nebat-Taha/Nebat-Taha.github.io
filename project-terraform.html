@@ -123,7 +123,49 @@ terraform_apply:
             </div>
         </section>
     </article>
-
+    <section>
+            <h2>06. Project Evolution: Standard vs. Safety-First</h2>
+            <p>To demonstrate the transition from a "Startup" automation mindset to an "Enterprise" governance mindset, the table below compares the two deployment models implemented in this project.</p>
+            
+            <div class="table-container" style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                    <thead>
+                        <tr style="background-color: #f8f9fa; border-bottom: 2px solid var(--accent);">
+                            <th style="padding: 15px; border: 1px solid #eee;">Feature</th>
+                            <th style="padding: 15px; border: 1px solid #eee;">Standard (Multi-Region Repo)</th>
+                            <th style="padding: 15px; border: 1px solid #eee;">Safety-First (Plan-Apply Repo)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 15px; border: 1px solid #eee; font-weight: 700;">Deployment Flow</td>
+                            <td style="padding: 15px; border: 1px solid #eee;">Continuous (Auto-Apply)</td>
+                            <td style="padding: 15px; border: 1px solid #eee;">Staged (Plan → Gate → Apply)</td>
+                        </tr>
+                        <tr style="background-color: #fdfdfd;">
+                            <td style="padding: 15px; border: 1px solid #eee; font-weight: 700;">Human Governance</td>
+                            <td style="padding: 15px; border: 1px solid #eee;">None (Trigger on Push)</td>
+                            <td style="padding: 15px; border: 1px solid #eee;">Required (GitHub Environments)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px; border: 1px solid #eee; font-weight: 700;">State Integrity</td>
+                            <td style="padding: 15px; border: 1px solid #eee;">Re-calculated at runtime</td>
+                            <td style="padding: 15px; border: 1px solid #eee;">Locked via Artifact (tfplan)</td>
+                        </tr>
+                        <tr style="background-color: #fdfdfd;">
+                            <td style="padding: 15px; border: 1px solid #eee; font-weight: 700;">Risk Level</td>
+                            <td style="padding: 15px; border: 1px solid #eee; color: #d9534f;">Moderate (Drift sensitive)</td>
+                            <td style="padding: 15px; border: 1px solid #eee; color: #5cb85c;">Low (Immutable Plan)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 15px; border: 1px solid #eee; font-weight: 700;">Use Case</td>
+                            <td style="padding: 15px; border: 1px solid #eee;">Development / CI Environments</td>
+                            <td style="padding: 15px; border: 1px solid #eee;">Production / Critical Infrastructure</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     <footer>
         <p>&copy; 2026 Nebat Taha | Built for Scalability.</p>
     </footer>
