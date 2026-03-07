@@ -1,134 +1,82 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Multi-Region Terraform | Nebat Taha</title>
-
     <link rel="stylesheet" href="style.css">
-
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-
 </head>
 <body>
-  <nav class="header-nav">
-    <div class="nav-links">
-        <a href="index.html">HOME</a>
-        <a href="projects.html">PROJECTS</a>
-    </div>
 
-    <div class="social-links">
-        <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/ " target="_blank" class="ico-linkedin" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        <a href="https://github.com/Nebat-Taha/ " target="_blank" class="ico-github" title="GitHub"><i class="fab fa-github"></i></a>
-        <a href="mailto:nebatn@gmail.com" class="ico-email" title="Email"><i class="fas fa-envelope"></i></a>
-        <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
-    </div>
+    <nav>
+        <div class="logo">NT</div>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="projects.html" style="color: var(--accent);">PROJECTS</a></li>
+            <li><a href="assets/Nebat_Taha_Resume.pdf" class="nav-resume" target="_blank" download>RESUME</a></li>
+        </ul>
     </nav>
 
-
-
-    <aside class="sticky-toc">
-        <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
-        <a href="#lifecycles" class="toc-link">01. Lifecycles</a>
-        <a href="#governance" class="toc-link">02. Governance</a>
-        <a href="#state" class="toc-link">03. State & Locking</a>
-        <a href="#drift" class="toc-link">04. Drift Detection</a>
-
-        <a href="#security" class="toc-link">05. Security Gates</a>
-
-    </aside>
-
-
-
-    <article class="article-container">
-
+    <article class="project-detail">
         <header>
-
             <a href="projects.html" class="back-link">← Back to Projects</a>
-
-            <h1 style="margin-top: 20px;">Enterprise Terraform: Multi-Region Architecture</h1>
-
-            <p style="font-size: 1.1rem; color: #666;">Architecting isolated Global vs. Regional lifecycles with S3 Backend Locking and Proactive Drift Detection.</p>
-
-            <div style="margin-top: 20px;">
-
-                <span class="tag">Terraform</span><span class="tag">AWS</span><span class="tag">Governance</span>
-
+            <h1>Multi-Region Terraform: Infrastructure as Code at Scale</h1>
+            <p class="subtitle">Automating global AWS footprints with GitHub Actions Matrix strategies and Shift-Left security gates.</p>
+            <div class="project-meta">
+                <span class="tag">Terraform</span>
+                <span class="tag">AWS</span>
+                <span class="tag">GitHub Actions</span>
+                <span class="tag">DevSecOps</span>
             </div>
-
         </header>
 
-
-
-        <section id="lifecycles" style="margin-top: 40px;">
-
-            <h2>01. Decoupled Resource Lifecycles</h2>
-
-            <p>Infrastructure is split into two distinct CI/CD pipelines to ensure that changes to global identity (IAM) or DNS (Route53) do not interfere with regional compute resources. This isolation prevents a failure in one region from cascading into global services.</p>
-
+        <section>
+            <h2>01. Scaling via Matrix Strategy</h2>
+            
+            <div class="decision-box">
+                <h3>Architectural Goal: Parallelism & Execution Speed</h3>
+                <p>To avoid the "bottleneck" of sequential deployments, I implemented a <strong>GitHub Actions Matrix Strategy</strong>. This allows the pipeline to trigger concurrent jobs for North America, Europe, and Asia-Pacific. Each job is isolated, significantly reducing the total deployment time for global updates.</p>
+            </div>
         </section>
 
-
-
-        
-
-
-
-        <section id="governance">
-
-            <h2>02. CI/CD Governance: Safety at Scale</h2>
-
-            <p>By splitting the workflow into <code>plan</code> and <code>apply</code>, I introduced an Environment Gate. The workflow pauses after the plan is generated, requiring a manual review of the Terraform Artifact before the production environment allows the apply job to run.</p>
-
-            <a href="https://github.com/Nebat-Taha/terraform-plan-apply" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View Safety-First Repo →</a>
-
+        <section>
+            <h2>02. State Isolation & Dynamic Backend</h2>
+            <div class="decision-box">
+                <h3>Architectural Goal: Preventing Global State Corruption</h3>
+                <p>A major risk in multi-region setups is a "Corrupted State." My pipeline uses <code>terraform init -reconfigure</code> and dynamic working directories (<code>./terraform-mr/regions/${{ matrix.region }}</code>). This ensures that each region maintains its own isolated state file, preventing a failure in one region from impacting the others.</p>
+            </div>
         </section>
 
-
-
-        <section id="state">
-
-            <h2>03. Collaborative State & Locking</h2>
-
-            <p>To enable a collaborative team environment and prevent state corruption, I implemented a remote backend using Amazon S3 for state storage and DynamoDB for state locking. This ensures that concurrent deployment attempts are safely blocked, maintaining a single source of truth across all regions.</p>
-
+        <section>
+            <h2>03. Shift-Left Security Gates</h2>
+            
+            <div class="decision-box">
+                <h3>Architectural Goal: Automated Compliance</h3>
+                <p>Security is not an afterthought; it is integrated into the runner. Before <code>terraform apply</code> can execute, the code must pass <strong>TFLint</strong> (code quality), <strong>tfsec</strong> (security misconfigurations), and <strong>Checkov</strong> (industry-standard compliance). This "Shift-Left" approach catches risks like unencrypted volumes or public S3 buckets before they ever touch AWS.</p>
+            </div>
         </section>
 
-
-
-        <section id="drift">
-
-            <h2>04. Proactive Drift Detection</h2>
-
-            <p>I engineered automated drift detection workflows using <code>terraform plan -detailed-exitcode</code>. The CI/CD interprets exit code 2 as drift detected, triggering a failure notification to the team to ensure manual AWS Console changes are caught and remediated.</p>
-
+        <section>
+            <h2>04. Deterministic Deployments</h2>
+            <div class="decision-box">
+                <h3>Architectural Goal: Eliminating "Human Error"</h3>
+                <p>The pipeline uses <code>-input=false</code> and <code>-auto-approve</code> within a strictly controlled <code>workflow_dispatch</code> trigger. By removing manual prompts, I ensure that deployments are deterministic and repeatable. Trace logging (<code>TF_LOG: TRACE</code>) is enabled to provide full auditability during complex regional updates.</p>
+            </div>
         </section>
 
-
-
-        <section id="security">
-
-            <h2>05. Shift-Left Security</h2>
-
-            <p>Before any resource is provisioned, the code must pass <code>tfsec</code> and <code>Checkov</code> static analysis gates. This ensures that every resource meets industry security standards and organizational compliance policies before it reaches the cloud.</p>
-
+        <section class="project-footer">
+            <div class="cta-box">
+                <h2>Explore the HCL & Pipelines</h2>
+                <p>See how the modules are structured to support this multi-region concurrent flow.</p>
+                <a href="https://github.com/Nebat-Taha/terraform-multi-region" target="_blank" class="read-more">View GitHub Repository →</a>
+            </div>
         </section>
-
-
-
-        <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
-
-            <p>&copy; 2026 Nebat Taha | Built for Scalability.</p>
-
-        </footer>
-
     </article>
 
-</body>
+    <footer>
+        <p>&copy; 2026 Nebat Taha | Infrastructure as Code Expert.</p>
+    </footer>
 
+</body>
 </html>
