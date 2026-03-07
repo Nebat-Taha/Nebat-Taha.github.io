@@ -21,61 +21,64 @@
     <article class="project-detail">
         <header>
             <a href="projects.html" class="back-link">← Back to Projects</a>
-            <h1>Multi-Region Terraform: Infrastructure as Code at Scale</h1>
-            <p class="subtitle">Automating global AWS footprints with GitHub Actions Matrix strategies and Shift-Left security gates.</p>
+            <h1>Enterprise Terraform: Multi-Region Architecture & Governance</h1>
+            <p class="subtitle">Architecting isolated Global vs. Regional lifecycles with S3 Backend Locking and Drift Detection.</p>
             <div class="project-meta">
                 <span class="tag">Terraform</span>
-                <span class="tag">AWS</span>
-                <span class="tag">GitHub Actions</span>
-                <span class="tag">DevSecOps</span>
+                <span class="tag">S3 + DynamoDB Locking</span>
+                <span class="tag">Matrix Strategy</span>
+                <span class="tag">Drift Detection</span>
             </div>
         </header>
 
         <section>
-            <h2>01. Scaling via Matrix Strategy</h2>
+            <h2>01. Decoupled Resource Lifecycles</h2>
+            <p>Infrastructure is split into two distinct CI/CD pipelines to ensure that changes to global identity (IAM) or DNS (Route53) do not interfere with regional compute resources.</p>
             
             <div class="decision-box">
-                <h3>Architectural Goal: Parallelism & Execution Speed</h3>
-                <p>To avoid the "bottleneck" of sequential deployments, I implemented a <strong>GitHub Actions Matrix Strategy</strong>. This allows the pipeline to trigger concurrent jobs for North America, Europe, and Asia-Pacific. Each job is isolated, significantly reducing the total deployment time for global updates.</p>
+                <h3>Global vs. Regional Pipelines</h3>
+                <p><strong>Global Pipeline:</strong> Manages IAM, Route 53, and cross-region networking. Executed in <code>us-east-1</code> as the authoritative region.<br>
+                <strong>Regional Pipeline:</strong> Utilizes a <strong>GitHub Actions Matrix</strong> to concurrently deploy VPCs and EC2 instances across <code>us-east-1</code>, <code>eu-central-1</code>, and <code>ap-southeast-2</code>.</p>
             </div>
-        </section>
-
-        <section>
-            <h2>02. State Isolation & Dynamic Backend</h2>
-            <div class="decision-box">
-                <h3>Architectural Goal: Preventing Global State Corruption</h3>
-                <p>A major risk in multi-region setups is a "Corrupted State." My pipeline uses <code>terraform init -reconfigure</code> and dynamic working directories (<code>./terraform-mr/regions/${{ matrix.region }}</code>). This ensures that each region maintains its own isolated state file, preventing a failure in one region from impacting the others.</p>
-            </div>
-        </section>
-
-        <section>
-            <h2>03. Shift-Left Security Gates</h2>
             
+        </section>
+
+        <section>
+            <h2>02. Collaborative State & Locking</h2>
             <div class="decision-box">
-                <h3>Architectural Goal: Automated Compliance</h3>
-                <p>Security is not an afterthought; it is integrated into the runner. Before <code>terraform apply</code> can execute, the code must pass <strong>TFLint</strong> (code quality), <strong>tfsec</strong> (security misconfigurations), and <strong>Checkov</strong> (industry-standard compliance). This "Shift-Left" approach catches risks like unencrypted volumes or public S3 buckets before they ever touch AWS.</p>
+                <h3>Architectural Goal: S3 Backend with DynamoDB</h3>
+                <p>To enable a collaborative team environment and prevent state corruption, I implemented a remote backend using <strong>Amazon S3</strong> for state storage and <strong>DynamoDB</strong> for state locking. This ensures that if two engineers (or two CI/CD jobs) attempt a deployment simultaneously, the second job is blocked until the first completes.</p>
             </div>
         </section>
 
         <section>
-            <h2>04. Deterministic Deployments</h2>
+            <h2>03. Automated Drift Detection</h2>
             <div class="decision-box">
-                <h3>Architectural Goal: Eliminating "Human Error"</h3>
-                <p>The pipeline uses <code>-input=false</code> and <code>-auto-approve</code> within a strictly controlled <code>workflow_dispatch</code> trigger. By removing manual prompts, I ensure that deployments are deterministic and repeatable. Trace logging (<code>TF_LOG: TRACE</code>) is enabled to provide full auditability during complex regional updates.</p>
+                <h3>Architectural Goal: Catching Manual "Out-of-Band" Changes</h3>
+                <p>Infrastructure often "drifts" when manual changes are made via the AWS Console. I engineered <strong>two dedicated Drift Detection CI/CD workflows</strong> that run <code>terraform plan -detailed-exitcode</code>. These pipelines alert the team if the real-world infrastructure deviates from the code, maintaining the Integrity of our Source of Truth.</p>
             </div>
+        </section>
+
+        <section>
+            <h2>04. Shift-Left Security & Secret Management</h2>
+            <div class="decision-box">
+                <h3>Architectural Goal: Zero-Trust Deployments</h3>
+                <p>For maximum security, <strong>AWS Access Keys</strong> and sensitive variables are stored exclusively in <strong>GitHub Secrets</strong> and injected at runtime. Before any deployment, the code must pass <code>tfsec</code> (security misconfigurations) and <code>Checkov</code> (compliance-as-code) gates to ensure all resources meet CIS Benchmarks.</p>
+            </div>
+            
         </section>
 
         <section class="project-footer">
             <div class="cta-box">
                 <h2>Explore the HCL & Pipelines</h2>
-                <p>See how the modules are structured to support this multi-region concurrent flow.</p>
+                <p>View the modular structure supporting separate Global and Regional state files.</p>
                 <a href="https://github.com/Nebat-Taha/terraform-multi-region" target="_blank" class="read-more">View GitHub Repository →</a>
             </div>
         </section>
     </article>
 
     <footer>
-        <p>&copy; 2026 Nebat Taha | Infrastructure as Code Expert.</p>
+        <p>&copy; 2026 Nebat Taha | Built for Scalability.</p>
     </footer>
 
 </body>
