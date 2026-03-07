@@ -209,3 +209,14 @@ th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border)
     text-transform: uppercase;
     font-size: 0.9rem;
 }
+/* Global Text Justification for Articles and Hero */
+p, .about-text, .decision-box p {
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
+}
+
+/* Ensure headings and small meta text stay left-aligned for contrast */
+h1, h2, h3, h4, .tag, .toc-link, .wes-link {
+    text-align: left;
+}
