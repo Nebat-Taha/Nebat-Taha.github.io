@@ -22,7 +22,7 @@
         <header>
             <a href="projects.html" class="back-link">← Back to Projects</a>
             <h1>Enterprise Terraform: Multi-Region Architecture & Governance</h1>
-            <p class="subtitle">Architecting isolated Global vs. Regional lifecycles with S3 Backend Locking and Drift Detection.</p>
+            <p class="subtitle">Architecting isolated Global vs. Regional lifecycles with S3 Backend Locking and Proactive Drift Detection.</p>
             <div class="project-meta">
                 <span class="tag">Terraform</span>
                 <span class="tag">S3 + DynamoDB Locking</span>
@@ -37,7 +37,7 @@
             
             <div class="decision-box">
                 <h3>Global vs. Regional Pipelines</h3>
-                <p><strong>Global Pipeline:</strong> Manages IAM, Route 53, and cross-region networking. Executed in <code>us-east-1</code> as the authoritative region.<br>
+                <p><strong>Global Pipeline:</strong> Manages IAM and Route 53. Executed in <code>us-east-1</code> as the authoritative region.<br>
                 <strong>Regional Pipeline:</strong> Utilizes a <strong>GitHub Actions Matrix</strong> to concurrently deploy VPCs and EC2 instances across <code>us-east-1</code>, <code>eu-central-1</code>, and <code>ap-southeast-2</code>.</p>
             </div>
             
@@ -47,31 +47,35 @@
             <h2>02. Collaborative State & Locking</h2>
             <div class="decision-box">
                 <h3>Architectural Goal: S3 Backend with DynamoDB</h3>
-                <p>To enable a collaborative team environment and prevent state corruption, I implemented a remote backend using <strong>Amazon S3</strong> for state storage and <strong>DynamoDB</strong> for state locking. This ensures that if two engineers (or two CI/CD jobs) attempt a deployment simultaneously, the second job is blocked until the first completes.</p>
+                <p>To enable a collaborative team environment and prevent state corruption, I implemented a remote backend using <strong>Amazon S3</strong> for state storage and <strong>DynamoDB</strong> for state locking. This ensures that concurrent deployment attempts are safely blocked, maintaining a single source of truth across all regions.</p>
             </div>
         </section>
 
         <section>
-            <h2>03. Automated Drift Detection</h2>
+            <h2>03. Proactive Drift Detection (Day 2 Ops)</h2>
+            <p>Infrastructure "drift" occurs when manual changes are made via the AWS Console, breaking the link between code and reality.</p>
+            
             <div class="decision-box">
-                <h3>Architectural Goal: Catching Manual "Out-of-Band" Changes</h3>
-                <p>Infrastructure often "drifts" when manual changes are made via the AWS Console. I engineered <strong>two dedicated Drift Detection CI/CD workflows</strong> that run <code>terraform plan -detailed-exitcode</code>. These pipelines alert the team if the real-world infrastructure deviates from the code, maintaining the Integrity of our Source of Truth.</p>
+                <h3>Architectural Goal: Automated Integrity Checks</h3>
+                <p>I engineered two dedicated Drift Detection workflows (Global & Regional) using <code>terraform plan -detailed-exitcode</code>. The CI/CD uses logic gates to interpret exit codes: 
+                <strong>0</strong> (Safe/No Change), <strong>1</strong> (Error), or <strong>2</strong> (Drift Detected). If drift is found, the job intentionally fails and alerts the team for immediate remediation.</p>
             </div>
+            
         </section>
 
         <section>
             <h2>04. Shift-Left Security & Secret Management</h2>
             <div class="decision-box">
                 <h3>Architectural Goal: Zero-Trust Deployments</h3>
-                <p>For maximum security, <strong>AWS Access Keys</strong> and sensitive variables are stored exclusively in <strong>GitHub Secrets</strong> and injected at runtime. Before any deployment, the code must pass <code>tfsec</code> (security misconfigurations) and <code>Checkov</code> (compliance-as-code) gates to ensure all resources meet CIS Benchmarks.</p>
+                <p>For maximum security, <strong>AWS Access Keys</strong> are stored in GitHub Secrets and injected at runtime. Before any <code>apply</code>, the code must pass <code>tfsec</code> and <code>Checkov</code> gates. This ensures that every resource—whether global IAM or a regional VPC—meets industry security standards before it is provisioned.</p>
             </div>
             
         </section>
 
         <section class="project-footer">
             <div class="cta-box">
-                <h2>Explore the HCL & Pipelines</h2>
-                <p>View the modular structure supporting separate Global and Regional state files.</p>
+                <h2>Explore the Workflows</h2>
+                <p>View the full GitHub Actions YAML for Global Deployment and Regional Drift Detection.</p>
                 <a href="https://github.com/Nebat-Taha/terraform-multi-region" target="_blank" class="read-more">View GitHub Repository →</a>
             </div>
         </section>
