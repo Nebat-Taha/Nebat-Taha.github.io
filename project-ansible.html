@@ -1,139 +1,122 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Ansible Resilience | Nebat Taha</title>
-
+    <title>Multi-Region Config & DR | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
-
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-
-    <style>
-
-        .sticky-toc { position: fixed; left: 3%; top: 150px; width: 180px; display: none; z-index: 10; }
-
-        @media (min-width: 1300px) { .sticky-toc { display: block; } }
-
-        .toc-link { display: block; font-size: 0.75rem; color: #999; text-decoration: none; margin-bottom: 15px; font-family: 'Fira Code', monospace; }
-
-        .article-container { max-width: 850px; margin: 0 auto; padding: 60px 20px; }
-
-        .tag { font-size: 0.7rem; font-weight: 700; color: var(--accent); border: 1px solid #eee; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; margin-right: 5px; }
-
-    </style>
-
 </head>
-
 <body>
 
-    <nav class="header-nav">
-
-    <div class="nav-links">
-
-        <a href="index.html">HOME</a>
-
-        <a href="projects.html">PROJECTS</a>
-
-    </div>
-
-    <div class="social-links">
-
-        <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/ " target="_blank" class="ico-linkedin" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-
-        <a href="https://github.com/Nebat-Taha/ " target="_blank" class="ico-github" title="GitHub"><i class="fab fa-github"></i></a>
-
-        <a href="mailto:nebatn@gmail.com" class="ico-email" title="Email"><i class="fas fa-envelope"></i></a>
-
-        <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
-
-    </div>
-
+    <nav>
+        <div class="logo">NT</div>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="projects.html" style="color: var(--accent);">PROJECTS</a></li>
+            <li><a href="assets/Nebat_Taha_Resume.pdf" class="nav-resume" target="_blank" download>RESUME</a></li>
+        </ul>
     </nav>
 
-
-
-    <aside class="sticky-toc">
-
-        <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
-
-        <a href="#control" class="toc-link">01. Control Plane</a>
-
-        <a href="#inventory" class="toc-link">02. Dynamic Inventory</a>
-
-        <a href="#backup" class="toc-link">03. Multi-Cloud Backup</a>
-
-    </aside>
-
-
-
-    <article class="article-container">
-
+    <article class="project-detail">
         <header>
-
             <a href="projects.html" class="back-link">← Back to Projects</a>
-
-            <h1 style="margin-top: 20px;">Multi-Region Configuration & Disaster Recovery</h1>
-
-            <p style="font-size: 1.1rem; color: #666;">Automating environment consistency and multi-cloud resiliency with Ansible and Backblaze B2.</p>
-
-            <div style="margin-top: 20px;">
-
-                <span class="tag">Ansible</span><span class="tag">Multi-Cloud</span><span class="tag">Disaster Recovery</span>
-
+            <h1>Multi-Region Configuration & Multi-Cloud Disaster Recovery</h1>
+            <p class="subtitle">Orchestrating AWS fleet health and Cross-Cloud data resilience using Ansible & GitHub Actions.</p>
+            <div class="project-meta">
+                <span class="tag">Ansible</span>
+                <span class="tag">GitHub Actions</span>
+                <span class="tag">Backblaze B2</span>
+                <span class="tag">Multi-Cloud</span>
+                <span class="tag">DevSecOps</span>
             </div>
-
         </header>
 
-
-
-        <section id="control" style="margin-top: 40px;">
-
-            <h2>01. Ephemeral Control Plane</h2>
-
-            <p>Instead of a standing Ansible server, the GitHub Runner acts as a temporary node. This eliminates monthly EC2 costs and ensures every deployment starts from a 100% "known good" environment, preventing configuration drift on the management side.</p>
-
+        <section class="intro-section">
+            <div class="split-view">
+                <div class="text-col">
+                    <h2>01. The "Serverless" Control Plane</h2>
+                    <p>
+                        Most Ansible setups rely on a "Master Server" that stays on 24/7. My architecture replaces this with **Ephemeral Runner Nodes**. 
+                    </p>
+                    <ul>
+                        <li><strong>Zero Cost:</strong> No standing EC2 instances for management.</li>
+                        <li><strong>Zero Drift:</strong> Every run starts with a fresh <code>pip install</code>, ensuring the environment is never "polluted" by old configs.</li>
+                        <li><strong>Security:</strong> Credentials (AWS/B2 keys) never live on a server; they are injected as <strong>GitHub Secrets</strong> at runtime.</li>
+                    </ul>
+                </div>
+                <div class="stat-box">
+                    <h3>Impact</h3>
+                    <p><strong>$0</strong> Monthly Management Cost</p>
+                    <p><strong>100%</strong> Clean-State Execution</p>
+                </div>
+            </div>
         </section>
 
+        <hr>
 
+        <section>
+            <h2>02. Dynamic Inventory & Multi-Region Matrix</h2>
+            <p>Managing static IP lists is a recipe for failure in the cloud. I implemented a <strong>Dynamic Inventory</strong> system using the <code>aws_ec2</code> plugin.</p>
+            
+            
 
-        
-
-
-
-        <section id="inventory">
-
-            <h2>02. Dynamic Inventory</h2>
-
-            <p>I utilized AWS Dynamic Inventory and EC2 Tags to group servers. This removes the manual overhead of updating IP addresses; if an instance scales or changes, Ansible discovers it automatically. The CI/CD uses a matrix strategy to target multiple regions in parallel.</p>
-
+            <div class="decision-box">
+                <h3>The Parallel Matrix Strategy</h3>
+                <p>Using GitHub Actions' <code>strategy.matrix</code>, I execute configuration playbooks across multiple AWS regions (us-east-1, eu-central-1) simultaneously. The system uses <strong>AWS Tags</strong> to group servers, allowing for "Targeted Configuration" without ever knowing an IP address beforehand.</p>
+            </div>
         </section>
 
-
-
-        <section id="backup">
-
-            <h2>03. Multi-Cloud Backup Strategy</h2>
-
-            <p>To avoid Single Cloud Failure, backups are streamed to Backblaze B2. For security and performance, backups are staged in a local temporary folder and immediately destroyed after the upload to minimize the data footprint and maintain a zero-trust environment.</p>
-
+        <section>
+            <h2>03. Multi-Cloud Resilience (Backblaze B2)</h2>
+            <p>True Disaster Recovery requires getting data <em>out</em> of the primary cloud provider. I engineered a backup pipeline that bridges **AWS** and **Backblaze B2**.</p>
+            
+            <div class="process-flow">
+                <div class="step">
+                    <h4>1. Local Dump</h4>
+                    <p>Database (Mongo/Redis) is backed up to a temporary local folder.</p>
+                </div>
+                <div class="step">
+                    <h4>2. Multi-Cloud Upload</h4>
+                    <p>The file is streamed to Backblaze B2. No public ports are exposed; all traffic is handled via SSH/API.</p>
+                </div>
+                <div class="step">
+                    <h4>3. Self-Cleaning</h4>
+                    <p>The local backup is immediately destroyed to save disk space and reduce the security footprint.</p>
+                </div>
+            </div>
         </section>
 
+        <section>
+            <h2>04. Precision Restore (RPO Management)</h2>
+            <p>Restoring the "latest" backup is a common mistake—the latest backup might be the one that is corrupted. My **Restore Pipeline** is built for human-in-the-loop precision.</p>
+            
+            <blockquote>
+                <strong>Architectural Note:</strong> The restore CICD generates an <strong>ephemeral inventory</strong> file at runtime. It targets a single, specific host and requires the operator to input the exact <code>backup_filename</code> from B2, ensuring we restore a known-good state.
+            </blockquote>
+        </section>
 
+        <section>
+            <h2>05. Policy Enforcement (The Untracked Guard)</h2>
+            <p>While Terraform manages the "Infrastructure as Code," Ansible acts as the **Policy Enforcer** for resources created via the Console or CLI. </p>
+            <ul>
+                <li><strong>Security Hardening:</strong> Enforcing SSH-only access and disabling unused services.</li>
+                <li><strong>Compliance:</strong> Automatically correcting S3 bucket policies or IAM roles that deviate from the standard, acting as a secondary safety net for "untracked" resources.</li>
+            </ul>
+        </section>
 
-        <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
-
-            <p>&copy; 2026 Nebat Taha | Resilience Engineer</p>
-
-        </footer>
-
+        <section class="project-footer">
+            <div class="cta-box">
+                <h2>Explore the Playbooks</h2>
+                <p>Check out the YAML structures for the Multi-Region CI/CD and the Precision Restore logic.</p>
+                <a href="https://github.com/Nebat-Taha/ansible-infrastructure" target="_blank" class="read-more">View GitHub Repository →</a>
+            </div>
+        </section>
     </article>
 
-</body>
+    <footer>
+        <p>&copy; 2026 Nebat Taha | Built for Resilience.</p>
+    </footer>
 
+</body>
 </html>
