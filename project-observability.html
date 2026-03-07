@@ -1,267 +1,123 @@
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Observability Architecture | Nebat Taha</title>
-
+    <title>Cloud-Native Observability | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
-
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-
     <style>
-
         .sticky-toc {
-
             position: fixed;
-
-            left: 3%;
-
+            left: 5%;
             top: 150px;
-
             width: 180px;
-
             display: none;
-
-            z-index: 10;
-
         }
+        @media (min-width: 1400px) { .sticky-toc { display: block; } }
+        
+        .toc-link {
+            display: block;
+            font-size: 0.75rem;
+            color: #999;
+            text-decoration: none;
+            margin-bottom: 12px;
+            font-family: 'Fira Code', monospace;
+        }
+        .toc-link:hover { color: var(--accent); }
 
-        @media (min-width: 1300px) { .sticky-toc { display: block; } }
+        .article-container { max-width: 850px; margin: 40px auto; padding: 0 20px; }
+        .project-meta { margin: 25px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+        .tag { font-size: 0.7rem; font-weight: 700; color: var(--accent); border: 1px solid #eee; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; }
+        
+        pre { background: #f9f9f9; padding: 25px; border-radius: 8px; overflow-x: auto; border: 1px solid #eee; margin: 20px 0; }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div style="font-weight: 900;">NT</div>
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="projects.html" style="color: var(--accent);">PROJECTS</a></li>
+        </ul>
+    </nav>
+
+    <aside class="sticky-toc">
+        <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
+        <a href="#exporter" class="toc-link">01. Custom Python Exporter</a>
+        <a href="#prometheus" class="toc-link">02. Prometheus & Service Discovery</a>
+        <a href="#grafana" class="toc-link">03. Visualization (Grafana)</a>
+        <a href="#alerting" class="toc-link">04. Alertmanager & SNS</a>
+        <a href="#scaling" class="toc-link">05. Strategy Whitepaper</a>
+    </aside>
+
+    <article class="article-container">
+        <header>
+            <a href="projects.html" class="back-link">← Back to Projects</a>
+            <h1 style="margin-top: 20px;">Full-Stack Observability: Prometheus, Grafana & Python</h1>
+            
+            <div class="project-meta">
+                <span class="tag">Python</span>
+                <span class="tag">Prometheus</span>
+                <span class="tag">Grafana</span>
+                <span class="tag">Docker</span>
+                <span class="tag">AWS CloudWatch</span>
+            </div>
+
+            <p class="about-text">
+                Building a proactive monitoring ecosystem that moves beyond basic "Up/Down" checks. This project implements custom metric collection, automated service discovery, and high-fidelity alerting for distributed systems.
+            </p>
+        </header>
+
+        <section id="exporter" class="decision-box" style="margin-top: 40px;">
+            <h3>01. Custom Python Metrics Exporter</h3>
+            <p>Standard exporters (like Node Exporter) provide infrastructure data, but they miss <strong>Business Logic</strong>. I developed a Python-based exporter using the <code>prometheus_client</code> library to track application-specific health metrics.</p>
+            
+            <pre><code>
+from prometheus_client import start_http_server, Summary, Counter
+import time
+
+# Create a metric to track request latency and count
+REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request')
+ERROR_COUNT = Counter('app_error_total', 'Total number of application errors')
+
+@REQUEST_TIME.time()
+def process_request():
+    # Application Logic here
+    pass
+            </code></pre>
+        </section>
+
+        <section id="prometheus" class="decision-box">
+            <h3>02. Prometheus Service Discovery</h3>
+            <p>In a dynamic cloud environment, IP addresses change constantly. I configured Prometheus with <strong>EC2 Service Discovery</strong>, allowing it to automatically find and scrape any instance tagged with <code>monitoring: enabled</code>. This eliminates the manual overhead of updating static config files.</p>
+        </section>
 
         
 
-        .toc-link {
-
-            display: block;
-
-            font-size: 0.75rem;
-
-            color: #999;
-
-            text-decoration: none;
-
-            margin-bottom: 15px;
-
-            font-family: 'Fira Code', monospace;
-
-            transition: 0.3s;
-
-        }
-
-        .toc-link:hover { color: var(--accent); }
-
-
-
-        .article-container {
-
-            max-width: 850px;
-
-            margin: 0 auto;
-
-            padding: 60px 20px;
-
-        }
-
-
-
-        .project-meta { margin: 25px 0; display: flex; gap: 10px; flex-wrap: wrap; }
-
-        .tag { font-size: 0.7rem; font-weight: 700; color: var(--accent); border: 1px solid #eee; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; }
-
-        pre { background: #f9f9f9; padding: 25px; border-radius: 8px; overflow-x: auto; border: 1px solid #eee; margin: 20px 0; }
-
-    </style>
-
-</head>
-
-<body>
-
-
-
-    <nav class="header-nav">
-
-    <div class="nav-links">
-
-        <a href="index.html">HOME</a>
-
-        <a href="projects.html">PROJECTS</a>
-
-    </div>
-
-    <div class="social-links">
-
-        <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/ " target="_blank" class="ico-linkedin" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-
-        <a href="https://github.com/Nebat-Taha/ " target="_blank" class="ico-github" title="GitHub"><i class="fab fa-github"></i></a>
-
-        <a href="mailto:nebatn@gmail.com" class="ico-email" title="Email"><i class="fas fa-envelope"></i></a>
-
-        <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
-
-    </div>
-
-    </nav>
-
-
-
-    <aside class="sticky-toc">
-
-        <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
-
-        <a href="#exporter" class="toc-link">01. Python Exporter</a>
-
-        <a href="#prometheus" class="toc-link">02. Service Discovery</a>
-
-        <a href="#grafana" class="toc-link">03. Dashboards</a>
-
-        <a href="#alerting" class="toc-link">04. Alert Routing</a>
-
-        <a href="#whitepaper" class="toc-link">05. Strategy Paper</a>
-
-    </aside>
-
-
-
-    <article class="article-container">
-
-        <header>
-
-            <a href="projects.html" class="back-link">← Back to Projects</a>
-
-            <h1 style="margin-top: 20px;">Full-Stack Observability: Prometheus, Grafana & Python</h1>
-
-            <div class="project-meta">
-
-                <span class="tag">Python</span>
-
-                <span class="tag">Prometheus</span>
-
-                <span class="tag">Grafana</span>
-
-                <span class="tag">Docker</span>
-
-            </div>
-
-        </header>
-
-
-
-        <section id="exporter">
-
-            <h2>01. Custom Python Metrics Exporter</h2>
-
-            <div class="decision-box">
-
-                <h3>Architectural Goal: Logic Visibility</h3>
-
-                <p>I developed a Python-based exporter using the <code>prometheus_client</code> library to track <strong>Application-Specific Health</strong>. This moves beyond basic CPU metrics to track business-critical performance like transaction latency and error rates.</p>
-
-            </div>
-
-<pre><code>
-
-from prometheus_client import start_http_server, Counter
-
-import time
-
-
-
-ERROR_COUNT = Counter('app_errors', 'Total Application Errors')
-
-
-
-def process_request():
-
-    try:
-
-        # App Logic
-
-        pass
-
-    except Exception:
-
-        ERROR_COUNT.inc()
-
-</code></pre>
-
+        <section id="grafana" class="decision-box">
+            <h3>03. Visualization: The Global Dashboard</h3>
+            <p>Data is useless without context. I engineered multi-tenant Grafana dashboards that correlate <strong>System Metrics</strong> (CPU/RAM) with <strong>Application Metrics</strong> (Error Rates/Latency). This allows for "Single Pane of Glass" troubleshooting during incidents.</p>
         </section>
 
-
-
-        <section id="prometheus">
-
-            <h2>02. Prometheus & Service Discovery</h2>
-
-            <div class="decision-box">
-
-                <h3>Architectural Goal: Automated Scraping</h3>
-
-                <p>Implemented <strong>AWS EC2 Service Discovery</strong> in Prometheus. By targeting specific EC2 tags, Prometheus automatically discovers new application nodes as they scale, eliminating the need for manual configuration updates.</p>
-
-            </div>
-
-            
-
+        <section id="alerting" class="decision-box">
+            <h3>04. Intelligent Alertmanager Routing</h3>
+            <p>To prevent "Alert Fatigue," I implemented a tiered alerting system. Critical errors trigger <strong>PagerDuty/SMS</strong>, while non-critical warnings are routed to specific <strong>Slack channels</strong>. Alert grouping ensures that 100 failing containers result in one consolidated notification rather than 100 individual pings.</p>
         </section>
 
-
-
-        <section id="grafana">
-
-            <h2>03. Visualization: Unified Dashboards</h2>
-
-            <div class="decision-box">
-
-                <h3>Architectural Goal: Contextual Awareness</h3>
-
-                <p>Engineered multi-tenant dashboards in Grafana that correlate infrastructure health with application error logs. This creates a "Single Pane of Glass" for rapid incident response.</p>
-
-            </div>
-
-        </section>
-
-
-
-        <section id="alerting">
-
-            <h2>04. Intelligent Alertmanager Routing</h2>
-
-            <div class="decision-box">
-
-                <h3>Architectural Goal: Reducing Fatigue</h3>
-
-                <p>Configured Alertmanager to route high-priority issues to <strong>PagerDuty</strong> and low-priority warnings to <strong>Slack</strong>, using grouping logic to prevent alert storms during mass outages.</p>
-
-            </div>
-
-        </section>
-
-
-
-        <section id="whitepaper" style="background: #f0f7ff; border-left: 4px solid var(--accent); padding: 20px; border-radius: 0 8px 8px 0;">
-
-            <h2>05. Strategy Research Whitepaper</h2>
-
-            <p>This implementation is the result of a deep-dive research into monitoring philosophies. For the full 14-minute evaluation of Nagios vs. Datadog vs. Prometheus, visit the research page.</p>
-
+        <section id="scaling" class="decision-box" style="background: #f0f7ff; border-left: 4px solid var(--accent);">
+            <h3>05. Deep-Dive Strategy Paper</h3>
+            <p>This implementation is backed by a comprehensive 14-minute research document evaluating Nagios vs. Datadog vs. Prometheus. For a detailed breakdown of the "Why" behind these tool choices, read the full whitepaper.</p>
             <a href="blog-observability-research.html" class="read-more">Read Research Whitepaper →</a>
-
         </section>
-
-
 
         <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
-
-            <p>&copy; 2026 Nebat Taha | Built for Insight.</p>
-
+            <p>&copy; 2026 Nebat Taha | Observability Architect</p>
+            <a href="https://github.com/Nebat-Taha" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 700;">View Monitoring Scripts →</a>
         </footer>
-
     </article>
 
 </body>
-
 </html>
