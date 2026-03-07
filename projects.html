@@ -5,141 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-  <style>
-    /* Ensure buttons are on top and clickable */
-    .project-tabs {
-        display: flex;
-        justify-content: center;
-        gap: 30px;
-        margin: 50px 0;
-        border-bottom: 1px solid #eee;
-        position: relative;
-        z-index: 10;
-    }
-
-    .tab-btn {
-        background: none;
-        border: none;
-        padding: 15px 25px;
-        font-family: 'Fira Code', monospace;
-        font-size: 0.9rem;
-        font-weight: 600;
-        cursor: pointer; /* Makes the 'hand' icon appear */
-        color: #888;
-        border-bottom: 3px solid transparent;
-        transition: 0.3s;
-        pointer-events: auto; /* Ensures the mouse can interact with it */
-    }
-
-    .tab-btn.active {
-        color: var(--accent) !important;
-        border-bottom: 3px solid var(--accent) !important;
-    }
-
-    .hidden { 
-        display: none !important; 
-    }
-</style>
-
-<script>
-    function showSection(sectionId) {
-        const casesSection = document.getElementById('cases-section');
-        const researchSection = document.getElementById('research-section');
-        const buttons = document.querySelectorAll('.tab-btn');
-
-        if (sectionId === 'cases') {
-            // Show Cases, Hide Research
-            casesSection.classList.remove('hidden');
-            researchSection.classList.add('hidden');
-            
-            // Update Buttons
-            buttons[0].classList.add('active');
-            buttons[1].classList.remove('active');
-        } else {
-            // Show Research, Hide Cases
-            researchSection.classList.remove('hidden');
-            casesSection.classList.add('hidden');
-            
-            // Update Buttons
-            buttons[1].classList.add('active');
-            buttons[0].classList.remove('active');
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Reusing your Home Page Card styles for consistency */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 50px;
         }
-    }
-</script>
+        .project-card {
+            background: #fff;
+            border: 1px solid #eee;
+            padding: 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .project-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .project-card h2 { font-size: 1.4rem; margin-bottom: 15px; color: #111; }
+        .project-card p { font-size: 0.95rem; color: #555; line-height: 1.6; text-align: justify; margin-bottom: 20px; }
+        
+        .project-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+        .p-tag { font-size: 0.7rem; font-family: 'Fira Code', monospace; background: #f4f4f4; padding: 4px 8px; border-radius: 4px; color: #666; }
+
+        @media (max-width: 850px) { .project-grid { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
 
+<div class="container">
     <nav class="header-nav">
-    <div class="nav-links">
-        <a href="index.html">HOME</a>
-        <a href="projects.html">PROJECTS</a>
-    </div>
-    <div class="social-links">
-        <a href="https://linkedin.com/in/yourprofile" target="_blank" title="LinkedIn" style="color: #111;"><i class="fab fa-linkedin"></i></a>
-        <a href="https://github.com/yourusername" target="_blank" title="GitHub" style="color: #111;"><i class="fab fa-github"></i></a>
-        <a href="mailto:your.email@example.com" title="Email" style="color: #111;"><i class="fas fa-envelope"></i></a>
-        <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
-    </div>
-</nav>
-
-    <main class="container">
-        <header class="section-header">
-            <h1 class="section-title">Portfolio & Research</h1>
-            <p class="section-subtitle">A collection of engineering implementations and architectural strategy papers.</p>
-        </header>
-
-        <div class="project-tabs">
-            <button class="tab-btn active" onclick="showSection('cases')">CASE STUDIES</button>
-            <button class="tab-btn" onclick="showSection('research')">STRATEGY & RESEARCH</button>
+        <div class="nav-links">
+            <a href="index.html">HOME</a>
+            <a href="projects.html" style="color: var(--accent);">PROJECTS</a>
         </div>
+        <div class="social-links">
+            <a href="https://linkedin.com/in/yourprofile" target="_blank" style="color: #111;"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/yourusername" target="_blank" style="color: #111;"><i class="fab fa-github"></i></a>
+            <a href="mailto:your.email@example.com" style="color: #111;"><i class="fas fa-envelope"></i></a>
+            <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
+        </div>
+    </nav>
 
-        <section id="cases-section">
-            <div class="project-grid">
-                
-                <div class="project-card">
-                    <h3>Multi-Region Terraform</h3>
-                    <p>Scalable AWS infrastructure using GitHub Actions Matrix strategies and remote state locking with S3/DynamoDB.</p>
-                    <div class="tags">
-                        <span class="tag">Terraform</span> <span class="tag">AWS</span> <span class="tag">CI/CD</span>
-                    </div>
-                    <a href="project-terraform.html" class="read-more">Read Case Study →</a>
-                </div>
+    <header class="hero" style="padding: 60px 0 20px;">
+        <h1 style="font-weight: 900;">Featured Projects</h1>
+        <p style="text-align: left; max-width: 600px;">A collection of my work focusing on infrastructure as code, automated deployments, and disaster recovery strategies.</p>
+    </header>
 
-                <div class="project-card">
-                    <h3>Ansible CI/CD Pipeline</h3>
-                    <p>Automated configuration management and multi-cloud disaster recovery using Backblaze B2 and ephemeral runners.</p>
-                    <div class="tags">
-                        <span class="tag">Ansible</span> <span class="tag">Backblaze</span> <span class="tag">Automation</span>
-                    </div>
-                    <a href="project-ansible.html" class="read-more">Read Case Study →</a>
-                </div>
-
-                <div class="project-card">
-                    <h3>Enterprise Observability</h3>
-                    <p>GitOps-managed monitoring for SQS and EKS utilizing Prometheus, Grafana, and custom Python Boto3 exporters.</p>
-                    <div class="tags">
-                        <span class="tag">Prometheus</span> <span class="tag">Grafana</span> <span class="tag">Python</span>
-                    </div>
-                    <a href="project-observability.html" class="read-more">Read Case Study →</a>
-                </div>
-
+    <div class="project-grid">
+        <a href="project-terraform.html" class="project-card">
+            <div>
+                <h2>Enterprise Terraform</h2>
+                <p>Architecting multi-region infrastructure with Govenance-first CI/CD pipelines, S3 state locking, and automated drift detection.</p>
             </div>
-        </section>
+            <div class="project-tags">
+                <span class="p-tag">AWS</span><span class="tag">TERRAFORM</span><span class="tag">CI/CD</span>
+            </div>
+        </a>
 
-        <section id="research-section" class="hidden">
-            <div class="blog-grid">
-                
-                <div class="blog-card">
-                    <span class="blog-category">Research Paper</span>
-                    <h3>Monitoring Strategy: Prometheus vs. The World</h3>
-                    <p>A 14-minute deep dive into the cost-benefit analysis of AWS CloudWatch, ELK, and Datadog for enterprise scale.</p>
-                    <a href="blog-observability-research.html" class="read-more">Read Whitepaper →</a>
-                </div>
+        <a href="project-ansible.html" class="project-card">
+            <div>
+                <h2>Multi-Cloud Resilience</h2>
+                <p>Automating configuration management and disaster recovery across AWS and Azure using Ansible and Backblaze B2.</p>
+            </div>
+            <div class="project-tags">
+                <span class="p-tag">ANSIBLE</span><span class="tag">B2</span><span class="tag">DR</span>
+            </div>
+        </a>
 
-                <div class="blog-card">
-                    <span class="blog-category">Roadmap</span>
-                    <h3>Global Expansion: Multi-Region Evolution</h3>
-                    <p>A phased roadmap for scaling infrastructure from a centralized database to a fully regionalized, sharded architecture.</p>
-                    <a href="blog-global-scaling.html" class="read-more">Read Whitepaper →</a>
-                </div>
+        <a href="project-observability.html" class="project-card">
+            <div>
+                <h2>Full-Stack Observability</h2>
+                <p>Custom Prometheus metrics exporters and Grafana visualization to move from "reactive" to "proactive" monitoring.</p>
+            </div>
+            <div class="project-tags">
+                <span class="p-tag">PROMETHEUS</span><span class="tag">GRAFANA</span><span class="tag">PYTHON</span>
+            </div>
+        </a>
+    </div>
+
+    <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
+        <p>&copy; 2026 Nebat Taha | DevOps Engineering</p>
+    </footer>
+</div>
+
+</body>
+</html>
