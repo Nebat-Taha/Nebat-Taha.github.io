@@ -5,53 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Observability Architecture | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        .sticky-toc {
-            position: fixed;
-            left: 3%;
-            top: 150px;
-            width: 180px;
-            display: none;
-            z-index: 10;
-        }
-        @media (min-width: 1300px) { .sticky-toc { display: block; } }
-        
-        .toc-link {
-            display: block;
-            font-size: 0.75rem;
-            color: #999;
-            text-decoration: none;
-            margin-bottom: 15px;
-            font-family: 'Fira Code', monospace;
-            transition: 0.3s;
-        }
-        .toc-link:hover { color: var(--accent); }
-
-        .article-container {
-            max-width: 850px;
-            margin: 0 auto;
-            padding: 60px 20px;
-        }
-
-        .project-meta { margin: 25px 0; display: flex; gap: 10px; flex-wrap: wrap; }
-        .tag { font-size: 0.7rem; font-weight: 700; color: var(--accent); border: 1px solid #eee; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; }
-        pre { background: #f9f9f9; padding: 25px; border-radius: 8px; overflow-x: auto; border: 1px solid #eee; margin: 20px 0; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-    <nav class="header-nav">
-    <div class="nav-links">
-        <a href="index.html">HOME</a>
-        <a href="projects.html">PROJECTS</a>
-    </div>
-    <div class="social-links">
-        <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/ " target="_blank" class="ico-linkedin" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        <a href="https://github.com/Nebat-Taha/ " target="_blank" class="ico-github" title="GitHub"><i class="fab fa-github"></i></a>
-        <a href="mailto:nebatn@gmail.com" class="ico-email" title="Email"><i class="fas fa-envelope"></i></a>
-        <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
-    </div>
+    <nav class="header-nav container">
+        <div class="nav-links">
+            <a href="index.html">HOME</a>
+            <a href="projects.html">PROJECTS</a>
+        </div>
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/" target="_blank" class="ico-linkedin"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/Nebat-Taha/" target="_blank" class="ico-github"><i class="fab fa-github"></i></a>
+            <a href="mailto:nebatn@gmail.com" class="ico-email"><i class="fas fa-envelope"></i></a>
+            <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
+        </div>
     </nav>
 
     <aside class="sticky-toc">
@@ -65,8 +34,8 @@
 
     <article class="article-container">
         <header>
-            <a href="projects.html" class="back-link">← Back to Projects</a>
-            <h1 style="margin-top: 20px;">Full-Stack Observability: Prometheus, Grafana & Python</h1>
+            <a href="projects.html" class="back-link">← BACK TO PROJECTS</a>
+            <h1 style="margin-top: 20px; font-weight: 900;">Full-Stack Observability: Prometheus, Grafana & Python</h1>
             <div class="project-meta">
                 <span class="tag">Python</span>
                 <span class="tag">Prometheus</span>
@@ -75,14 +44,15 @@
             </div>
         </header>
 
-        <section id="exporter">
-            <h2>01. Custom Python Metrics Exporter</h2>
+        
+
+        <section id="exporter" style="margin-top: 40px;">
+            <h2 class="section-title">01. Custom Python Metrics Exporter</h2>
             <div class="decision-box">
                 <h3>Architectural Goal: Logic Visibility</h3>
                 <p>I developed a Python-based exporter using the <code>prometheus_client</code> library to track <strong>Application-Specific Health</strong>. This moves beyond basic CPU metrics to track business-critical performance like transaction latency and error rates.</p>
             </div>
-<pre><code>
-from prometheus_client import start_http_server, Counter
+<pre><code>from prometheus_client import start_http_server, Counter
 import time
 
 ERROR_COUNT = Counter('app_errors', 'Total Application Errors')
@@ -92,39 +62,38 @@ def process_request():
         # App Logic
         pass
     except Exception:
-        ERROR_COUNT.inc()
-</code></pre>
+        ERROR_COUNT.inc()</code></pre>
         </section>
 
         <section id="prometheus">
-            <h2>02. Prometheus & Service Discovery</h2>
+            <h2 class="section-title">02. Prometheus & Service Discovery</h2>
             <div class="decision-box">
                 <h3>Architectural Goal: Automated Scraping</h3>
                 <p>Implemented <strong>AWS EC2 Service Discovery</strong> in Prometheus. By targeting specific EC2 tags, Prometheus automatically discovers new application nodes as they scale, eliminating the need for manual configuration updates.</p>
             </div>
-            
         </section>
 
         <section id="grafana">
-            <h2>03. Visualization: Unified Dashboards</h2>
+            <h2 class="section-title">03. Visualization: Unified Dashboards</h2>
             <div class="decision-box">
                 <h3>Architectural Goal: Contextual Awareness</h3>
                 <p>Engineered multi-tenant dashboards in Grafana that correlate infrastructure health with application error logs. This creates a "Single Pane of Glass" for rapid incident response.</p>
             </div>
+            
         </section>
 
         <section id="alerting">
-            <h2>04. Intelligent Alertmanager Routing</h2>
+            <h2 class="section-title">04. Intelligent Alertmanager Routing</h2>
             <div class="decision-box">
                 <h3>Architectural Goal: Reducing Fatigue</h3>
                 <p>Configured Alertmanager to route high-priority issues to <strong>PagerDuty</strong> and low-priority warnings to <strong>Slack</strong>, using grouping logic to prevent alert storms during mass outages.</p>
             </div>
         </section>
 
-        <section id="whitepaper" style="background: #f0f7ff; border-left: 4px solid var(--accent); padding: 20px; border-radius: 0 8px 8px 0;">
-            <h2>05. Strategy Research Whitepaper</h2>
+        <section id="whitepaper" class="decision-box">
+            <h2 style="color: var(--accent); margin-top: 0;">05. Strategy Research Whitepaper</h2>
             <p>This implementation is the result of a deep-dive research into monitoring philosophies. For the full 14-minute evaluation of Nagios vs. Datadog vs. Prometheus, visit the research page.</p>
-            <a href="blog-observability-research.html" class="read-more">Read Research Whitepaper →</a>
+            <a href="blog-observability-research.html" class="wes-link">Read Research Whitepaper →</a>
         </section>
 
         <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
