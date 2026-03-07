@@ -199,3 +199,8 @@ pre {
     font-family: 'Fira Code', monospace;
     font-size: 0.9rem;
 }
+.evolution-container { overflow-x: auto; margin: 40px 0; }
+.evolution-container table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #eee; border-radius: 8px; }
+.evolution-container th { background: #f8f9fa; color: #444; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
+.evolution-container th, .evolution-container td { padding: 18px; border: 1px solid #eee; text-align: left; font-size: 0.95rem; }
+.evolution-container tr:hover { background: #fcfcfc; }
