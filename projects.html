@@ -7,6 +7,61 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Tab Navigation Styles */
+        .tab-container {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 50px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tab-btn {
+            padding: 15px 5px;
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #999;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .tab-btn:hover { color: #222; }
+
+        .tab-btn.active {
+            color: var(--accent);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent);
+        }
+
+        /* Hide content by default */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
 
@@ -24,72 +79,79 @@
     </nav>
 
     <main class="container" style="margin-top: 80px; padding-bottom: 100px;">
-        <header style="margin-bottom: 60px;">
+        <header style="margin-bottom: 40px;">
             <h1 style="font-size: 3rem; font-weight: 900; letter-spacing: -2px;">Technical Portfolio</h1>
-            <p style="color: #666; font-size: 1.1rem; max-width: 600px;">Production-grade engineering and high-level architectural strategy.</p>
+            <p style="color: #666; font-size: 1.1rem; max-width: 600px;">Explore my work through engineering projects or strategic architectural research.</p>
         </header>
 
-        <h2 class="section-title">Core DevOps Engineering</h2>
-        <div class="project-grid">
-            <div class="project-card">
-                <div class="project-meta">
-                    <span class="tag">Terraform</span>
-                    <span class="tag">AWS</span>
-                </div>
-                <h3>Infrastructure as Code</h3>
-                <p>Modular blueprints for deploying secure, scalable Kubernetes (EKS) clusters and global networking VPCs.</p>
-                <a href="#" class="wes-link">GitHub Repo →</a>
-            </div>
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="openTab(event, 'devops')">Core DevOps Engineering</button>
+            <button class="tab-btn" onclick="openTab(event, 'architecture')">Architecture & Strategy</button>
+        </div>
 
-            <div class="project-card">
-                <div class="project-meta">
-                    <span class="tag">Ansible</span>
-                    <span class="tag">DR</span>
+        <div id="devops" class="tab-content active">
+            <div class="project-grid">
+                <div class="project-card">
+                    <div class="project-meta">
+                        <span class="tag">Terraform</span>
+                        <span class="tag">AWS</span>
+                    </div>
+                    <h3>Infrastructure as Code</h3>
+                    <p>Modular blueprints for deploying secure, scalable Kubernetes (EKS) clusters and global networking VPCs.</p>
+                    <a href="#" class="wes-link">GitHub Repo →</a>
                 </div>
-                <h3>Multi-Region Configuration</h3>
-                <p>Automating environment consistency and multi-cloud resiliency using Ansible and Backblaze B2.</p>
-                <a href="project-ansible.html" class="wes-link">Case Study →</a>
-            </div>
 
-            <div class="project-card">
-                <div class="project-meta">
-                    <span class="tag">Python</span>
-                    <span class="tag">Prometheus</span>
+                <div class="project-card">
+                    <div class="project-meta">
+                        <span class="tag">Ansible</span>
+                        <span class="tag">DR</span>
+                    </div>
+                    <h3>Multi-Region Configuration</h3>
+                    <p>Automating environment consistency and multi-cloud resiliency using Ansible and Backblaze B2.</p>
+                    <a href="project-ansible.html" class="wes-link">Case Study →</a>
                 </div>
-                <h3>Full-Stack Observability</h3>
-                <p>Custom metrics exporters and dashboards providing deep visibility into application health and performance.</p>
-                <a href="project-observability.html" class="wes-link">Case Study →</a>
+
+                <div class="project-card">
+                    <div class="project-meta">
+                        <span class="tag">Python</span>
+                        <span class="tag">Prometheus</span>
+                    </div>
+                    <h3>Full-Stack Observability</h3>
+                    <p>Custom metrics exporters and dashboards providing deep visibility into application health and performance.</p>
+                    <a href="project-observability.html" class="wes-link">Case Study →</a>
+                </div>
             </div>
         </div>
 
-        <h2 class="section-title" style="margin-top: 80px;">Architecture & Strategy Research</h2>
-        <div class="project-grid">
-            <div class="project-card">
-                <div class="project-meta"><span class="tag">Strategy</span></div>
-                <h3>Monitoring & Alarm Review</h3>
-                <p>An evaluation of observability tools: CloudWatch vs. Prometheus vs. Datadog for enterprise scale.</p>
-                <a href="blog-observability-research.html" class="wes-link">Read Whitepaper →</a>
-            </div>
+        <div id="architecture" class="tab-content">
+            <div class="project-grid">
+                <div class="project-card">
+                    <div class="project-meta"><span class="tag">Strategy</span></div>
+                    <h3>Monitoring & Alarm Review</h3>
+                    <p>An evaluation of observability tools: CloudWatch vs. Prometheus vs. Datadog for enterprise scale.</p>
+                    <a href="blog-observability-research.html" class="wes-link">Read Whitepaper →</a>
+                </div>
 
-            <div class="project-card">
-                <div class="project-meta"><span class="tag">Roadmap</span></div>
-                <h3>Global Scaling Strategy</h3>
-                <p>A high-level business roadmap for expanding platforms across international geographic boundaries.</p>
-                <a href="blog-global-scaling.html" class="wes-link">View Roadmap →</a>
-            </div>
+                <div class="project-card">
+                    <div class="project-meta"><span class="tag">Roadmap</span></div>
+                    <h3>Global Scaling Strategy</h3>
+                    <p>A high-level business roadmap for expanding platforms across international geographic boundaries.</p>
+                    <a href="blog-global-scaling.html" class="wes-link">View Roadmap →</a>
+                </div>
 
-            <div class="project-card">
-                <div class="project-meta"><span class="tag">Architecture</span></div>
-                <h3>Multi-Region Evolution</h3>
-                <p>Technical design review of the 3-phase transition from centralized to sharded global architectures.</p>
-                <a href="arch-global-evolution.html" class="wes-link">Technical Review →</a>
-            </div>
+                <div class="project-card">
+                    <div class="project-meta"><span class="tag">Architecture</span></div>
+                    <h3>Multi-Region Evolution</h3>
+                    <p>Technical design review of the 3-phase transition from centralized to sharded global architectures.</p>
+                    <a href="arch-global-evolution.html" class="wes-link">Technical Review →</a>
+                </div>
 
-            <div class="project-card">
-                <div class="project-meta"><span class="tag">Resilience</span></div>
-                <h3>Disaster Recovery Analysis</h3>
-                <p>Comparative analysis of DR models, recommending Active-Active failover for 5-minute RTO.</p>
-                <a href="arch-disaster-recovery.html" class="wes-link">View Analysis →</a>
+                <div class="project-card">
+                    <div class="project-meta"><span class="tag">Resilience</span></div>
+                    <h3>Disaster Recovery Analysis</h3>
+                    <p>Comparative analysis of DR models, recommending Active-Active failover for 5-minute RTO.</p>
+                    <a href="arch-disaster-recovery.html" class="wes-link">View Analysis →</a>
+                </div>
             </div>
         </div>
     </main>
@@ -97,6 +159,30 @@
     <footer style="padding: 60px 0; border-top: 1px solid #eee; text-align: center; background: #fafafa;">
         <p style="color: #999; font-size: 0.8rem; letter-spacing: 1px;">&copy; 2026 NEBAT TAHA | CLOUD ARCHITECT & DEVOPS</p>
     </footer>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            
+            // Hide all tab content
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+
+            // Remove 'active' class from all buttons
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+
+            // Show current tab and add active class
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
 
 </body>
 </html>
