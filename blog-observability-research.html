@@ -3,54 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-</header>
+    <title>Monitoring & Alarm Strategy | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        .blog-container { max-width: 850px; margin: 0 auto; padding: 60px 20px; }
-        .blog-content { line-height: 1.8; color: #333; font-size: 1.1rem; text-align: justify; }
-        .blog-content h2 { margin-top: 50px; color: var(--accent); border-bottom: 2px solid #eee; padding-bottom: 10px; font-weight: 900; }
-        .blog-content h3 { margin-top: 30px; color: #444; font-weight: 700; }
-        .blog-content p { margin-bottom: 20px; }
-        
-        .research-summary { 
-            background: #f0f7ff; 
-            border-left: 5px solid var(--accent); 
-            padding: 30px; 
-            margin: 40px 0; 
-            font-style: italic;
-        }
-
-        .highlight-box {
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 25px;
-            border-radius: 8px;
-            margin: 25px 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-        }
-
-        .sticky-toc {
-            position: fixed;
-            left: 30px;
-            top: 150px;
-            width: 180px;
-            display: none;
-        }
-
-        @media (min-width: 1250px) { .sticky-toc { display: block; } }
-        
-        .toc-link { display: block; font-size: 0.75rem; color: #999; text-decoration: none; margin-bottom: 12px; font-family: 'Fira Code', monospace; }
-        .toc-link:hover { color: var(--accent); }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
-   
+    <nav class="header-nav container">
+        <div class="nav-links">
+            <a href="index.html">HOME</a>
+            <a href="projects.html">PROJECTS</a>
+        </div>
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/" target="_blank" class="ico-linkedin"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/Nebat-Taha/" target="_blank" class="ico-github"><i class="fab fa-github"></i></a>
+            <a href="mailto:nebatn@gmail.com" class="ico-email"><i class="fas fa-envelope"></i></a>
+            <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
+        </div>
+    </nav>
 
     <aside class="sticky-toc">
-        <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px;">WHITE PAPER INDEX</p>
+        <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">WHITE PAPER INDEX</p>
         <a href="#cloudwatch" class="toc-link">01. CloudWatch & SNS</a>
         <a href="#fluent" class="toc-link">02. Fluent Bit vs Agent</a>
         <a href="#prometheus" class="toc-link">03. Prometheus Stack</a>
@@ -60,78 +34,62 @@
         <a href="#nagios" class="toc-link">07. Nagios</a>
         <a href="#datadog" class="toc-link">08. Datadog</a>
     </aside>
-    <title>Monitoring & Alarm Strategy | Nebat Taha</title>
-     <nav class="header-nav">
-    <div class="nav-links">
-        <a href="index.html">HOME</a>
-        <a href="projects.html">PROJECTS</a>
-    </div>
-    <div class="social-links">
-        <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/ " target="_blank" class="ico-linkedin" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        <a href="https://github.com/Nebat-Taha/ " target="_blank" class="ico-github" title="GitHub"><i class="fab fa-github"></i></a>
-        <a href="mailto:nebatn@gmail.com" class="ico-email" title="Email"><i class="fas fa-envelope"></i></a>
-        <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
-    </div>
-    </nav>
-    <header style="text-align: center; margin-bottom: 60px;">
-    <a href="projects.html" class="back-link">← Back to Portfolio</a>
-    <h1 style="font-size: 2.8rem; margin-top: 20px; letter-spacing: -1px;">Alarm and Notification Strategy</h1>
-    <p style="color: #888; text-transform: uppercase; font-weight: 700; font-size: 0.8rem;">Technical Design Review • By Nebat Taha</p>
-    <a href="assets/Nebat_Taha_Monitoring_Strategy.pdf" class="download-link" download>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                Download Roadmap PDF
-            </a>
-    </div>
-    <article class="blog-container">
+
+    <article class="article-container">
         <header style="text-align: center; margin-bottom: 60px;">
-            <a href="projects.html" class="back-link">← Back to Portfolio</a>
-            <h1 style="font-size: 2.8rem; margin-top: 20px; letter-spacing: -1px;">Alarm and Notification Strategy</h1>
-            <p style="color: #888; text-transform: uppercase; font-weight: 700; font-size: 0.8rem;">Technical Design Review • By Nebat Taha</p>
+            <a href="projects.html" class="back-link">← BACK TO PORTFOLIO</a>
+            <h1 style="font-size: 2.8rem; margin-top: 20px; letter-spacing: -1px; font-weight: 900;">Monitoring & Alarm Strategy</h1>
+            <p style="color: #888; text-transform: uppercase; font-weight: 700; font-size: 0.8rem; margin-bottom: 25px;">Technical Design Review • By Nebat Taha</p>
+            
+            <a href="assets/Nebat_Taha_Monitoring_Strategy.pdf" class="resume-btn" style="display: inline-flex; align-items: center; gap: 8px;" download>
+                <i class="fas fa-file-pdf"></i> Download Full PDF
+            </a>
         </header>
 
-        <section class="research-summary">
+        <section class="decision-box">
             <p><strong>Overview:</strong> This document serves as a comprehensive evaluation of observability tools for EC2 and EKS environments. It analyzes the cost-efficiency, scalability, and operational overhead of native AWS services versus third-party and open-source ecosystems.</p>
         </section>
 
+        
+
         <div class="blog-content">
             
-            <h2 id="cloudwatch">01. CloudWatch Alarms with SNS</h2>
-            <p>Amazon CloudWatch Alarms are specifically designed to monitor AWS resources and trigger notifications when certain thresholds are reached, such as performance metrics, health statuses, or capacity limits. These alarms can be seamlessly integrated with Amazon Simple Notification Service (SNS) to automate alerts or take actions based on preset conditions.</p>
-            <p>The Amazon CloudWatch Agent enhances these monitoring capabilities by collecting custom metrics and logs from AWS resources. It can stream application logs, system logs, or custom log files directly to CloudWatch Logs, where they can be effectively monitored and analyzed. This flexibility allows for the creation of log-based alarms and the use of log metric filters to identify specific patterns, such as keywords or error messages.</p>
-            <div class="highlight-box">
-                <strong>Cost Analysis:</strong> CloudWatch costs are influenced by data volume ingested, the number of metrics monitored, and configured alarms. Basic monitoring is free for certain services, but custom metrics and detailed monitoring incur additional charges. Regularly monitoring usage is advisable to optimize expenses.
+            <h2 id="cloudwatch" class="section-title">01. CloudWatch Alarms with SNS</h2>
+            <p>Amazon CloudWatch Alarms are specifically designed to monitor AWS resources and trigger notifications when certain thresholds are reached. These alarms can be seamlessly integrated with Amazon Simple Notification Service (SNS) to automate alerts or take actions based on preset conditions.</p>
+            
+            <div class="decision-box">
+                <p><strong>Cost Analysis:</strong> CloudWatch costs are influenced by data volume ingested and the number of metrics. While basic monitoring is free, custom metrics and high-resolution alarms incur significant charges at scale. Optimization of ingestion filters is recommended.</p>
             </div>
 
-            <h2 id="fluent">02. Fluent Bit and Amazon CloudWatch Agent</h2>
-            <p>Fluent Bit is a lightweight, efficient, open-source log processor and forwarder, popular in cloud-native and containerized environments like Amazon EKS. Its key strength is the ability to process and filter logs before forwarding them to destinations like Elasticsearch or CloudWatch, reducing log noise by excluding unnecessary info.</p>
-            <p>When choosing between the two: CloudWatch Agent is optimized for AWS-native centralized collection but can consume more system resources. Fluent Bit excels in high-volume environments requiring advanced routing and transformation but lacks the native metric collection capability of the CloudWatch Agent.</p>
+            <h2 id="fluent" class="section-title">02. Fluent Bit vs. CloudWatch Agent</h2>
+            <p>Fluent Bit is a lightweight, open-source log processor popular in EKS. Its strength is filtering logs <em>before</em> forwarding, reducing "noise" and costs. While the CloudWatch Agent is optimized for native AWS integration, Fluent Bit excels in high-volume environments requiring advanced routing.</p>
 
-            <h2 id="prometheus">03. Prometheus with Grafana and Alertmanager</h2>
-            <p>This provides a powerful, flexible solution for centralized monitoring and visualization. Prometheus stores metrics in its own time-series database, while Grafana integrates seamlessly to visualize data from both EC2 and EKS on customizable dashboards. By leveraging PromQL, teams can identify trends and pinpoint irregularities in real time.</p>
-            <p>Alertmanager handles the alerting lifecycle, routing notifications to channels like Slack or email. Its deduplication and grouping features prevent alert fatigue—essential when monitoring dynamic Kubernetes clusters with numerous pods.</p>
+            
 
-            <h2 id="amp">04. Amazon Managed Prometheus (AMP) with Amazon SNS</h2>
-            <p>AMP is a fully managed solution designed to simplify the deployment and operation of Prometheus. It handles scaling and security (encryption at rest/transit and IAM integration) without the operational overhead of managing underlying infrastructure.</p>
-            <p>Note: AMP does not directly scrape metrics. It receives metrics pushed from collectors running in the cluster, such as the AWS Distro for OpenTelemetry (ADOT) Collector.</p>
+            <h2 id="prometheus" class="section-title">03. Prometheus, Grafana, & Alertmanager</h2>
+            <p>Prometheus provides a powerful solution for time-series data. By leveraging PromQL, teams can identify trends in real time. Alertmanager handles the lifecycle, routing high-priority issues to PagerDuty and low-priority warnings to Slack to prevent alert fatigue.</p>
 
-            <h2 id="elk">05. Elastic (ELK) Stack with Alerting</h2>
-            <p>The ELK stack (Elasticsearch, Logstash, Kibana) delivers a robust solution for managing logs and metrics. Logstash facilitates data ingestion from diverse sources, while Kibana serves as the visualization layer. Advanced alerting features (often requiring Gold/Platinum subscriptions) allow for rules tailored to specific log patterns or thresholds.</p>
+            <h2 id="amp" class="section-title">04. Amazon Managed Prometheus (AMP)</h2>
+            <p>AMP simplifies operation by handling scaling and security (IAM integration) without managing infrastructure. Note: AMP does not scrape metrics directly; it requires a collector like <strong>ADOT</strong> (AWS Distro for OpenTelemetry) to push metrics.</p>
 
-            <h2 id="pagerduty">06. PagerDuty Integration</h2>
-            <p>Integrating PagerDuty with AWS enhances incident management. It allows for real-time incident response, on-call management, and centralized monitoring. While it offers a Free Tier, enterprise-grade features like advanced escalation policies require paid plans.</p>
+            <h2 id="elk" class="section-title">05. Elastic (ELK) Stack</h2>
+            <p>The ELK stack (Elasticsearch, Logstash, Kibana) remains the robust choice for deep log analysis. While powerful for searching through terabytes of logs, it requires significant compute resources compared to the Prometheus/Loki ecosystem.</p>
 
-            <h2 id="nagios">07. Nagios</h2>
-            <p>Nagios remains a robust monitoring solution for infrastructure management. It offers a comprehensive suite of plugins for monitoring AWS API statuses and specific application metrics. While powerful, its performance may be challenged as environments scale, often requiring a distributed architecture.</p>
+            <h2 id="pagerduty" class="section-title">06. PagerDuty Integration</h2>
+            <p>Integrating PagerDuty ensures real-time incident response. It centralizes monitoring from various sources, allowing for sophisticated on-call rotations and escalation policies that go beyond standard SNS emails.</p>
 
-            <h2 id="datadog">08. Datadog</h2>
-            <p>Datadog provides comprehensive observability with deep visibility into Kubernetes clusters. It monitors nodes, pods, and containers while tracking Kubernetes events. Its auto-discovery features simplify management by automatically detecting new services. Datadog uses a flexible pricing model based on the number of hosts and containers.</p>
+            <h2 id="nagios" class="section-title">07. Nagios</h2>
+            <p>Nagios is a legacy powerhouse for infrastructure management. While highly extensible with plugins, its performance can be challenged as cloud environments scale dynamically, often making it better suited for static on-premise hardware monitoring.</p>
+
+            <h2 id="datadog" class="section-title">08. Datadog</h2>
+            <p>Datadog offers the "Gold Standard" of auto-discovery in Kubernetes. It monitors nodes, pods, and containers with zero-configuration in many cases. However, its pricing model is per-host/container, which can lead to "surprise" bills in highly elastic environments.</p>
 
         </div>
-    </article>
 
-    <footer style="margin-top: 100px; padding: 40px; text-align: center; border-top: 1px solid #eee;">
-        <p>&copy; 2026 Nebat Taha | Infrastructure & Strategy</p>
-    </footer>
+        <footer style="margin-top: 100px; padding: 40px; text-align: center; border-top: 1px solid #eee;">
+            <p>&copy; 2026 Nebat Taha | Infrastructure & Strategy</p>
+        </footer>
+    </article>
 
 </body>
 </html>
