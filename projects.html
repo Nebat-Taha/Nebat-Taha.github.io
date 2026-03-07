@@ -3,189 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects & Research | Nebat Taha</title>
+    <title>Projects & Architecture | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* Tab Styling */
-        .project-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 40px 0;
-            border-bottom: 1px solid #eee;
-        }
-        .tab-btn {
-            background: none;
-            border: none;
-            padding: 15px 10px;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            cursor: pointer;
-            color: #888;
-            border-bottom: 3px solid transparent;
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
-        .tab-btn.active {
-            color: var(--accent);
-            border-bottom: 3px solid var(--accent);
-        }
-
-        /* Grid Layouts */
-        .project-grid, .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            margin-top: 20px;
-        }
-        
-        /* Card Styling to match Home Page */
-        .project-card, .blog-card {
-            background: #fff;
-            border: 1px solid #eee;
-            padding: 35px;
-            border-radius: 8px;
-            text-decoration: none;
-            color: inherit;
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .project-card:hover, .blog-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-
-        .project-card h3, .blog-card h3 { margin-bottom: 15px; font-weight: 900; }
-        .project-card p, .blog-card p { font-size: 0.95rem; color: #555; text-align: justify; margin-bottom: 20px; line-height: 1.6; }
-
-        .tags { display: flex; gap: 8px; flex-wrap: wrap; }
-        .tag { font-size: 0.7rem; font-family: 'Fira Code', monospace; background: #f4f4f4; padding: 4px 8px; border-radius: 4px; color: #666; font-weight: 500; }
-        .blog-category { font-size: 0.7rem; color: var(--accent); font-weight: 900; text-transform: uppercase; margin-bottom: 10px; display: block; }
-
-        .hidden { display: none; }
-
-        @media (max-width: 850px) {
-            .project-grid, .blog-grid { grid-template-columns: 1fr; }
-        }
-    </style>
 </head>
 <body>
 
-<div class="container">
-    <nav class="header-nav">
+    <nav class="header-nav container">
         <div class="nav-links">
             <a href="index.html">HOME</a>
-            <a href="projects.html" style="color: var(--accent);">PROJECTS</a>
+            <a href="projects.html" class="active">PROJECTS</a>
         </div>
         <div class="social-links">
-            <a href="https://linkedin.com/in/yourprofile" target="_blank" class="ico-linkedin"><i class="fab fa-linkedin"></i></a>
-            <a href="https://github.com/yourusername" target="_blank" class="ico-github"><i class="fab fa-github"></i></a>
-            <a href="mailto:your.email@example.com" class="ico-email"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/" target="_blank" class="ico-linkedin"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/Nebat-Taha/" target="_blank" class="ico-github"><i class="fab fa-github"></i></a>
+            <a href="mailto:nebatn@gmail.com" class="ico-email"><i class="fas fa-envelope"></i></a>
             <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
         </div>
     </nav>
 
-    <header class="hero" style="padding: 60px 0 20px; text-align: center;">
-        <h1 style="font-weight: 900;">Portfolio & Research</h1>
-        <p style="text-align: center; margin: 0 auto; max-width: 650px;">A collection of engineering implementations and architectural strategy papers.</p>
-    </header>
+    <main class="container" style="margin-top: 80px; padding-bottom: 100px;">
+        <header style="margin-bottom: 60px;">
+            <h1 style="font-size: 3rem; font-weight: 900; letter-spacing: -2px;">Technical Portfolio</h1>
+            <p style="color: #666; font-size: 1.1rem; max-width: 600px;">A collection of production-grade infrastructure, automation pipelines, and architectural research papers.</p>
+        </header>
 
-    <div class="project-tabs">
-        <button class="tab-btn active" onclick="showSection('cases')">CASE STUDIES</button>
-        <button class="tab-btn" onclick="showSection('research')">STRATEGY & RESEARCH</button>
-    </div>
-
-    <section id="cases-section">
+        <h2 class="section-title">Core DevOps Engineering</h2>
         <div class="project-grid">
-            <a href="project-terraform.html" class="project-card">
-                <div>
-                    <h3>Multi-Region Terraform</h3>
-                    <p>Scalable AWS infrastructure using GitHub Actions Matrix strategies and remote state locking with S3/DynamoDB.</p>
+            <div class="project-card">
+                <div class="project-meta">
+                    <span class="tag">Python</span>
+                    <span class="tag">Prometheus</span>
                 </div>
-                <div class="tags">
-                    <span class="tag">Terraform</span> <span class="tag">AWS</span> <span class="tag">CI/CD</span>
-                </div>
-            </a>
+                <h3>Full-Stack Observability</h3>
+                <p>Custom Python metrics exporters integrated with Prometheus and Grafana for deep application visibility.</p>
+                <a href="project-observability.html" class="wes-link">View Project →</a>
+            </div>
 
-            <a href="project-ansible.html" class="project-card">
-                <div>
-                    <h3>Ansible CI/CD Pipeline</h3>
-                    <p>Automated configuration management and multi-cloud disaster recovery using Backblaze B2 and ephemeral runners.</p>
+            <div class="project-card">
+                <div class="project-meta">
+                    <span class="tag">Ansible</span>
+                    <span class="tag">Multi-Cloud</span>
                 </div>
-                <div class="tags">
-                    <span class="tag">Ansible</span> <span class="tag">Backblaze</span> <span class="tag">Automation</span>
-                </div>
-            </a>
+                <h3>Multi-Region Configuration</h3>
+                <p>Automating disaster recovery and environment consistency across AWS and Backblaze B2 using Ansible.</p>
+                <a href="project-ansible.html" class="wes-link">View Project →</a>
+            </div>
 
-            <a href="project-observability.html" class="project-card">
-                <div>
-                    <h3>Enterprise Observability</h3>
-                    <p>GitOps-managed monitoring for SQS and EKS utilizing Prometheus, Grafana, and custom Python Boto3 exporters.</p>
+            <div class="project-card">
+                <div class="project-meta">
+                    <span class="tag">Terraform</span>
+                    <span class="tag">EKS</span>
                 </div>
-                <div class="tags">
-                    <span class="tag">Prometheus</span> <span class="tag">Grafana</span> <span class="tag">Python</span>
-                </div>
-            </a>
+                <h3>Infrastructure as Code</h3>
+                <p>Modular Terraform blueprints for deploying secure, scalable Kubernetes clusters and networking VPCs.</p>
+                <a href="#" class="wes-link">Coming Soon →</a>
+            </div>
         </div>
-    </section>
 
-    <section id="research-section" class="hidden">
-        <div class="blog-grid">
-            <a href="blog-observability-research.html" class="blog-card">
-                <div>
-                    <span class="blog-category">Research Paper</span>
-                    <h3>Monitoring Strategy: Prometheus vs. The World</h3>
-                    <p>A 14-minute deep dive into the cost-benefit analysis of AWS CloudWatch, ELK, and Datadog for enterprise scale.</p>
-                </div>
-            </a>
+        <h2 class="section-title" style="margin-top: 80px;">Architecture & Strategy Research</h2>
+        <div class="project-grid">
+            <div class="project-card">
+                <div class="project-meta"><span class="tag">Strategy</span></div>
+                <h3>Monitoring & Alarm Review</h3>
+                <p>A 14-minute deep dive into tool selection: Nagios vs. Datadog vs. CloudWatch vs. Prometheus.</p>
+                <a href="blog-observability-research.html" class="wes-link">Read Whitepaper →</a>
+            </div>
 
-            <a href="blog-global-scaling.html" class="blog-card">
-                <div>
-                    <span class="blog-category">Roadmap</span>
-                    <h3>Global Expansion: Multi-Region Evolution</h3>
-                    <p>A phased roadmap for scaling infrastructure from a centralized database to a fully regionalized, sharded architecture.</p>
-                </div>
-            </a>
+            <div class="project-card">
+                <div class="project-meta"><span class="tag">Architecture</span></div>
+                <h3>Global Expansion Roadmap</h3>
+                <p>A phased evolution from single-region clusters to a sharded, GDPR-compliant global mesh.</p>
+                <a href="blog-global-scaling.html" class="wes-link">View Roadmap →</a>
+            </div>
 
-            <a href="arch-disaster-recovery.html" class="blog-card">
-                <div>
-                    <span class="blog-category">Technical Analysis</span>
-                    <h3>Active-Active Resilience Strategy</h3>
-                    <p>Why Active-Active is the gold standard for modern Cloud-Native banking compared to traditional DR models.</p>
-                </div>
-            </a>
+            <div class="project-card">
+                <div class="project-meta"><span class="tag">Resilience</span></div>
+                <h3>Active-Active DR Analysis</h3>
+                <p>Comparative analysis of DR models, recommending Active-Active failover for < 5m RTO.</p>
+                <a href="arch-disaster-recovery.html" class="wes-link">View Analysis →</a>
+            </div>
         </div>
-    </section>
+    </main>
 
-    <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
-        <p>&copy; 2026 Nebat Taha | Infrastructure & Strategy</p>
+    <footer style="padding: 60px 0; border-top: 1px solid #eee; text-align: center; background: #fafafa;">
+        <p style="color: #999; font-size: 0.8rem; letter-spacing: 1px;">&copy; 2026 NEBAT TAHA | CLOUD ARCHITECT & DEVOPS</p>
     </footer>
-</div>
-
-<script>
-    function showSection(section) {
-        // Toggle visibility of sections
-        document.getElementById('cases-section').classList.toggle('hidden', section !== 'cases');
-        document.getElementById('research-section').classList.toggle('hidden', section !== 'research');
-        
-        // Handle Active Button State
-        const buttons = document.querySelectorAll('.tab-btn');
-        if (section === 'cases') {
-            buttons[0].classList.add('active');
-            buttons[1].classList.remove('active');
-        } else {
-            buttons[0].classList.remove('active');
-            buttons[1].classList.add('active');
-        }
-    }
-</script>
 
 </body>
 </html>
