@@ -1,3 +1,4 @@
+/* --- 1. Variables & Global Reset --- */
 :root {
     --bg: #ffffff;
     --text: #1a1a1a;
@@ -7,234 +8,47 @@
 }
 
 body { 
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; 
-    line-height: 1.6; color: var(--text); max-width: 900px; margin: 0 auto; padding: 0 20px 40px 20px; 
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Helvetica, Arial, sans-serif; 
+    line-height: 1.6; 
+    color: var(--text); 
+    max-width: 1000px; /* Slightly wider for better grid balance */
+    margin: 0 auto; 
+    padding: 0 20px 40px 20px; 
 }
 
-/* Navigation */
-nav { 
-    position: sticky; top: 0; background: white; border-bottom: 1px solid var(--border); 
-    padding: 15px 0; display: flex; justify-content: space-between; align-items: center; z-index: 1000; 
-}
-nav ul { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; }
-nav ul li { margin-left: 20px; }
-nav ul li a { text-decoration: none; color: var(--text); font-family: 'Courier New', Courier, monospace; font-weight: bold; font-size: 0.9rem; }
-nav ul li a:hover { color: var(--accent); }
-
-.nav-resume { background-color: var(--accent); color: white !important; padding: 6px 12px; border-radius: 4px; }
-
-/* Evolution Table & Content */
-.evolution-container { overflow-x: auto; margin: 20px 0; }
-table { width: 100%; border-collapse: collapse; background: var(--code-bg); border: 1px solid var(--border); }
-th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border); }
-.arrow { color: var(--accent); font-weight: bold; }
-
-/* Project Cards */
-/*.project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px; } */
-.project-grid {
-    display: grid;
-    /* This tells the browser: "Make as many columns as fit, 
-       but each must be at least 300px wide" */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-    gap: 25px;
-    margin-top: 30px;
-    align-items: stretch; /* Keeps card heights equal in the same row */
-}
-.project-card { border: 1px solid var(--border); padding: 20px; border-radius: 8px; transition: transform 0.2s; }
-.project-card:hover { transform: translateY(-5px); border-color: var(--accent); }
-
-/* Standardized Decision Box for all project pages */
-.decision-box {
-    background: rgba(0, 115, 230, 0.05); /* Soft blue tint */
-    border-left: 4px solid var(--accent); /* Your brand color */
-    padding: 20px;
-    margin: 25px 0;
-    border-radius: 0 8px 8px 0;
-}
-
-.decision-box h3 {
-    margin-top: 0;
-    color: var(--accent);
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.decision-box p {
-    margin-bottom: 0;
-    font-size: 0.95rem;
-    line-height: 1.6;
-}
-
-/* Project Meta Tags Layout */
-.project-meta {
+/* --- 2. Professional Header & Navigation --- */
+.header-nav {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px; /* Space between tags */
-    margin-top: 20px;
-    margin-bottom: 30px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 0;
+    border-bottom: 1px solid var(--border);
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
-/* --- 1. Hero Tags (For the individual project pages) --- */
-.project-meta .tag {
-    background: rgba(0, 115, 230, 0.1);
-    color: var(--accent);
-    border: 1px solid rgba(0, 115, 230, 0.3);
-    padding: 6px 14px;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    display: inline-block;
+.nav-links { display: flex; align-items: center; }
+.nav-links a { 
+    margin-right: 25px; 
+    text-decoration: none; 
+    color: #666; 
+    font-weight: 700; 
+    font-size: 0.8rem; 
+    letter-spacing: 1px; 
 }
+.nav-links a:hover { color: var(--accent); }
 
-/* --- 2. Card Tags (For the projects.html gallery) --- */
-.project-card .tag {
-    background: #f4f4f4; /* Subtle grey */
-    color: #555; /* Muted text */
-    border: none;
-    padding: 4px 8px;
-    border-radius: 3px;
-    font-size: 0.7rem; /* Smaller font */
-    font-weight: 500;
-    text-transform: none; /* Normal case looks cleaner in small cards */
-    margin-right: 5px;
-    margin-bottom: 5px;
-    display: inline-block;
-}
+.social-links { display: flex; align-items: center; gap: 20px; }
+.social-links a { font-size: 1.3rem; transition: transform 0.2s ease; text-decoration: none; }
+.social-links a:hover { transform: scale(1.1); }
 
-/* Optional: hover effect for card tags if they link somewhere */
-.project-card .tag:hover {
-    background: #e0e0e0;
-}
-
-.comparison-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    font-size: 0.9rem;
-}
-
-.comparison-table th, .comparison-table td {
-    border: 1px solid rgba(0, 115, 230, 0.2);
-    padding: 12px;
-    text-align: left;
-}
-
-.comparison-table th {
-    background: rgba(0, 115, 230, 0.05);
-    color: var(--accent);
-}
-
-/* --- Blog / Whitepaper Layout --- */
-.blog-container {
-    max-width: 800px; /* Narrower for better readability */
-    margin: 0 auto;
-    padding: 60px 20px;
-}
-
-.blog-header {
-    text-align: center;
-    margin-bottom: 50px;
-}
-
-.blog-content {
-    line-height: 1.8;
-    font-size: 1.1rem;
-    color: #333;
-}
-
-.blog-content h2 {
-    margin-top: 40px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-    color: var(--accent);
-}
-
-.blog-content blockquote {
-    border-left: 5px solid var(--accent);
-    padding: 10px 20px;
-    background: #f9f9f9;
-    font-style: italic;
-    margin: 30px 0;
-}
-
-/* Layout for the Research Grid */
-.blog-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-/* Tab Menu Styling */
-.project-tabs {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin: 40px 0;
-}
-
-.tab-btn {
-    background: none;
-    border: none;
-    padding: 10px 20px;
-    font-family: 'Fira Code', monospace;
-    font-weight: 600;
-    cursor: pointer;
-    color: #888;
-    border-bottom: 2px solid transparent;
-    transition: 0.3s;
-}
-
-.tab-btn.active {
-    color: var(--accent);
-    border-bottom: 2px solid var(--accent);
-}
-
-/* Helper class to hide/show sections */
-.hidden {
-    display: none;
-}
-/* Table of Contents / Summary Box */
-.toc-box {
-    background: #f4f7f6;
-    padding: 25px;
-    border-radius: 8px;
-    margin-bottom: 40px;
-}
-
-.toc-box h4 {
-    margin-top: 0;
-    text-transform: uppercase;
-    font-size: 0.9rem;
-}
-/* Global Text Justification for Articles and Hero */
-p, .about-text, .decision-box p {
-    text-align: justify;
-    text-justify: inter-word;
-    hyphens: auto;
-}
-
-/* Removes the blue underline and styles the section headers */
-.section-title {
-    font-size: 1.5rem;
-    font-weight: 900;
-    margin-bottom: 25px;
-    display: block;
-    border-bottom: 2px solid #eee; /* Light grey instead of blue */
-    width: fit-content;
-    padding-bottom: 5px;
-    color: #111;
-    text-decoration: none;
-}
-
-/* Brand Colors for Social Icons */
+/* Official Brand Colors */
 .ico-linkedin { color: #0077B5 !important; }
 .ico-github   { color: #181717 !important; }
 .ico-email    { color: #EA4335 !important; }
 
-/* Resume Button styling */
 .resume-btn {
     font-size: 0.75rem;
     font-weight: 900;
@@ -245,13 +59,114 @@ p, .about-text, .decision-box p {
     text-transform: uppercase;
     text-decoration: none;
 }
+.resume-btn:hover { background: #111; color: #fff !important; }
 
-.resume-btn:hover {
-    background: #111;
-    color: #fff !important;
+/* --- 3. Hero & Typography --- */
+.hero { padding: 60px 0 40px; }
+.hero h1 { font-size: 3rem; margin-bottom: 10px; color: #111; font-weight: 900; }
+.hero h2 { font-size: 1.25rem; font-weight: 400; color: #555; margin-bottom: 25px; }
+
+p, .about-text p, .decision-box p {
+    text-align: justify;
+    text-justify: inter-word;
+    hyphens: auto;
 }
 
-/* Ensure headings and small meta text stay left-aligned for contrast */
-h1, h2, h3, h4, .tag, .toc-link, .wes-link {
+/* Left-align specific technical elements for readability */
+h1, h2, h3, h4, .tag, .toc-link, .wes-link, th, td {
     text-align: left;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 25px;
+    display: block;
+    border-bottom: 2px solid var(--accent);
+    width: fit-content;
+    padding-bottom: 5px;
+    color: #111;
+    text-decoration: none;
+}
+
+/* --- 4. Grids & Cards (Home & Projects) --- */
+.competency-grid, .project-grid, .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+    align-items: stretch;
+}
+
+.competency-card, .project-card, .blog-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 25px;
+    border-radius: 8px;
+    transition: transform 0.2s, border-color 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+}
+
+.competency-card:hover, .project-card:hover, .blog-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.card-icon { color: var(--accent); font-size: 1.4rem; margin-bottom: 10px; }
+
+/* --- 5. Project-Specific UI Elements --- */
+.decision-box {
+    background: rgba(37, 99, 235, 0.05);
+    border-left: 4px solid var(--accent);
+    padding: 20px;
+    margin: 25px 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.tag {
+    background: #f4f4f4;
+    color: #555;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    display: inline-block;
+}
+
+/* Individual Project Hero Tags */
+.project-meta .tag {
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    padding: 6px 14px;
+    font-size: 0.85rem;
+}
+
+/* --- 6. Tables & Tabs --- */
+.comparison-table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9rem; }
+.comparison-table th, .comparison-table td { border: 1px solid var(--border); padding: 12px; }
+.comparison-table th { background: var(--code-bg); color: var(--accent); }
+
+.project-tabs { display: flex; justify-content: center; gap: 30px; margin: 40px 0; border-bottom: 1px solid var(--border); }
+.tab-btn {
+    background: none; border: none; padding: 15px 20px; font-family: 'Inter', sans-serif;
+    font-weight: 700; cursor: pointer; color: #888; border-bottom: 3px solid transparent; transition: 0.3s;
+}
+.tab-btn.active { color: var(--accent); border-bottom: 3px solid var(--accent); }
+
+/* --- 7. Education & Misc --- */
+.edu-item { margin-bottom: 40px; border-left: 3px solid var(--border); padding-left: 20px; }
+.wes-link { font-size: 0.85rem; color: var(--accent); text-decoration: none; font-weight: 700; margin-top: 8px; display: inline-block; }
+.hidden { display: none; }
+
+@media (max-width: 850px) {
+    .header-nav { flex-direction: column; gap: 20px; text-align: center; }
+    .hero h1 { font-size: 2.2rem; }
 }
