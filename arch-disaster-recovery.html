@@ -3,79 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects | DR Architecture </title>
+    <title>DR Architecture & Resilience | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-<nav class="header-nav">
-    <div class="nav-links">
-        <a href="index.html">HOME</a>
-        <a href="projects.html">PROJECTS</a>
-    </div>
-    <div class="social-links">
-        <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/ " target="_blank" class="ico-linkedin" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        <a href="https://github.com/Nebat-Taha/ " target="_blank" class="ico-github" title="GitHub"><i class="fab fa-github"></i></a>
-        <a href="mailto:nebatn@gmail.com" class="ico-email" title="Email"><i class="fas fa-envelope"></i></a>
-        <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
-    </div>
+
+    <nav class="header-nav container">
+        <div class="nav-links">
+            <a href="index.html">HOME</a>
+            <a href="projects.html">PROJECTS</a>
+        </div>
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/" target="_blank" class="ico-linkedin"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/Nebat-Taha/" target="_blank" class="ico-github"><i class="fab fa-github"></i></a>
+            <a href="mailto:nebatn@gmail.com" class="ico-email"><i class="fas fa-envelope"></i></a>
+            <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
+        </div>
     </nav>
 
-<article style="margin-top:40px;">
-  
-    <h1>Disaster Recovery: Alternatives and Recommendations</h1>
-    
-    <p class="about-text">
-        In high-stakes industries like banking, Disaster Recovery (DR) isn't just a technical backup plan—it's a core business requirement. This analysis explores the shift from traditional passive models to modern, automated resilience.
-    </p>
+    <article class="article-container">
+        <header>
+            <a href="projects.html" class="back-link">← BACK TO PROJECTS</a>
+            <h1 style="margin-top: 20px; font-weight: 900;">Disaster Recovery: Alternatives & Recommendations</h1>
+            <p style="font-size: 1.1rem; color: #666; text-align: left;">Evaluating RTO, RPO, and cost-efficiency for mission-critical cloud resilience.</p>
+        </header>
 
-    <h2>01. The Alternatives</h2>
-    <div class="evolution-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Model</th>
-                    <th>Logic</th>
-                    <th>RTO</th>
-                    <th>Cost</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Active-Passive</strong></td>
-                    <td>1:1 Mapping (Idle backup)</td>
-                    <td>30-60 min</td>
-                    <td>Very High</td>
-                </tr>
-                <tr>
-                    <td><strong>Pilot Light</strong></td>
-                    <td>Minimal standby footprint</td>
-                    <td>10-15 min</td>
-                    <td>High</td>
-                </tr>
-                <tr>
-                    <td><strong>Active-Active</strong></td>
-                    <td>Mutual Regional Failover</td>
-                    <td>2-4 min</td>
-                    <td>Optimized</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        <section style="margin-top: 40px;">
+            <p>In high-stakes industries like banking or healthcare, Disaster Recovery (DR) isn't just a technical backup plan—it's a core business requirement. This analysis explores the shift from traditional passive models to modern, automated resilience.</p>
+        </section>
 
-    <div class="decision-box">
-        <h2>Final Recommendation: Active-Active Regional Failover</h2>
-        <p>The Active-Active model eliminates the need for idle standby infrastructure, enables fully automated regional failover within minutes, and continuously validates system resilience through real production traffic.</p>
-    </div>
+        
 
-    <h3>Key Advantages</h3>
-    <ul>
-        <li><strong>Automated Failover via Route 53:</strong> Health checks redirect traffic within minutes, achieving an RTO of < 5 mins without human intervention.</li>
-        <li><strong>Continuous Validation:</strong> All regions serve live traffic. Failover paths are always "warm," removing the risk of an untested standby environment.</li>
-        <li><strong>Elastic Scaling:</strong> Instead of pre-paying for idle servers, we use Auto Scaling to expand healthy regions only when needed.</li>
-    </ul>
+        <h2 class="section-title">01. The Alternatives</h2>
+        <div class="evolution-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Logic</th>
+                        <th>RTO (Recovery Time)</th>
+                        <th>Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Active-Passive</strong></td>
+                        <td>1:1 Mapping (Idle backup)</td>
+                        <td>30-60 min</td>
+                        <td>Very High</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pilot Light</strong></td>
+                        <td>Minimal standby footprint</td>
+                        <td>10-15 min</td>
+                        <td>High</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Active-Active</strong></td>
+                        <td>Mutual Regional Failover</td>
+                        <td>2-4 min</td>
+                        <td>Optimized</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <h3>Trade-offs & Mitigation</h3>
-    <p>While performance may briefly dip during a regional scale-up event, this is an accepted trade-off for the massive gains in cost efficiency and operational simplicity. To mitigate systemic failures, we use <strong>staged CI/CD deployments</strong> and <strong>environment isolation</strong>.</p>
-</article>
-</body>
-</html>
+        <section class="decision-box">
+            <h2 style="margin-top: 0; color: var(--accent);">Final Recommendation: Active-Active Regional Failover</h2>
+            <p>The Active-Active model eliminates the need for expensive, idle standby infrastructure. By serving traffic from all regions simultaneously, we enable fully automated failover within minutes and continuously validate system resilience through real
