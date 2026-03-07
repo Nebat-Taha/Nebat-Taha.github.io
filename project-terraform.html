@@ -5,30 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Multi-Region Terraform | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        .sticky-toc { position: fixed; left: 3%; top: 150px; width: 180px; display: none; z-index: 10; }
-        @media (min-width: 1300px) { .sticky-toc { display: block; } }
-        .toc-link { display: block; font-size: 0.75rem; color: #999; text-decoration: none; margin-bottom: 15px; font-family: 'Fira Code', monospace; }
-        .article-container { max-width: 850px; margin: 0 auto; padding: 60px 20px; }
-        .tag { font-size: 0.7rem; font-weight: 700; color: var(--accent); border: 1px solid #eee; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; margin-right: 5px; }
-        pre { background: #f9f9f9; padding: 25px; border-radius: 8px; overflow-x: auto; border: 1px solid #eee; margin: 20px 0; }
-        .comparison-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9rem; }
-        .comparison-table th, .comparison-table td { padding: 15px; border: 1px solid #eee; text-align: left; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-  <nav class="header-nav">
-    <div class="nav-links">
-        <a href="index.html">HOME</a>
-        <a href="projects.html">PROJECTS</a>
-    </div>
-    <div class="social-links">
-        <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/ " target="_blank" class="ico-linkedin" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        <a href="https://github.com/Nebat-Taha/ " target="_blank" class="ico-github" title="GitHub"><i class="fab fa-github"></i></a>
-        <a href="mailto:nebatn@gmail.com" class="ico-email" title="Email"><i class="fas fa-envelope"></i></a>
-        <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
-    </div>
+
+    <nav class="header-nav container">
+        <div class="nav-links">
+            <a href="index.html">HOME</a>
+            <a href="projects.html">PROJECTS</a>
+        </div>
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/" target="_blank" class="ico-linkedin"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/Nebat-Taha/" target="_blank" class="ico-github"><i class="fab fa-github"></i></a>
+            <a href="mailto:nebatn@gmail.com" class="ico-email"><i class="fas fa-envelope"></i></a>
+            <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
+        </div>
     </nav>
 
     <aside class="sticky-toc">
@@ -42,40 +34,47 @@
 
     <article class="article-container">
         <header>
-            <a href="projects.html" class="back-link">← Back to Projects</a>
-            <h1 style="margin-top: 20px;">Enterprise Terraform: Multi-Region Architecture</h1>
-            <p style="font-size: 1.1rem; color: #666;">Architecting isolated Global vs. Regional lifecycles with S3 Backend Locking and Proactive Drift Detection.</p>
-            <div style="margin-top: 20px;">
-                <span class="tag">Terraform</span><span class="tag">AWS</span><span class="tag">Governance</span>
+            <a href="projects.html" class="back-link">← BACK TO PROJECTS</a>
+            <h1 style="margin-top: 20px; font-weight: 900;">Enterprise Terraform: Multi-Region Architecture</h1>
+            <p style="font-size: 1.1rem; color: #666; text-align: left;">Architecting isolated Global vs. Regional lifecycles with S3 Backend Locking and Proactive Drift Detection.</p>
+            
+            <div class="project-meta">
+                <span class="tag">Terraform</span>
+                <span class="tag">AWS</span>
+                <span class="tag">Governance</span>
             </div>
         </header>
 
+        
+
         <section id="lifecycles" style="margin-top: 40px;">
-            <h2>01. Decoupled Resource Lifecycles</h2>
+            <h2 class="section-title">01. Decoupled Resource Lifecycles</h2>
             <p>Infrastructure is split into two distinct CI/CD pipelines to ensure that changes to global identity (IAM) or DNS (Route53) do not interfere with regional compute resources. This isolation prevents a failure in one region from cascading into global services.</p>
         </section>
 
-        
-
         <section id="governance">
-            <h2>02. CI/CD Governance: Safety at Scale</h2>
+            <h2 class="section-title">02. CI/CD Governance: Safety at Scale</h2>
             <p>By splitting the workflow into <code>plan</code> and <code>apply</code>, I introduced an Environment Gate. The workflow pauses after the plan is generated, requiring a manual review of the Terraform Artifact before the production environment allows the apply job to run.</p>
+            <div class="decision-box">
+                <h3>Engineering Decision</h3>
+                <p>We chose manual approval gates over fully automated applies to ensure cost visibility and security compliance for high-impact infrastructure changes.</p>
+            </div>
             <a href="https://github.com/Nebat-Taha/terraform-plan-apply" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View Safety-First Repo →</a>
         </section>
 
         <section id="state">
-            <h2>03. Collaborative State & Locking</h2>
-            <p>To enable a collaborative team environment and prevent state corruption, I implemented a remote backend using Amazon S3 for state storage and DynamoDB for state locking. This ensures that concurrent deployment attempts are safely blocked, maintaining a single source of truth across all regions.</p>
+            <h2 class="section-title">03. Collaborative State & Locking</h2>
+            <p>To enable a collaborative team environment and prevent state corruption, I implemented a remote backend using Amazon S3 for state storage and DynamoDB for state locking. This ensures that concurrent deployment attempts are safely blocked.</p>
         </section>
 
         <section id="drift">
-            <h2>04. Proactive Drift Detection</h2>
-            <p>I engineered automated drift detection workflows using <code>terraform plan -detailed-exitcode</code>. The CI/CD interprets exit code 2 as drift detected, triggering a failure notification to the team to ensure manual AWS Console changes are caught and remediated.</p>
+            <h2 class="section-title">04. Proactive Drift Detection</h2>
+            <p>I engineered automated drift detection workflows using <code>terraform plan -detailed-exitcode</code>. The CI/CD interprets exit code 2 as drift detected, triggering a failure notification to catch manual AWS Console changes.</p>
         </section>
 
         <section id="security">
-            <h2>05. Shift-Left Security</h2>
-            <p>Before any resource is provisioned, the code must pass <code>tfsec</code> and <code>Checkov</code> static analysis gates. This ensures that every resource meets industry security standards and organizational compliance policies before it reaches the cloud.</p>
+            <h2 class="section-title">05. Shift-Left Security</h2>
+            <p>Before any resource is provisioned, the code must pass <code>tfsec</code> and <code>Checkov</code> static analysis gates. This ensures every resource meets industry security standards before it reaches the cloud.</p>
         </section>
 
         <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
