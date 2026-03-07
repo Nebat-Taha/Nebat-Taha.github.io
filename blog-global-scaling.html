@@ -3,14 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Expansion Roadmap | Nebat Taha</title>
+    <title>Global Scaling Roadmap | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
+        /* Shared Blog/Whitepaper Styles */
         .blog-container { max-width: 850px; margin: 0 auto; padding: 60px 20px; }
         .blog-content { line-height: 1.8; color: #333; font-size: 1.1rem; }
+        .blog-content h2 { margin-top: 50px; color: var(--accent); border-bottom: 2px solid #eee; padding-bottom: 10px; font-weight: 900; }
+        .blog-content p { margin-bottom: 20px; }
         
-        /* Subtle Download Link instead of big button */
+        .research-summary { 
+            background: #f0f7ff; 
+            border-left: 5px solid var(--accent); 
+            padding: 30px; 
+            margin: 40px 0; 
+            font-style: italic;
+        }
+
+        /* Subtle Download Link */
         .download-link {
             display: inline-flex;
             align-items: center;
@@ -25,7 +36,20 @@
         }
         .download-link:hover { border-bottom: 1px solid var(--accent); }
 
-        /* Roadmap Timeline Styling */
+        /* Sticky Sidebar Index */
+        .sticky-toc {
+            position: fixed;
+            left: 30px;
+            top: 150px;
+            width: 180px;
+            display: none;
+        }
+        @media (min-width: 1250px) { .sticky-toc { display: block; } }
+        
+        .toc-link { display: block; font-size: 0.75rem; color: #999; text-decoration: none; margin-bottom: 12px; font-family: 'Fira Code', monospace; }
+        .toc-link:hover { color: var(--accent); }
+
+        /* Roadmap Timeline */
         .roadmap { margin: 40px 0; border-left: 2px solid #eee; padding-left: 30px; }
         .phase { position: relative; margin-bottom: 50px; }
         .phase::before {
@@ -40,8 +64,6 @@
             border: 4px solid #fff;
             box-shadow: 0 0 0 2px var(--accent);
         }
-        .phase-meta { font-family: 'Fira Code', monospace; font-size: 0.8rem; color: var(--accent); text-transform: uppercase; font-weight: 700; }
-        .phase h3 { margin: 5px 0 15px 0; color: #111; }
     </style>
 </head>
 <body>
@@ -54,54 +76,69 @@
         </ul>
     </nav>
 
+    <aside class="sticky-toc">
+        <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px;">ROADMAP INDEX</p>
+        <a href="#challenge" class="toc-link">01. The Challenge</a>
+        <a href="#phase1" class="toc-link">02. Phase 1: Edge</a>
+        <a href="#phase2" class="toc-link">03. Phase 2: Isolation</a>
+        <a href="#phase3" class="toc-link">04. Phase 3: Mesh</a>
+        <a href="#compliance" class="toc-link">05. Data Residency</a>
+        <a href="#conclusion" class="toc-link">06. Strategy Summary</a>
+    </aside>
+
     <article class="blog-container">
         <header style="text-align: center; margin-bottom: 60px;">
             <a href="projects.html" class="back-link">← Back to Portfolio</a>
-            <h1 style="font-size: 2.5rem; margin-top: 20px; letter-spacing: -1px;">Global Expansion: Multi-Region Evolution</h1>
-            <p style="color: #666;">A Phased Roadmap for Scaling Infrastructure & Data Residency</p>
+            <h1 style="font-size: 2.8rem; margin-top: 20px; letter-spacing: -1px;">Global Expansion: Multi-Region Evolution</h1>
+            <p style="color: #888; text-transform: uppercase; font-weight: 700; font-size: 0.8rem;">Infrastructure Roadmap • By Nebat Taha</p>
             
             <a href="assets/Global_Scaling_Roadmap.pdf" class="download-link" download>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                Download Roadmap PDF
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                Download PDF Version
             </a>
         </header>
 
-        <section class="blog-content">
-            <h2>The Challenge: Outgrowing the Single Region</h2>
-            <p>Most platforms begin in a single AWS region (e.g., <code>us-east-1</code>). However, as the user base expands to Europe and Asia, two critical issues emerge: <strong>Latency</strong> and <strong>Data Residency Compliance</strong> (GDPR/APRA). This roadmap outlines the shift from a monolithic regional presence to a globally distributed architecture.</p>
+        <section class="research-summary">
+            <p><strong>Strategic Context:</strong> As platforms scale globally, infrastructure must evolve from centralized "monolithic regions" to distributed, sharded architectures. This roadmap details the technical transition required to solve for latency, high availability, and sovereign data compliance.</p>
+        </section>
+
+        <div class="blog-content">
+            
+            <h2 id="challenge">01. The Challenge: Regional Limitations</h2>
+            <p>Most architectures begin in a single AWS region (e.g., <code>us-east-1</code>). While simple, this creates a "Blast Radius" risk and high latency for international users. Beyond performance, regulations like GDPR and APRA often mandate that user data must reside within specific geographic boundaries, making a single-region strategy a legal bottleneck for growth.</p>
 
             <div class="roadmap">
+                <h2 id="phase1">02. Phase 1: Performance Optimization</h2>
                 <div class="phase">
-                    <span class="phase-meta">Phase 1: Performance Optimization</span>
                     <h3>Edge Acceleration & Read Replicas</h3>
-                    <p>Before moving full compute to other regions, we implement <strong>Amazon CloudFront</strong> for global content delivery and deploy <strong>Cross-Region Read Replicas</strong> for RDS. This reduces latency for global users without the complexity of multi-master writes.</p>
+                    <p>The first step focuses on offloading traffic. By implementing <strong>Amazon CloudFront</strong>, we move static content to the edge. Simultaneously, deploying <strong>RDS Cross-Region Read Replicas</strong> allows global users to pull data from a local regional source, significantly reducing GET request latency without the overhead of multi-master write complexity.</p>
                 </div>
 
+                <h2 id="phase2">03. Phase 2: Regional Isolation</h2>
                 <div class="phase">
-                    <span class="phase-meta">Phase 2: Regional Isolation</span>
                     <h3>Active-Passive Compute</h3>
-                    <p>Deploying a full stack (VPC, EKS, Application) in a second region. At this stage, the second region acts as a "Hot Standby" for Disaster Recovery. Traffic is routed via <strong>Route 53 Latency Policies</strong>.</p>
+                    <p>In this phase, we deploy the full compute stack (VPC, EKS, Application) in a secondary "Hot Standby" region. This provides true Disaster Recovery. Traffic is managed via <strong>Route 53 Latency-Based Routing</strong>, ensuring users are automatically directed to the nearest healthy regional entry point.</p>
                 </div>
 
+                <h2 id="phase3">04. Phase 3: The Global Mesh</h2>
                 <div class="phase">
-                    <span class="phase-meta">Phase 3: The Global Mesh</span>
                     <h3>Multi-Region Sharding & Data Sovereignty</h3>
-                    <p>The final evolution: Sharding the database so European user data stays in <code>eu-central-1</code> while US data stays in <code>us-east-1</code>. We utilize <strong>Transit Gateway Peering</strong> for cross-region service communication and <strong>Global Accelerator</strong> for a single entry point.</p>
+                    <p>The final evolution involves sharding the database. User data is partitioned by geography (e.g., German users in <code>eu-central-1</code>). We utilize <strong>Transit Gateway Peering</strong> for cross-region communication and <strong>Global Accelerator</strong> for a unified entry point, creating a resilient "Global Mesh" architecture.</p>
                 </div>
             </div>
 
             
 
-            <h2>Key Strategic Considerations</h2>
-            <ul>
-                <li><strong>State Management:</strong> Moving from a single source of truth to a distributed state requires careful handling of eventual consistency.</li>
-                <li><strong>CI/CD Complexity:</strong> Transitioning from simple pipelines to the <strong>Terraform Matrix Strategy</strong> we implemented in the Terraform Case Study.</li>
-                <li><strong>Observability:</strong> Centralizing logs from all regions into a single Grafana dashboard for a "Global Command Center" view.</li>
-            </ul>
-        </section>
+            <h2 id="compliance">05. Data Residency & Sovereignty</h2>
+            <p>Scaling globally is not just a network challenge; it is a data challenge. Sharded regional clusters allow us to implement strict data sovereignty. Using AWS IAM and regional KMS keys, we ensure that data in the "Europe Shard" remains unreadable and inaccessible from the "US Shard," fulfilling compliance requirements for highly regulated sectors like Fintech.</p>
+
+            <h2 id="conclusion">06. Strategy Summary</h2>
+            <p>Transitioning to a global footprint is a multi-year journey. By following a phased approach, an organization can balance the <strong>Operational Complexity</strong> of multi-region management against the <strong>Business Necessity</strong> of global performance and legal compliance. The foundation of this roadmap is the <strong>Terraform Matrix Strategy</strong>, which ensures infrastructure parity across all 20+ AWS regions.</p>
+
+        </div>
     </article>
 
-    <footer style="margin-top: 80px; padding: 40px; text-align: center; border-top: 1px solid #eee;">
+    <footer style="margin-top: 100px; padding: 40px; text-align: center; border-top: 1px solid #eee;">
         <p>&copy; 2026 Nebat Taha | Global Infrastructure Strategy</p>
     </footer>
 
