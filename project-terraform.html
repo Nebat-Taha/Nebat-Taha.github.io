@@ -30,13 +30,14 @@
         <a href="#state" class="toc-link">03. State & Locking</a>
         <a href="#drift" class="toc-link">04. Drift Detection</a>
         <a href="#security" class="toc-link">05. Security Gates</a>
+        <a href="#modular" class="toc-link">06. Reusable Modules</a>
     </aside>
 
     <article class="article-container">
         <header>
             <a href="projects.html" class="back-link">← Back to Projects</a>
-            <h1 style="margin-top: 20px;">Enterprise Terraform: Multi-Region Architecture</h1>
-            <p style="font-size: 1.1rem; color: #666;">Architecting isolated Global vs. Regional lifecycles with S3 Backend Locking and Proactive Drift Detection.</p>
+            <h1 style="margin-top: 20px;">Multi-Region Infrastructure Automation with Terraform</h1>
+            <p style="font-size: 1.1rem; color: #666;">Designed a modular Terraform architecture to automate infrastructure deployment across multiple regions. The system separates global and regional resource lifecycles, uses remote state with locking for safe collaboration, and integrates GitHub Actions workflows for controlled, multi-region infrastructure automation.</p>
             <div style="margin-top: 20px;">
                 <span class="tag">Terraform</span><span class="tag">AWS</span><span class="tag">Governance</span>
             </div>
@@ -44,31 +45,35 @@
 
         <section id="lifecycles" style="margin-top: 40px;">
             <h2>01. Decoupled Resource Lifecycles</h2>
-            <p>Infrastructure is split into two distinct CI/CD pipelines to ensure that changes to global identity (IAM) or DNS (Route53) do not interfere with regional compute resources. This isolation prevents a failure in one region from cascading into global services.</p>
+            <p>Infrastructure is split into two distinct CI/CD pipelines to ensure that changes to global resources do not interfere with regional compute resources. This isolation ensures that regional infrastructure changes can be deployed independently while protecting critical global resources such as IAM and DNS from unintended disruption.</p>
         </section>
-
-        
 
         <section id="governance">
             <h2>02. CI/CD Governance: Safety at Scale</h2>
-            <p>By splitting the workflow into <code>plan</code> and <code>apply</code>, I introduced an Environment Gate. The workflow pauses after the plan is generated, requiring a manual review of the Terraform Artifact before the production environment allows the apply job to run.</p>
-            <a href="https://github.com/Nebat-Taha/terraform-plan-apply" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View Safety-First Repo →</a>
+            <p>The Terraform workflow is implemented in GitHub Actions and split into <code>plan</code> and <code>apply</code>  stages to enforce deployment governance. After the plan is generated, the workflow pauses for manual review through an environment approval gate before allowing the apply job to execute in production.</p> 
         </section>
 
         <section id="state">
-            <h2>03. Collaborative State & Locking</h2>
-            <p>To enable a collaborative team environment and prevent state corruption, I implemented a remote backend using Amazon S3 for state storage and DynamoDB for state locking. This ensures that concurrent deployment attempts are safely blocked, maintaining a single source of truth across all regions.</p>
+            <h2>03. State & Locking</h2>
+            <p>To support collaborative infrastructure development and prevent state corruption, Terraform state is stored remotely in Amazon S3 with DynamoDB used for state locking. This prevents concurrent deployments from modifying the same state file, ensuring a consistent and reliable source of truth across environments.</p>
         </section>
 
         <section id="drift">
             <h2>04. Proactive Drift Detection</h2>
-            <p>I engineered automated drift detection workflows using <code>terraform plan -detailed-exitcode</code>. The CI/CD interprets exit code 2 as drift detected, triggering a failure notification to the team to ensure manual AWS Console changes are caught and remediated.</p>
+            <p>Automated drift detection is implemented using <code>terraform plan -detailed-exitcode</code>. When the command returns exit code 2, the CI/CD workflow interprets this as infrastructure drift and fails the pipeline, alerting the team that manual changes were made outside Terraform.</p>
         </section>
 
         <section id="security">
             <h2>05. Shift-Left Security</h2>
-            <p>Before any resource is provisioned, the code must pass <code>tfsec</code> and <code>Checkov</code> static analysis gates. This ensures that every resource meets industry security standards and organizational compliance policies before it reaches the cloud.</p>
+            <p>Before any resource is provisioned, the codebase passes through <code>tfsec </code> and <code>checkov </code>. These static analysis tools enforce security best practices and ensure infrastructure configurations comply with organizational security policies before reaching production.</p>
         </section>
+
+          <section id="modular">
+            <h2>06. Modular Infrastructure Design </h2>
+            <p>Infrastructure components are implemented as reusable Terraform modules to ensure consistency across regions. Each module exposes configurable variables for region-specific parameters such as VPC CIDR ranges and instance types, allowing the same infrastructure blueprint to be reused while maintaining standardized configurations.</p>
+        </section>
+
+        <a href="https://github.com/Nebat-Taha/terraform-plan-apply" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View Safety-First Repo →</a>
 
         <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
             <p>&copy; 2026 Nebat Taha | Built for Scalability.</p>
