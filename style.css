@@ -204,3 +204,62 @@ pre {
 .evolution-container th { background: #f8f9fa; color: #444; font-weight: 700; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; }
 .evolution-container th, .evolution-container td { padding: 18px; border: 1px solid #eee; text-align: left; font-size: 0.95rem; }
 .evolution-container tr:hover { background: #fcfcfc; }
+
+
+
+/* Specific fix to remove blue underlines and style links */
+a { 
+    text-decoration: none; 
+    color: inherit; 
+}
+
+.wes-link { 
+    color: var(--accent); 
+    font-weight: 700; 
+    text-decoration: none; 
+}
+
+.wes-link:hover { 
+    text-decoration: underline; 
+}
+
+/* Grid layout for the 7 cards */
+.competency-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns desktop */
+    gap: 20px;
+    margin-top: 40px;
+}
+
+/* Responsive adjustment for Mobile */
+@media (max-width: 768px) {
+    .competency-grid {
+        grid-template-columns: 1fr; /* Single column mobile */
+    }
+}
+
+.competency-card {
+    background: #fff;
+    padding: 25px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.competency-card:hover { 
+    transform: translateY(-5px); 
+}
+
+.card-icon { 
+    font-size: 1.5rem; 
+    color: var(--accent); 
+    margin-bottom: 15px; 
+}
+
+.card-tag { 
+    font-family: 'Fira Code', monospace; 
+    font-size: 0.8rem; 
+    color: #888; 
+    display: block; 
+    margin-bottom: 5px; 
+}
