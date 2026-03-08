@@ -45,9 +45,9 @@ body {
 .social-links a:hover { transform: scale(1.1); }
 
 /* Official Brand Colors */
-.ico-linkedin { color: #0077B5 !important; }
+.ico-linkedin { color: #0077b5 !important; }
 .ico-github   { color: #181717 !important; }
-.ico-email    { color: #EA4335 !important; }
+.ico-email    { color: #ea4335 !important; }
 
 .resume-btn {
     font-size: 0.75rem;
@@ -295,3 +295,14 @@ a {
     display: block; 
     margin-bottom: 5px; 
 }
+
+
+/* Icon and Tool Name on same line */
+        .card-header-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+        .card-header-row .card-icon { margin-bottom: 0; }
+        .card-header-row .card-tag { margin-bottom: 0; }
