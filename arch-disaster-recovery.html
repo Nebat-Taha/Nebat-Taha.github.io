@@ -198,35 +198,66 @@ Rather than paying for idle standby environments, resources are used actively du
 
 <table>
 <tr>
-<th>Architecture</th>
-<th>Regions</th>
-<th>RTO</th>
-<th>Operational Overhead</th>
-<th>Cost</th>
+<th>Category</th>
+<th>Active–Passive</th>
+<th>Pilot Light</th>
+<th>Active–Active (Selected)</th>
 </tr>
 
 <tr>
-<td>Active–Passive</td>
-<td>6 Regions</td>
-<td>30–60 Minutes</td>
+<td>Setup</td>
+<td>6 regions (3 active + 3 passive)</td>
+<td>3 active + 1 pilot-light region</td>
+<td>3 active regions</td>
+</tr>
+
+<tr>
+<td>Failover Model</td>
+<td>Fixed regional backup</td>
+<td>Centralized standby region</td>
+<td>Dynamic routing to healthy regions</td>
+</tr>
+
+<tr>
+<td>Resource State</td>
+<td>Passive regions mostly idle</td>
+<td>Standby region partially active</td>
+<td>All regions active</td>
+</tr>
+
+<tr>
+<td>Recovery Time (RTO)</td>
+<td>30–60 minutes</td>
+<td>10–15 minutes</td>
+<td><strong>2–5 minutes</strong></td>
+</tr>
+
+<tr>
+<td>Operational Overhead</td>
 <td>High</td>
-<td>Very High</td>
-</tr>
-
-<tr>
-<td>Pilot Light</td>
-<td>4 Regions</td>
-<td>10–15 Minutes</td>
 <td>Medium</td>
-<td>High</td>
+<td><strong>Low</strong></td>
 </tr>
 
 <tr>
-<td><strong>Active–Active</strong></td>
-<td>3 Regions</td>
-<td><strong>2–5 Minutes</strong></td>
-<td><strong>Low</strong></td>
+<td>Cost Profile</td>
+<td>Very High</td>
+<td>High</td>
 <td><strong>Optimized</strong></td>
+</tr>
+
+<tr>
+<td>Reliability Characteristics</td>
+<td>Failover rarely tested</td>
+<td>Standby infrequently exercised</td>
+<td>Continuously validated via live traffic</td>
+</tr>
+
+<tr>
+<td>Automation Level</td>
+<td>Low</td>
+<td>Medium</td>
+<td><strong>High</strong></td>
 </tr>
 
 </table>
