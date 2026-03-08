@@ -30,7 +30,7 @@
         <a href="#state" class="toc-link">03. State & Locking</a>
         <a href="#drift" class="toc-link">04. Drift Detection</a>
         <a href="#security" class="toc-link">05. Security Gates</a>
-        <a href="#modular" class="toc-link">06. Reusable Modules</a>
+        <a href="#modular" class="toc-link">06. Modular Design</a>
     </aside>
 
     <article class="article-container">
@@ -39,7 +39,7 @@
             <h1 style="margin-top: 20px;">Multi-Region Infrastructure Automation with Terraform</h1>
             <p style="font-size: 1.1rem; color: #666;">Designed a modular Terraform architecture to automate infrastructure deployment across multiple regions. The system separates global and regional resource lifecycles, uses remote state with locking for safe collaboration, and integrates GitHub Actions workflows for controlled, multi-region infrastructure automation.</p>
             <div style="margin-top: 20px;">
-                <span class="tag">Terraform</span><span class="tag">AWS</span><span class="tag">Governance</span>
+                <span class="tag">Terraform</span><span class="tag">AWS</span><span class="tag">GitHub Action</span><span class="tag">Multi-Region</span>
             </div>
         </header>
 
@@ -49,7 +49,7 @@
         </section>
 
         <section id="governance">
-            <h2>02. CI/CD Governance: Safety at Scale</h2>
+            <h2>02. CI/CD Governance</h2>
             <p>The Terraform workflow is implemented in GitHub Actions and split into <code>plan</code> and <code>apply</code>  stages to enforce deployment governance. After the plan is generated, the workflow pauses for manual review through an environment approval gate before allowing the apply job to execute in production.</p> 
         </section>
 
@@ -64,12 +64,12 @@
         </section>
 
         <section id="security">
-            <h2>05. Shift-Left Security</h2>
-            <p>Before any resource is provisioned, the codebase passes through <code>tfsec </code> and <code>checkov </code>. These static analysis tools enforce security best practices and ensure infrastructure configurations comply with organizational security policies before reaching production.</p>
+            <h2>05. Security Gates</h2>
+            <p>Applied <strong>shift-left security</strong> practices by enforcing static code analysis using <code>tfsec</code> and <code>Checkov</code> before any Terraform resource is provisioned. This ensures that security and compliance checks occur early in the CI/CD pipeline, preventing insecure or non-compliant resources from reaching production.</p>
         </section>
 
           <section id="modular">
-            <h2>06. Modular Infrastructure Design </h2>
+            <h2>06. Modular Design </h2>
             <p>Infrastructure components are implemented as reusable Terraform modules to ensure consistency across regions. Each module exposes configurable variables for region-specific parameters such as VPC CIDR ranges and instance types, allowing the same infrastructure blueprint to be reused while maintaining standardized configurations.</p>
         </section>
 
