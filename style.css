@@ -327,3 +327,7 @@ table th {
     background-color: #f5f5f5;
     font-weight: 700;
 }
+
+table tr:hover {
+    background-color: #fafafa;
+}
