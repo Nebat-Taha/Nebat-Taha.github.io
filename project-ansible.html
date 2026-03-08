@@ -28,9 +28,10 @@
         <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
         <a href="#control-plane" class="toc-link">01. Ephemeral Control Plane </a>
         <a href="#inventory" class="toc-link">02. Dynamic Inventory</a>
-        <a href="#backup" class="toc-link">03. Multi-Cloud Backup</a>
-        <a href="#restore" class="toc-link">04. Precision Restore</a>
-        <a href="#security" class="toc-link">05. Policy Enforcement</a>
+        <a href="#inventory" class="toc-link">03. Multi-Region CI/CD Matrix </a>
+        <a href="#backup" class="toc-link">04. Multi-Cloud Backup</a>
+        <a href="#restore" class="toc-link">05. Precision Restore</a>
+        <a href="#security" class="toc-link">06. Policy Enforcement</a>
     </aside>
 
     <article class="article-container">
@@ -43,8 +44,7 @@
                 <span class="tag">GITHUB ACTIONS</span>
                 <span class="tag">MULTI-CLOUD</span>
                 <span class="tag">BACKBLAZE B2</span>
-                <span class="tag">BACKUP & RESTORE</span>
-                
+                <span class="tag">BACKUP & RESTORE</span>  
             </div>
             
             <p class="about-text" style="margin-top: 20px;">
@@ -58,25 +58,29 @@
         </section>
 
         <section id="inventory" class="decision-box">
-            <h3>02. Dynamic Inventory & Multi-Region Matrix</h3>
-            <p>I leveraged <strong>AWS Dynamic Inventory</strong> and <strong>EC2 Tags</strong> to automatically group servers by role (e.g., Redis, MongoDB). The CI/CD pipeline uses a matrix strategy to run playbooks across multiple regions in parallel, eliminating manual IP management and ensuring consistent configuration.</p>
+            <h3>02. Dynamic Inventory</h3>
+            <p> Dynamic AWS inventory discovers instances by tags, to automatically group servers by role (e.g., Redis, MongoDB). This effectively eliminates the need for manual IP management and ensures consistent configuration across regions. Any changes in instances are automatically reflected without intervention. </p>
         </section>
 
+        <section id="multi-region" class="decision-box">
+            <h3>03. Multi-Region CI/CD Matrix </h3>
+            <p>Parallel deployment workflow using GitHub Actions strategy matrix allows consistent automation across regions, improving reliability and scalability.</p>
+        </section>
         
 
         <section id="backup" class="decision-box">
-            <h3>03. Multi-Cloud Backup Strategy</h3>
+            <h3>04. Multi-Cloud Backup Strategy</h3>
             <p>Backups are streamed securely to <strong>Backblaze B2</strong> using GitHub Secrets for credentials. Files are staged in a temporary local folder and deleted immediately after upload, automating multi-cloud resiliency while minimizing storage footprint and operational risk.</p>
         </section>
 
         <section id="restore" class="decision-box">
-            <h3>04. Precision Restore</h3>
+            <h3>05. Precision Restore</h3>
             <p>The restore workflow is manually triggered to avoid accidental recovery of corrupted backups. Operators specify the exact file in B2, which is downloaded and restored via an ephemeral Ansible runner, combining precision with automated safeguards.</p>
         </section>
 
         <section id="security" class="decision-box">
-            <h3>05. Policy Enforcement</h3>
-            <p>While Terraform enforces primary IaC, Ansible acts as a <strong>post-provisioning guard</strong>. It automatically enforces security policies on resources created manually via Console or CLI, ensuring that all infrastructure adheres to compliance and security standards immediately after provisioning. </p>
+            <h3>06. Policy Enforcement</h3>
+            <p>While Terraform enforces primary IaC, Ansible acts as a <strong>post-provisioning guard</strong>. It automatically Ansible enforces security and configuration policies on resources created via Console or CLI, bringing manually provisioned resources into governance automatically.</p>
         </section>
 
             <a href="https://github.com/Nebat-Taha/terraform-plan-apply" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View GitHub Repo →</a>
