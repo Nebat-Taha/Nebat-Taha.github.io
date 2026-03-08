@@ -8,10 +8,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <style>
+   <style>
         /* Specific Brand Icon Colors */
-        .fa-terraform { color: #844fba; } /* Terraform Purple */
-        .fa-ansible { color: #ee0000; }   /* Ansible Red */
+        .fa-linkedin { color: #0077b5 !important; }
+        .fa-envelope { color: #ea4335 !important; }
+        .fa-terraform { color: #844fba !important; } 
+        .fa-ansible { color: #ee0000 !important; }   
+
+        /* Ensure icons have a minimum width to prevent layout shift */
+        .card-icon i {
+            min-width: 24px;
+            text-align: center;
+        }
 
         /* Icon and Tool Name on same line */
         .card-header-row {
@@ -20,7 +28,7 @@
             gap: 10px;
             margin-bottom: 8px;
         }
-        .card-header-row .card-icon { margin-bottom: 0; }
+        .card-header-row .card-icon { margin-bottom: 0; display: flex; align-items: center; }
         .card-header-row .card-tag { margin-bottom: 0; }
     </style>
 </head>
