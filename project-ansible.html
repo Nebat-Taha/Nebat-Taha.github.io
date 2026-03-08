@@ -28,7 +28,7 @@
         <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
         <a href="#control-plane" class="toc-link">01. Ephemeral Control Plane </a>
         <a href="#inventory" class="toc-link">02. Dynamic Inventory</a>
-        <a href="#inventory" class="toc-link">03. Multi-Region CI/CD Matrix </a>
+        <a href="#inventory" class="toc-link">03. Multi-Region CI/CD</a>
         <a href="#backup" class="toc-link">04. Multi-Cloud Backup</a>
         <a href="#restore" class="toc-link">05. Precision Restore</a>
         <a href="#security" class="toc-link">06. Policy Enforcement</a>
@@ -59,11 +59,11 @@
 
         <section id="inventory" class="decision-box">
             <h3>02. Dynamic Inventory</h3>
-            <p> Dynamic AWS inventory discovers instances by tags, to automatically group servers by role (e.g., Redis, MongoDB). This effectively eliminates the need for manual IP management and ensures consistent configuration across regions. Any changes in instances are automatically reflected without intervention. </p>
+            <p> Dynamic AWS inventory uses instance tags to group servers by role (e.g., Redis, MongoDB), eliminating manual IP management. Any changes in instances are automatically reflected without intervention. </p>
         </section>
 
         <section id="multi-region" class="decision-box">
-            <h3>03. Multi-Region CI/CD Matrix </h3>
+            <h3>03. Multi-Region CI/CD</h3>
             <p>Parallel deployment workflow using GitHub Actions strategy matrix allows consistent automation across regions, improving reliability and scalability.</p>
         </section>
         
