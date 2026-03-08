@@ -6,54 +6,23 @@
     <title>Multi-Region Config & DR | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        /* Sidebar sits outside the main flow to avoid 'indentation' look */
-        .sticky-toc {
-            position: fixed;
-            left: 5%;
-            top: 150px;
-            width: 180px;
-            display: none;
-        }
-
-        @media (min-width: 1300px) {
-            .sticky-toc { display: block; }
-        }
-
-        .toc-link {
-            display: block;
-            font-size: 0.75rem;
-            color: #999;
-            text-decoration: none;
-            margin-bottom: 12px;
-            font-family: 'Fira Code', monospace;
-            transition: 0.3s;
-        }
-        .toc-link:hover { color: var(--accent); }
-
-        /* Match the White Paper width and centering */
-        .article-container {
-            max-width: 850px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .project-meta { margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap; }
-        .tag { font-size: 0.7rem; font-weight: 700; color: var(--accent); border: 1px solid #eee; padding: 4px 10px; border-radius: 4px; }
-        
-        pre { background: #f9f9f9; padding: 20px; border-radius: 8px; overflow-x: auto; border: 1px solid #eee; }
-        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; }
-    </style>
+    
 </head>
 <body>
 
-    <nav>
-        <div style="font-weight: 900;">NT</div>
-        <ul>
-            <li><a href="index.html">HOME</a></li>
-            <li><a href="projects.html" style="color: var(--accent);">PROJECTS</a></li>
-        </ul>
-    </nav>
+    <div class="container">
+    <nav class="header-nav">
+        <div class="nav-links">
+            <a href="index.html" style="color: var(--accent);">HOME</a>
+            <a href="projects.html">PROJECTS</a>
+        </div>
+         <div class="social-links">
+            <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/Nebat-Taha/" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="mailto:nebatn@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
+        </div>
+        </nav>
 
     <aside class="sticky-toc">
         <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
