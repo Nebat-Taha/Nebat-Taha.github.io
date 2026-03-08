@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+   
 </head>
 <body>
 
@@ -27,7 +28,7 @@
     <header class="hero">
         <h1>Nebat Nurhussen Taha</h1>
         <h2>DevOps Engineer | Cloud Infrastructure & Automation</h2>
-        <p>Automating infrastructure provisioning, deployment workflows, and monitoring systems to to build reliable and scalable cloud platforms.</p>
+        <p>Automating infrastructure provisioning, deployment workflows, and monitoring systems to build reliable and scalable cloud platforms.</p>
     </header>
 
     <section class="about-section">
@@ -41,80 +42,93 @@
 
     <div class="competency-grid">
         <div class="competency-card">
-            <div class="card-icon"><i class="fas fa-cubes"></i></div>
-            <span class="card-tag">Terraform</span>
+            <div class="card-header-row">
+                <div class="card-icon"><i class="fas fa-box"></i></div>
+                <span class="card-tag">Terraform</span>
+            </div>
             <h3>Infrastructure as Code</h3>
             <p>Provisioning and managing cloud infrastructure using Terraform for repeatable, consistent, and automated environments.</p>
         </div>
         <div class="competency-card">
-            <div class="card-icon"><i class="fas fa-code-branch"></i></div>
-            <span class="card-tag">GitHub Actions</span>
+            <div class="card-header-row">
+                <div class="card-icon"><i class="fas fa-code-branch"></i></div>
+                <span class="card-tag">GitHub Actions</span>
+            </div>
             <h3>CI/CD Automation</h3>
             <p>Building automated pipelines to deploy infrastructure and applications reliably across environments.</p>
         </div>
         <div class="competency-card">
-            <div class="card-icon"><i class="fas fa-tasks"></i></div>
-            <span class="card-tag">Ansible</span>
+            <div class="card-header-row">
+                <div class="card-icon"><i class="fas fa-tasks"></i></div>
+                <span class="card-tag">Ansible</span>
+            </div>
             <h3>Configuration Management</h3>
             <p>Automating system configuration and environment consistency with Ansible using dynamic inventory.</p>
         </div>
         <div class="competency-card">
-            <div class="card-icon"><i class="fas fa-chart-area"></i></div>
-            <span class="card-tag">Prometheus + Grafana</span>
+            <div class="card-header-row">
+                <div class="card-icon"><i class="fas fa-chart-area"></i></div>
+                <span class="card-tag">Prometheus + Grafana</span>
+            </div>
             <h3>Monitoring & Observability</h3>
             <p>Implementing monitoring and visualization systems to track infrastructure health and operational metrics.</p>
         </div>
         <div class="competency-card">
-            <div class="card-icon"><i class="fas fa-cloud"></i></div>
-            <span class="card-tag">AWS + Azure</span>
+            <div class="card-header-row">
+                <div class="card-icon"><i class="fas fa-cloud"></i></div>
+                <span class="card-tag">AWS + Azure</span>
+            </div>
             <h3>Cloud Infrastructure</h3>
             <p>Designing and operating cloud environments across AWS and Azure with automation-first practices.</p>
         </div>
         <div class="competency-card">
-            <div class="card-icon"><i class="fas fa-server"></i></div>
-            <span class="card-tag">Server/HA Architecture</span>
+            <div class="card-header-row">
+                <div class="card-icon"><i class="fas fa-server"></i></div>
+                <span class="card-tag">Server/HA Architecture</span>
+            </div>
             <h3>Architecture & High Availability</h3>
             <p>Designing resilient, highly available, and cost-optimized systems across on-prem and cloud environments.</p>
         </div>
         <div class="competency-card">
-            <div class="card-icon"><i class="fas fa-terminal"></i></div>
-            <span class="card-tag">Python/Bash</span>
+            <div class="card-header-row">
+                <div class="card-icon"><i class="fas fa-terminal"></i></div>
+                <span class="card-tag">Python/Bash</span>
+            </div>
             <h3>Scripting & Automation</h3>
             <p>Writing scripts to automate repetitive tasks, manage infrastructure, and improve operational efficiency.</p>
         </div>
     </div>
 
-    <section class="about-section" style="padding-bottom: 100px; margin-top: 60px;">
-    <span class="section-title">Featured Projects</span>
-
- <div class="project-grid">
-        <div class="project-card">
-            <div class="card-icon"><i class="fas fa-cubes"></i></div>
-            <span class="card-tag">Terraform</span>
-            <h3>Multi-region Infrastructure Automation Pipeline</h3>
-            <p>Terraform + GitHub Actions automation for cloud infrastructure provisioning.</p>
-            <a href="project-terraform.html">View Project →</a>
-        </div>
+    <section class="about-section" style="padding-bottom: 60px; margin-top: 80px;">
+        <span class="section-title">Featured Projects</span>
         <div class="project-grid">
             <div class="project-card">
-            <div class="card-icon"><i class="fas fa-code-branch"></i></div>
-            <span class="card-tag">Ansible</span>
-            <h3>Multi-region Configuration Management<</h3>
-            <p>Ansible + GitHub Actions automation for cloud infrastructure provisioning.</p>
-            <a href="project-ansible.html">View Project →</a>
+                <div class="card-icon"><i class="fas fa-box"></i></div>
+                <span class="card-tag">Terraform</span>
+                <h3>Multi-region Infrastructure Automation Pipeline</h3>
+                <p>Terraform + GitHub Actions automation for cloud infrastructure provisioning and modular multi-regional deployments.</p>
+                <a href="project-terraform.html" class="wes-link" style="display:inline-block; margin-top:15px;">View Project →</a>
+            </div>
+
+            <div class="project-card">
+                <div class="card-icon"><i class="fas fa-tasks"></i></div>
+                <span class="card-tag">Ansible</span>
+                <h3>Multi-region Configuration Management</h3>
+                <p>Automating server configuration, environment consistency, and backup verification using Ansible playbooks.</p>
+                <a href="project-ansible.html" class="wes-link" style="display:inline-block; margin-top:15px;">View Project →</a>
+            </div>
         </div>
-        <div>
-</section>
-    
-    <section class="about-section" style="padding-bottom: 100px; margin-top: 60px;">
+    </section>
+
+    <section class="about-section" style="padding-bottom: 100px; margin-top: 20px;">
         <span class="section-title">Education</span>
         <div class="edu-item" style="margin-bottom: 40px;">
-            <h3>M.Sc. in Software Engineering</h3>
+            <h3><i class="fas fa-graduation-cap" style="margin-right: 10px; color: var(--accent);"></i>M.Sc. in Software Engineering</h3>
             <p>HiLCoE School of Science and Technology | 2013 – 2016</p>
             <p style="color: #666; font-size: 0.9rem;">WES Equivalence: Four-year Bachelor’s degree in Canada</p>
         </div>
         <div class="edu-item">
-            <h3>B.Sc. in Computer Science</h3>
+            <h3><i class="fas fa-graduation-cap" style="margin-right: 10px; color: var(--accent);"></i>B.Sc. in Computer Science</h3>
             <p>Mekelle University | 2007 – 2010</p>
             <p style="color: #666; font-size: 0.9rem;">WES Equivalence: Three-year Bachelor’s degree in Canada</p>
             <a href="https://badges.wes.org/Evidence?i=818c0910-b7b4-4c68-8e5d-d651d2a53ec3&type=ca" target="_blank" class="wes-link">View WES Credential →</a>
