@@ -1,161 +1,246 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Projects | DR Architecture </title>
-
+    <title>Multi-Region Terraform | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
-<nav class="header-nav">
+    <div class="container">
+    <nav class="header-nav">
+        <div class="nav-links">
+            <a href="index.html" style="color: var(--accent);">HOME</a>
+            <a href="projects.html">PROJECTS</a>
+        </div>
+         <div class="social-links">
+            <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/Nebat-Taha/" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="mailto:nebatn@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
+        </div>
+        </nav>
+
+
+ <aside class="sticky-toc">
+<p style="font-weight:900;font-size:0.7rem;color:#444;margin-bottom:20px;letter-spacing:1px;">ARCHITECTURE INDEX</p>
+
+<a href="#context" class="toc-link">01. Context</a>
+<a href="#models" class="toc-link">02. DR Models Evaluated</a>
+<a href="#active-passive" class="toc-link">03. Active–Passive</a>
+<a href="#pilot-light" class="toc-link">04. Pilot Light</a>
+<a href="#active-active" class="toc-link">05. Active–Active</a>
+<a href="#recommendation" class="toc-link">06. Architecture Decision</a>
+<a href="#comparison" class="toc-link">07. Strategy Comparison</a>
+
+    <article class="article-container">
+ <header>
+<a href="projects.html" class="back-link">← Back to Projects</a>
+<h1 style="margin-top:20px;">Multi-Region Disaster Recovery Strategy</h1>
+<div class="project-meta">
+    <span class="tag">ARCHITECTURE</span>
+    <span class="tag">DISASTER RECOVERY</span>
+    <span class="tag">AWS</span>
+    <span class="tag">MULTI-REGION</span>
+    <span class="tag">RESILIENCE</span>
+</div>
+<p class="about-text" style="margin-top:20px;">
+This architecture evaluates disaster recovery strategies for applications deployed across three AWS regions. The objective was to design a resilient failover model that minimizes operational overhead while maintaining rapid recovery and cost efficiency.
+</p>
+</header>
+<section id="context" class="decision-box" style="margin-top:40px;">
+
+<h3>01. System Context</h3>
+
+<p>
+The application is deployed across <strong>three production regions</strong> to provide geographic redundancy and low latency for users.
+</p>
+
+<p>
+A disaster recovery strategy was required to ensure that regional failures would not disrupt service availability. Several architectural models were evaluated based on:
+</p>
+
+<ul>
+<li>Recovery Time Objective (RTO)</li>
+<li>Infrastructure cost</li>
+<li>Operational complexity</li>
+<li>Reliability of failover mechanisms</li>
+</ul>
 
-    <div class="nav-links">
+<p>
+Three disaster recovery approaches were considered before selecting the final architecture.
+</p>
 
-        <a href="index.html">HOME</a>
+</section>
 
-        <a href="projects.html">PROJECTS</a>
+        <section id="models" class="decision-box">
 
-    </div>
+<h3>02. Disaster Recovery Models Evaluated</h3>
 
-    <div class="social-links">
+<p>
+Three common disaster recovery strategies were analyzed for the multi-region deployment:
+</p>
 
-        <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/ " target="_blank" class="ico-linkedin" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+<ul>
+<li><strong>Active–Passive</strong> – dedicated standby regions paired with each production region</li>
+<li><strong>Pilot Light</strong> – a minimal standby environment scaled during failure</li>
+<li><strong>Active–Active</strong> – all regions fully operational with automated regional failover</li>
+</ul>
 
-        <a href="https://github.com/Nebat-Taha/ " target="_blank" class="ico-github" title="GitHub"><i class="fab fa-github"></i></a>
+<p>
+Each model offers different trade-offs between cost, recovery speed, and operational complexity.
+</p>
 
-        <a href="mailto:nebatn@gmail.com" class="ico-email" title="Email"><i class="fas fa-envelope"></i></a>
+</section>
 
-        <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
+<section id="active-passive" class="decision-box">
 
-    </div>
+<h3>03. Active–Passive Disaster Recovery</h3>
 
-    </nav>
+<p>
+In the Active–Passive model, every production region has a dedicated standby region acting as a recovery target.
+</p>
 
+<p>
+With three active regions, this architecture requires <strong>three additional passive regions</strong>, resulting in a total of six environments.
+</p>
 
+<p>
+Passive regions typically run database replicas but do not actively serve application traffic. Infrastructure is activated only during a disaster event using infrastructure-as-code workflows.
+</p>
 
-<article style="margin-top:40px;">
+<p><strong>Considerations</strong></p>
 
-  
+<ul>
+<li>High infrastructure cost due to idle standby environments</li>
+<li>Passive environments are rarely exercised, increasing drift risk</li>
+<li>Failover often requires manual intervention</li>
+</ul>
 
-    <h1>Disaster Recovery: Alternatives and Recommendations</h1>
+</section>
 
-    
+        <section id="pilot-light" class="decision-box">
 
-    <p class="about-text">
+<h3>04. Pilot Light Architecture</h3>
 
-        In high-stakes industries like banking, Disaster Recovery (DR) isn't just a technical backup plan—it's a core business requirement. This analysis explores the shift from traditional passive models to modern, automated resilience.
+<p>
+The Pilot Light model maintains a minimal standby environment in an additional region.
+</p>
 
-    </p>
+<p>
+Only essential infrastructure components remain active, such as networking and minimal database replication. During a disaster, the region is scaled up to handle production traffic.
+</p>
 
+<p><strong>Considerations</strong></p>
 
+<ul>
+<li>Ongoing cost for maintaining standby infrastructure</li>
+<li>Additional operational complexity for scaling during recovery</li>
+<li>Recovery still requires scaling operations during an incident</li>
+</ul>
 
-    <h2>01. The Alternatives</h2>
+</section>
 
-    <div class="evolution-container">
+        <section id="active-active" class="decision-box">
 
-        <table>
+<h3>05. Active–Active Regional Architecture</h3>
 
-            <thead>
+<p>
+In the Active–Active model, all production regions operate continuously and serve live traffic.
+</p>
 
-                <tr>
+<p>
+Regions act as <strong>mutual failover targets</strong>, eliminating the need for dedicated standby infrastructure.
+</p>
 
-                    <th>Model</th>
+<p>
+Traffic routing is managed using <strong>Route 53 health checks</strong>, which automatically redirect users to the nearest healthy region when a failure occurs.
+</p>
 
-                    <th>Logic</th>
+<p>
+<strong>Auto Scaling</strong> increases capacity in healthy regions to absorb redirected traffic during failover events.
+</p>
 
-                    <th>RTO</th>
+</section>
 
-                    <th>Cost</th>
+        <section id="recommendation" class="decision-box">
 
-                </tr>
+<h3>06. Architecture Decision: Active–Active</h3>
 
-            </thead>
+<p>
+After evaluating the alternatives, the Active–Active regional architecture was selected.
+</p>
 
-            <tbody>
+<p>
+This approach maximizes infrastructure utilization while maintaining strong resiliency characteristics.
+</p>
 
-                <tr>
+<p>
+Rather than paying for idle standby environments, resources are used actively during normal operation and scale only when necessary during failure scenarios.
+</p>
 
-                    <td><strong>Active-Passive</strong></td>
+<p><strong>Key Benefits</strong></p>
 
-                    <td>1:1 Mapping (Idle backup)</td>
+<ul>
+<li>Automated failover using Route 53 health checks</li>
+<li>Recovery Time Objective under five minutes</li>
+<li>Elastic scaling during failover events</li>
+<li>Reduced operational complexity</li>
+</ul>
 
-                    <td>30-60 min</td>
+</section>
 
-                    <td>Very High</td>
+        <section id="comparison" class="decision-box">
 
-                </tr>
+<h3>07. Strategy Comparison</h3>
 
-                <tr>
+<table>
+<tr>
+<th>Architecture</th>
+<th>Regions</th>
+<th>RTO</th>
+<th>Operational Overhead</th>
+<th>Cost</th>
+</tr>
 
-                    <td><strong>Pilot Light</strong></td>
+<tr>
+<td>Active–Passive</td>
+<td>6 Regions</td>
+<td>30–60 Minutes</td>
+<td>High</td>
+<td>Very High</td>
+</tr>
 
-                    <td>Minimal standby footprint</td>
+<tr>
+<td>Pilot Light</td>
+<td>4 Regions</td>
+<td>10–15 Minutes</td>
+<td>Medium</td>
+<td>High</td>
+</tr>
 
-                    <td>10-15 min</td>
+<tr>
+<td><strong>Active–Active</strong></td>
+<td>3 Regions</td>
+<td><strong>2–5 Minutes</strong></td>
+<td><strong>Low</strong></td>
+<td><strong>Optimized</strong></td>
+</tr>
 
-                    <td>High</td>
+</table>
 
-                </tr>
+</section>
 
-                <tr>
-
-                    <td><strong>Active-Active</strong></td>
-
-                    <td>Mutual Regional Failover</td>
-
-                    <td>2-4 min</td>
-
-                    <td>Optimized</td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-
-
-    <div class="decision-box">
-
-        <h2>Final Recommendation: Active-Active Regional Failover</h2>
-
-        <p>The Active-Active model eliminates the need for idle standby infrastructure, enables fully automated regional failover within minutes, and continuously validates system resilience through real production traffic.</p>
-
-    </div>
-
-
-
-    <h3>Key Advantages</h3>
-
-    <ul>
-
-        <li><strong>Automated Failover via Route 53:</strong> Health checks redirect traffic within minutes, achieving an RTO of < 5 mins without human intervention.</li>
-
-        <li><strong>Continuous Validation:</strong> All regions serve live traffic. Failover paths are always "warm," removing the risk of an untested standby environment.</li>
-
-        <li><strong>Elastic Scaling:</strong> Instead of pre-paying for idle servers, we use Auto Scaling to expand healthy regions only when needed.</li>
-
-    </ul>
-
-
-
-    <h3>Trade-offs & Mitigation</h3>
-
-    <p>While performance may briefly dip during a regional scale-up event, this is an accepted trade-off for the massive gains in cost efficiency and operational simplicity. To mitigate systemic failures, we use <strong>staged CI/CD deployments</strong> and <strong>environment isolation</strong>.</p>
-
-</article>
-
+        
+        
+        
+        
+       
+        <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
+            <p>&copy; 2026 Nebat Taha | Built for Scalability.</p>
+        </footer>
+    </article>
 </body>
-
 </html>
