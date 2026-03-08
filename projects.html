@@ -7,61 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* Tab Navigation Styles */
-        .tab-container {
-            display: flex;
-            gap: 30px;
-            margin-bottom: 50px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .tab-btn {
-            padding: 15px 5px;
-            background: none;
-            border: none;
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: #999;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            transition: 0.3s;
-        }
-
-        .tab-btn:hover { color: #222; }
-
-        .tab-btn.active {
-            color: var(--accent);
-        }
-
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--accent);
-        }
-
-        /* Hide content by default */
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+    
 </head>
 <body>
 
@@ -95,29 +41,38 @@
                     <div class="project-meta">
                         <span class="tag">Terraform</span>
                         <span class="tag">AWS</span>
+                        <span class="tag">Github-Action</span>
+                        <span class="tag">Multi-Region</span>
+                        <span class="tag">Terraform Modules</span>
+                        
                     </div>
-                    <h3>Infrastructure as Code</h3>
-                    <p>Modular blueprints for deploying secure, scalable Kubernetes (EKS) clusters and global networking VPCs.</p>
+                    <h3>Multi-Region Infrastructure Automation</h3>
+                    <p>Designed modular Infrastructure-as-Code using Terraform modules to provision secure, scalable cloud resources across multiple regions. Automated deployments with GitHub Actions matrix workflows, enabling parallel regional provisioning with independent Terraform state files and standardized configurations, reducing manual provisioning time by 90% while maintaining compliance and consistency across environments. </p>
                     <a href="project-terraform.html" class="wes-link">Case Study →</a>
                 </div>
 
                 <div class="project-card">
                     <div class="project-meta">
                         <span class="tag">Ansible</span>
-                        <span class="tag">DR</span>
+                        <span class="tag">Github-Action</span>
+                        <span class="tag">Multi-Region</span>
+                        <span class="tag">Backblaze B2</span>
+                        <span class="tag">Backup & Restore</span>
                     </div>
-                    <h3>Multi-Region Configuration</h3>
-                    <p>Automating environment consistency and multi-cloud resiliency using Ansible and Backblaze B2.</p>
+                    <h3>Multi-Region Configuration & Multi-Cloud Backup</h3>
+                    <p>Automated multi-region infrastructure configuration using Ansible with dynamic inventory, ensuring consistent desired system state. Implemented automated database backups from AWS MongoDB and Redis to Backblaze B2, enabling a resilient multi-cloud data protection strategy. Designed a recovery workflow that generates ephemeral runtime inventories to restore backups to a specified region, instance, and database through a controlled manual recovery pipeline.</p>
                     <a href="project-ansible.html" class="wes-link">Case Study →</a>
                 </div>
 
                 <div class="project-card">
                     <div class="project-meta">
-                        <span class="tag">Python</span>
                         <span class="tag">Prometheus</span>
+                        <span class="tag">Grafana</span>
+                        <span class="tag">Python</span>
+                        <span class="tag">Observability</span>
+                        <span class="tag">Alerting</span>
                     </div>
-                    <h3>Full-Stack Observability</h3>
-                    <p>Custom metrics exporters and dashboards providing deep visibility into application health and performance.</p>
+                    <h3>Full-Stack Observability</h3>Built custom Prometheus exporters and Grafana dashboards to deliver full-stack observability across application and infrastructure layers. Designed Grafana alerting policies to notify administrators when key operational thresholds are exceeded, including AWS queue latency limits and high CPU utilization, improving incident detection and response.</p>
                     <a href="project-observability.html" class="wes-link">Case Study →</a>
                 </div>
             </div>
