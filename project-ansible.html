@@ -37,7 +37,7 @@
     <article class="article-container">
         <header>
             <a href="projects.html" class="back-link">← Back to Projects</a>
-            <h1 style="margin-top: 20px;">Multi-Region Configuration & Multi-Cloud Disaster Recovery</h1>
+            <h1 style="margin-top: 20px;">Multi-Region Configuration & Multi-Cloud Backup</h1>
             
             <div class="project-meta">
                 <span class="tag">ANSIBLE</span>
@@ -47,12 +47,12 @@
                 <span class="tag">BACKUP & RESTORE</span>  
             </div>
             
-            <p class="about-text" style="margin-top: 20px;">
+            <p class="about-text" style="font-size: 1.1rem; color: #666;">
                 Automated multi-region configuration, backup, and restore workflows using ephemeral Ansible runners and GitHub Actions, ensuring consistent infrastructure state and multi-cloud resilience while minimizing operational overhead.
                      </p>
         </header>
 
-        <section id="control-plane" class="decision-box" style="margin-top: 40px;">
+        <section id="control-plane"  style="margin-top: 40px;">
             <h3>01. Ephemeral Control Plane</h3>
             <p>Instead of a permanent Ansible server, the <strong>GitHub Runner</strong> acts as a temporary control node. This eliminates recurring EC2 costs and ensures each deployment starts from a 100% "known good" environment, preventing configuration drift in the management plane.</p>
         </section>
