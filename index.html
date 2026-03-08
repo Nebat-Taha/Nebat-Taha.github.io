@@ -6,29 +6,32 @@
     <title>Nebat Nurhussen Taha | DevOps Engineer</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-   <style>
-        /* Specific Brand Icon Colors */
-   
-        .fa-terraform { color: #844fba !important; } 
-        .fa-ansible { color: #ee0000 !important; }   
-
-        /* Ensure icons have a minimum width to prevent layout shift */
-        .card-icon i {
-            min-width: 24px;
-            text-align: center;
-        }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* Social Icon Colors */
+        .fa-linkedin { color: #0077b5; }
+        .fa-envelope { color: #ea4335; }
+        .fa-github { color: #24292e; }
 
         /* Icon and Tool Name on same line */
         .card-header-row {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
+            gap: 12px;
+            margin-bottom: 12px;
         }
-        .card-header-row .card-icon { margin-bottom: 0; display: flex; align-items: center; }
-        .card-header-row .card-tag { margin-bottom: 0; }
+
+        /* SVG Icon Sizing */
+        .svg-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-icon { font-size: 1.2rem; color: var(--accent); display: flex; align-items: center; }
+        .card-tag { font-family: 'Fira Code', monospace; font-size: 0.8rem; color: #888; margin: 0; }
     </style>
 </head>
 <body>
@@ -40,9 +43,9 @@
             <a href="projects.html">PROJECTS</a>
         </div>
         <div class="social-links">
-            <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/" target="_blank" class="ico-linkedin"><i class="fab fa-linkedin"></i></a>
-            <a href="https://github.com/Nebat-Taha/" target="_blank" class="ico-github"><i class="fab fa-github"></i></a>
-            <a href="mailto:nebatn@gmail.com" class="ico-email"><i class="fas fa-envelope"></i></a>
+            <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/Nebat-Taha/" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="mailto:nebatn@gmail.com"><i class="fas fa-envelope"></i></a>
             <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
         </div>
     </nav>
@@ -65,12 +68,15 @@
     <div class="competency-grid">
         <div class="competency-card">
             <div class="card-header-row">
-                <div class="card-icon"><i class="fa-brands fa-terraform"></i></div>
+                <div class="svg-icon">
+                    <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Terraform</title><path fill="#844FBA" d="M1.44 0v7.575l6.561 3.79V3.787L1.44 0zm21.12 4.227l-6.561 3.791v7.574l6.56-3.787V4.227zM8.56 4.226v7.575l6.561 3.79V7.934L8.56 4.226zm0 8.453v7.575l6.561 3.79v-7.575l-6.56-3.79zM1.44 8.454v7.575L8 19.82v-7.575l-6.56-3.79z"/></svg>
+                </div>
                 <span class="card-tag">Terraform</span>
             </div>
             <h3>Infrastructure as Code</h3>
             <p>Provisioning and managing cloud infrastructure using Terraform for repeatable, consistent, and automated environments.</p>
         </div>
+
         <div class="competency-card">
             <div class="card-header-row">
                 <div class="card-icon"><i class="fas fa-code-branch"></i></div>
@@ -79,14 +85,18 @@
             <h3>CI/CD Automation</h3>
             <p>Building automated pipelines to deploy infrastructure and applications reliably across environments.</p>
         </div>
+
         <div class="competency-card">
             <div class="card-header-row">
-                <div class="card-icon"><i class="fa-brands fa-ansible"></i></div>
+                <div class="svg-icon">
+                    <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Ansible</title><path fill="#EE0000" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.333 17.5h-1.93l-.645-1.577h-5.518l-.645 1.577H6.667L12 4.475l5.333 13.025zm-3.326-3.153l-2.007-4.91-2.007 4.91h4.014z"/></svg>
+                </div>
                 <span class="card-tag">Ansible</span>
             </div>
             <h3>Configuration Management</h3>
             <p>Automating system configuration and environment consistency with Ansible using dynamic inventory.</p>
         </div>
+
         <div class="competency-card">
             <div class="card-header-row">
                 <div class="card-icon"><i class="fas fa-chart-area"></i></div>
@@ -95,6 +105,7 @@
             <h3>Monitoring & Observability</h3>
             <p>Implementing monitoring and visualization systems to track infrastructure health and operational metrics.</p>
         </div>
+
         <div class="competency-card">
             <div class="card-header-row">
                 <div class="card-icon"><i class="fas fa-cloud"></i></div>
@@ -103,14 +114,16 @@
             <h3>Cloud Infrastructure</h3>
             <p>Designing and operating cloud environments across AWS and Azure with automation-first practices.</p>
         </div>
+
         <div class="competency-card">
             <div class="card-header-row">
                 <div class="card-icon"><i class="fas fa-server"></i></div>
-                <span class="card-tag">Server/HA Architecture</span>
+                <span class="card-tag">Architecture</span>
             </div>
             <h3>Architecture & High Availability</h3>
             <p>Designing resilient, highly available, and cost-optimized systems across on-prem and cloud environments.</p>
         </div>
+
         <div class="competency-card">
             <div class="card-header-row">
                 <div class="card-icon"><i class="fas fa-terminal"></i></div>
@@ -123,10 +136,12 @@
 
     <section class="about-section" style="padding-bottom: 60px; margin-top: 80px;">
         <span class="section-title">Featured Projects</span>
-       <div class="project-grid">
+        <div class="project-grid">
             <div class="project-card">
                 <div class="card-header-row">
-                    <div class="card-icon"><i class="fa-brands fa-terraform"></i></div>
+                    <div class="svg-icon">
+                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Terraform</title><path fill="#844FBA" d="M1.44 0v7.575l6.561 3.79V3.787L1.44 0zm21.12 4.227l-6.561 3.791v7.574l6.56-3.787V4.227zM8.56 4.226v7.575l6.561 3.79V7.934L8.56 4.226zm0 8.453v7.575l6.561 3.79v-7.575l-6.56-3.79zM1.44 8.454v7.575L8 19.82v-7.575l-6.56-3.79z"/></svg>
+                    </div>
                     <span class="card-tag">Terraform</span>
                 </div>
                 <h3>Multi-region Infrastructure Automation Pipeline</h3>
@@ -136,7 +151,9 @@
 
             <div class="project-card">
                 <div class="card-header-row">
-                    <div class="card-icon"><i class="fa-brands fa-ansible"></i></div>
+                    <div class="svg-icon">
+                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Ansible</title><path fill="#EE0000" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.333 17.5h-1.93l-.645-1.577h-5.518l-.645 1.577H6.667L12 4.475l5.333 13.025zm-3.326-3.153l-2.007-4.91-2.007 4.91h4.014z"/></svg>
+                    </div>
                     <span class="card-tag">Ansible</span>
                 </div>
                 <h3>Multi-region Configuration Management</h3>
@@ -152,7 +169,6 @@
             <h3><i class="fas fa-graduation-cap" style="margin-right: 10px; color: var(--accent);"></i>M.Sc. in Software Engineering</h3>
             <p>HiLCoE School of Science and Technology | 2013 – 2016</p>
             <p style="color: #666; font-size: 0.9rem;">WES Equivalence: Four-year Bachelor’s degree in Canada</p>
-            <a href="https://badges.wes.org/Evidence?i=818c0910-b7b4-4c68-8e5d-d651d2a53ec3&type=ca" target="_blank" class="wes-link">View WES Credential →</a>
         </div>
         <div class="edu-item">
             <h3><i class="fas fa-graduation-cap" style="margin-right: 10px; color: var(--accent);"></i>B.Sc. in Computer Science</h3>
