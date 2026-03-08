@@ -37,9 +37,12 @@
     <article class="article-container">
         <header>
             <a href="projects.html" class="back-link">← Back to Projects</a>
-            <h1 style="margin-top: 20px;">Multi-Region Configuration & Multi-Cloud Backup</h1>
+            <h1 style="margin-top: 40px;">Multi-Region Configuration & Multi-Cloud Backup</h1>
+            <p class="about-text" style="font-size: 1.1rem; color: #666;">
+                Automated multi-region configuration, backup, and restore workflows using ephemeral Ansible runners and GitHub Actions, ensuring consistent infrastructure state and multi-cloud resilience while minimizing operational overhead.
+                     </p>
             
-            <div class="project-meta">
+            <div style="margin-top: 20px;">
                 <span class="tag">ANSIBLE</span>
                 <span class="tag">GITHUB ACTIONS</span>
                 <span class="tag">MULTI-CLOUD</span>
@@ -47,9 +50,7 @@
                 <span class="tag">BACKUP & RESTORE</span>  
             </div>
             
-            <p class="about-text" style="font-size: 1.1rem; color: #666;">
-                Automated multi-region configuration, backup, and restore workflows using ephemeral Ansible runners and GitHub Actions, ensuring consistent infrastructure state and multi-cloud resilience while minimizing operational overhead.
-                     </p>
+            
         </header>
 
         <section id="control-plane"  style="margin-top: 40px;">
@@ -57,28 +58,28 @@
             <p>Instead of a permanent Ansible server, the <strong>GitHub Runner</strong> acts as a temporary control node. This eliminates recurring EC2 costs and ensures each deployment starts from a 100% "known good" environment, preventing configuration drift in the management plane.</p>
         </section>
 
-        <section id="inventory" class="decision-box">
+        <section id="inventory">
             <h3>02. Dynamic Inventory</h3>
             <p> Dynamic AWS inventory uses instance tags to group servers by role (e.g., Redis, MongoDB), eliminating manual IP management. Any changes in instances are automatically reflected without intervention. </p>
         </section>
 
-        <section id="multi-region" class="decision-box">
+        <section id="multi-region">
             <h3>03. Multi-Region CI/CD</h3>
             <p>Parallel deployment workflow using GitHub Actions strategy matrix allows consistent automation across regions, improving reliability and scalability.</p>
         </section>
         
 
-        <section id="backup" class="decision-box">
+        <section id="backup">
             <h3>04. Multi-Cloud Backup Strategy</h3>
             <p>Backups are streamed securely to <strong>Backblaze B2</strong> using GitHub Secrets for credentials. Files are staged in a temporary local folder and deleted immediately after upload, automating multi-cloud resiliency while minimizing storage footprint and operational risk.</p>
         </section>
 
-        <section id="restore" class="decision-box">
+        <section id="restore">
             <h3>05. Precision Restore</h3>
             <p>The restore workflow is manually triggered to avoid accidental recovery of corrupted backups. Operators specify the exact file in B2, which is downloaded and restored via an ephemeral Ansible runner, combining precision with automated safeguards.</p>
         </section>
 
-        <section id="security" class="decision-box">
+        <section id="security">
             <h3>06. Policy Enforcement</h3>
             <p>While Terraform enforces primary IaC, Ansible acts as a <strong>post-provisioning guard</strong>. It automatically Ansible enforces security and configuration policies on resources created via Console or CLI, bringing manually provisioned resources into governance automatically.</p>
         </section>
