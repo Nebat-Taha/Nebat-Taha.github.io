@@ -100,7 +100,7 @@ h1, h2, h3, h4, .tag, .toc-link, .wes-link, th, td {
 
 .competency-card {
     background: #fff;
-    padding: 15px 20px; /* Smaller padding */
+    padding: 10px 20px; /* Smaller padding */
     border: 1px solid #eee;
     border-radius: 6px;
     transition: transform 0.2s ease;
