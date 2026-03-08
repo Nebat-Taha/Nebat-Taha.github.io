@@ -306,3 +306,24 @@ a {
         }
         .card-header-row .card-icon { margin-bottom: 0; }
         .card-header-row .card-tag { margin-bottom: 0; }
+
+
+/* Styling table*/
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.9rem;
+}
+
+table th,
+table td {
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    text-align: left;
+}
+
+table th {
+    background-color: #f5f5f5;
+    font-weight: 700;
+}
