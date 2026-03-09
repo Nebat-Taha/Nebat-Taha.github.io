@@ -30,6 +30,8 @@
 <a href="#option3" class="toc-link">04. Fully Regional Data</a>
 <a href="#option4" class="toc-link">05. Phased Evolution</a>
 <a href="#comparison" class="toc-link">06. Architecture Comparison</a>
+<a href="#decision" class="toc-link">07. Architecture Decision</a>
+<a href="#future" class="toc-link">08. Future Evolution</a>
 </aside>
 
 <article class="article-container">
@@ -251,6 +253,69 @@ This model enables global expansion while minimizing early operational complexit
 
 </section>
 
+<section id="decision">
+
+<h3>07. Architecture Decision</h3>
+
+<p>
+After evaluating the available architectures, the <strong>Centralized Primary Database with Regional Read Replicas</strong> model was selected as the initial deployment strategy.
+</p>
+
+<p>
+This architecture provides a strong balance between performance, operational simplicity, and long-term scalability while avoiding the operational overhead associated with fully regional data partitioning.
+</p>
+
+<h4>Key Factors in the Decision</h4>
+
+<ul>
+
+<li>
+<strong>Improved Global Read Performance</strong><br>
+Regional read replicas significantly reduce latency for read-heavy workloads by allowing user queries to be served locally.
+</li>
+
+<li>
+<strong>Single Source of Truth</strong><br>
+Maintaining a centralized primary database simplifies data consistency and operational management compared to multi-region write architectures.
+</li>
+
+<li>
+<strong>Predictable Write Behavior</strong><br>
+Write operations traverse the AWS Global Backbone to the Primary Region, providing consistent latency and avoiding instability associated with public internet routing.
+</li>
+
+<li>
+<strong>Controlled Operational Complexity</strong><br>
+This architecture avoids the operational challenges of data sharding, cross-region identity resolution, and conflict management required by fully regional databases.
+</li>
+
+<li>
+<strong>Clear Evolution Path</strong><br>
+The architecture allows future evolution toward regional data ownership if regulatory requirements or scale demand it.
+</li>
+
+</ul>
+
+</section>
+
+<section id="future" class="decision-box">
+
+<h3>08. Future Evolution</h3>
+
+<p>
+As the platform grows and regional regulatory requirements increase, the architecture can evolve toward a fully regionalized data model.
+</p>
+
+<p>
+This transition would introduce geographically partitioned database shards, allowing each region to manage its own data independently while maintaining global service availability.
+</p>
+
+<p>
+Adopting a phased evolution strategy allows the platform to balance early operational simplicity with the ability to support stricter data residency requirements in the future.
+</p>
+
+</section>
+    
 <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
 <p>&copy; 2026 Nebat Taha | Built for Scalability.</p>
 </footer>
