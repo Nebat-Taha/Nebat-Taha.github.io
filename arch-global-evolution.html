@@ -1,195 +1,260 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Projects | Architecture Evolution Roadmap </title>
-
     <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
-
+    <div class="container">
     <nav class="header-nav">
+        <div class="nav-links">
+            <a href="index.html" style="color: var(--accent);">HOME</a>
+            <a href="projects.html">PROJECTS</a>
+        </div>
+         <div class="social-links">
+            <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/Nebat-Taha/" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="mailto:nebatn@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
+        </div>
+        </nav>
 
-    <div class="nav-links">
+<aside class="sticky-toc">
+<p style="font-weight:900;font-size:0.7rem;color:#444;margin-bottom:20px;letter-spacing:1px;">ARCHITECTURE INDEX</p>
+<a href="#context" class="toc-link">01. System Context</a>
+<a href="#option1" class="toc-link">02. Centralized Primary DB</a>
+<a href="#option2" class="toc-link">03. Primary + Regional Reads</a>
+<a href="#option3" class="toc-link">04. Fully Regional Data</a>
+<a href="#option4" class="toc-link">05. Phased Evolution</a>
+<a href="#comparison" class="toc-link">06. Architecture Comparison</a>
+</aside>
 
-        <a href="index.html">HOME</a>
-
-        <a href="projects.html">PROJECTS</a>
-
-    </div>
-
-    <div class="social-links">
-
-        <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/ " target="_blank" class="ico-linkedin" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-
-        <a href="https://github.com/Nebat-Taha/ " target="_blank" class="ico-github" title="GitHub"><i class="fab fa-github"></i></a>
-
-        <a href="mailto:nebatn@gmail.com" class="ico-email" title="Email"><i class="fas fa-envelope"></i></a>
-
-        <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
-
-    </div>
-
-    </nav>
-
-
-
-<article style="margin-top:40px;">
-
+<article class="article-container">
+<header>
+<a href="projects.html" class="back-link">← Back to Projects</a>
+<h1 style="margin-top:20px;">Global Expansion Architecture Strategies</h1>
+<div class="project-meta">
+<span class="tag">ARCHITECTURE</span>
+<span class="tag">AWS</span>
+<span class="tag">MULTI-REGION</span>
+<span class="tag">DATA ARCHITECTURE</span>
+<span class="tag">SCALABILITY</span>
+</div>
+<p class="about-text" style="margin-top:20px;">
+This architecture evaluates multiple strategies for expanding an application globally while balancing performance, data residency requirements, and operational complexity. Several deployment models were analyzed before selecting a scalable long-term approach.
+</p>
+</header>
     
+<section id="context" style="margin-top:40px;">
 
-    <h1>Scaling Globally: A Phased Architecture Evolution</h1>
+<h3>01. System Context</h3>
 
+<p>
+The platform is designed to support global users while maintaining strong performance and predictable data management practices.
+</p>
+
+<p>
+The AWS account operates with a <strong>Primary Region</strong>, which hosts core infrastructure components, and additional <strong>regional deployments</strong> used to serve users closer to their geographic location.
+</p>
+
+<p>
+Several architectural strategies were evaluated to determine the most effective balance between:
+</p>
+
+<ul>
+<li>User latency and application responsiveness</li>
+<li>Data residency requirements</li>
+<li>Operational complexity</li>
+<li>Long-term scalability</li>
+</ul>
+
+<p>
+Four architectural models were evaluated before selecting a long-term strategy.
+</p>
+
+</section>
+
+
+<section id="option1" >
+
+<h3>02. Hybrid Multi-Region with Centralized Primary Database</h3>
+
+<p>
+This model deploys application services across multiple AWS regions while maintaining a single centralized database located in the Primary Region.
+</p>
+
+<p>
+Users are routed to the nearest regional application stack, but all database reads and writes occur in the Primary Region.
+</p>
+
+<h4>Architecture Characteristics</h4>
+
+<ul>
+<li><strong>Traffic Routing:</strong> Route 53 geolocation routing directs users to the nearest regional ALB.</li>
+<li><strong>Application Layer:</strong> Each region runs a full EKS-based application stack.</li>
+<li><strong>Database Model:</strong> MongoDB Primary located in the Primary Region.</li>
+</ul>
+
+<h4>Inter-Region Connectivity</h4>
+
+<p>
+Regional VPCs connect to the Primary Region using <strong>VPC Peering</strong>, allowing private communication across AWS regions. All traffic remains on the <strong>AWS Global Backbone</strong>, ensuring predictable latency and avoiding public internet routing.
+</p>
+
+<h4>Summary</h4>
+
+<p>
+This approach is best suited for regions geographically close to the Primary Region. While application servers run locally, database communication remains centralized.
+</p>
+
+</section>
+
+<section id="option2">
+
+<h3>03. Centralized Primary Database with Regional Read Replicas</h3>
+
+<p>
+This architecture improves global performance by introducing regional read replicas while maintaining a single authoritative primary database.
+</p>
+
+<p>
+Application servers operate regionally, while read-heavy workloads are served by local database replicas.
+</p>
+
+<h4>Database Model</h4>
+
+<ul>
+<li><strong>Primary Database:</strong> Primary Region</li>
+<li><strong>Read Replicas:</strong> Regional AWS deployments</li>
+<li><strong>Replication:</strong> Asynchronous replication</li>
+</ul>
+
+<h4>Write Path Optimization</h4>
+
+<p>
+Application servers handle client connection setup locally. Once the connection is established, write operations are forwarded directly to the primary database via the AWS private backbone.
+</p>
+
+<p>
+Although geographic distance introduces latency, the AWS backbone provides reliable and consistent network performance compared to public internet routing.
+</p>
+
+<h4>Key Considerations</h4>
+
+<ul>
+<li>Read latency is significantly improved for regional users</li>
+<li>Write latency depends on distance to the Primary Region</li>
+<li>Operational complexity remains manageable</li>
+</ul>
+
+</section>
+
+<section id="option3">
+
+<h3>04. Fully Regional Deployment with Partitioned Data</h3>
+
+<p>
+This architecture introduces full regional autonomy by assigning each region its own primary database shard.
+</p>
+
+<p>
+User data is stored and processed entirely within the user's home region.
+</p>
+
+<h4>Architecture Characteristics</h4>
+
+<ul>
+<li>Independent primary database shard per region</li>
+<li>No cross-region dependency for write operations</li>
+<li>Strong regional data residency guarantees</li>
+</ul>
+
+<h4>Key Considerations</h4>
+
+<ul>
+<li>Roaming users may experience latency when accessing data from outside their home region</li>
+<li>Operational complexity increases due to shard management and identity resolution</li>
+<li>Requires strong governance and operational maturity</li>
+</ul>
+
+</section>
+
+    <section id="option4">
+
+<h3>05. Phased Hybrid-to-Regional Evolution</h3>
+
+<p>
+Instead of selecting a single architecture permanently, this strategy proposes a phased evolution model.
+</p>
+
+<p>
+The platform begins with a simpler centralized architecture and gradually evolves toward regional data ownership as the platform scales.
+</p>
+
+<h4>Phased Approach</h4>
+
+<ul>
+<li><strong>Phase 1:</strong> Deploy centralized database architecture for rapid expansion</li>
+<li><strong>Phase 2:</strong> Introduce regional read replicas</li>
+<li><strong>Phase 3:</strong> Enable regional write capability</li>
+<li><strong>Phase 4:</strong> Transition to geographic data partitioning</li>
+</ul>
+
+<p>
+This model enables global expansion while minimizing early operational complexity.
+</p>
+
+</section>
+
+<section id="comparison">
+
+<h3>06. Architecture Comparison</h3>
+
+<table>
+
+<tr>
+<th>Architecture</th>
+<th>Write Model</th>
+<th>Read Latency</th>
+<th>Write Latency</th>
+<th>Operational Complexity</th>
+</tr>
+
+<tr>
+<td>Centralized Primary</td>
+<td>Primary Region</td>
+<td>High (remote)</td>
+<td>High</td>
+<td>Low</td>
+</tr>
+
+<tr>
+<td>Primary + Read Replicas</td>
+<td>Primary Region</td>
+<td>Low (regional)</td>
+<td>Medium</td>
+<td>Medium</td>
+</tr>
+
+<tr>
+<td>Fully Regional</td>
+<td>Regional Shards</td>
+<td>Low</td>
+<td>Low</td>
+<td>High</td>
+</tr>
+
+</table>
+
+</section>
+
+<footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
+<p>&copy; 2026 Nebat Taha | Built for Scalability.</p>
+</footer>
     
-
-    <p class="about-text">
-
-        Scaling a platform globally requires more than just deploying code in new regions. It requires a careful balance of <strong>User Experience (Latency)</strong>, <strong>Operational Complexity</strong>, and <strong>Data Residency</strong>.
-
-    </p>
-
-
-
-    <h2>The Three-Phase Approach</h2>
-
-
-
-    <section class="decision-box">
-
-        <h3>Phase 1: Proximity Hybrid (Mexico Focused)</h3>
-
-        <p><strong>Goal:</strong> Fast market entry with minimal complexity.</p>
-
-        <p>By leveraging the AWS Global Backbone and VPC Peering, we serve the Mexico region from <code>us-east-1</code>. Initial connection setup is local, while database operations travel over private fiber to ensure reliability and sub-millisecond packet loss.</p>
-
-        
-
-    </section>
-
-
-
-    <section class="decision-box">
-
-        <h3>Phase 2: Regional Read Replicas (EU/AU Expansion)</h3>
-
-        <p><strong>Goal:</strong> Optimize global performance while maintaining a Single Source of Truth.</p>
-
-        <p>As we expand to Frankfurt and Sydney, we introduce <strong>Asynchronous Read Replicas</strong>. This achieves local read speeds for 90% of user interactions, while routing writes back to the US primary via a "One-Trip" write model over the private AWS backbone.</p>
-
-        
-
-    </section>
-
-
-
-    <section class="decision-box">
-
-        <h3>Phase 3: Geographic Partitioning (Sharding)</h3>
-
-        <p><strong>Goal:</strong> Regulatory compliance (GDPR) and ultra-low latency.</p>
-
-        <p>The final evolution involves full data sharding. User data lives exclusively in their home region. This maximizes performance and satisfies strict data residency laws, though it increases the operational overhead of shard management.</p>
-
-        
-
-    </section>
-
-
-
-    <h2>Architecture Comparison</h2>
-
-    <div class="evolution-container">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>Metric</th>
-
-                    <th>Centralized (P1)</th>
-
-                    <th>Read-Replicas (P2)</th>
-
-                    <th>Sharded (P3)</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                <tr>
-
-                    <td><strong>Read Latency</strong></td>
-
-                    <td>High (Excl. MX)</td>
-
-                    <td>Low (Global)</td>
-
-                    <td>Minimal</td>
-
-                </tr>
-
-                <tr>
-
-                    <td><strong>Write Latency</strong></td>
-
-                    <td>High</td>
-
-                    <td>High (Backbone)</td>
-
-                    <td>Minimal</td>
-
-                </tr>
-
-                <tr>
-
-                    <td><strong>Complexity</strong></td>
-
-                    <td>Low</td>
-
-                    <td>Medium</td>
-
-                    <td>High</td>
-
-                </tr>
-
-                <tr>
-
-                    <td><strong>Compliance</strong></td>
-
-                    <td>Standard</td>
-
-                    <td>Standard</td>
-
-                    <td>GDPR Ready</td>
-
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-
-
-    <h3>Final Recommendation</h3>
-
-    <p>Success lies in the <strong>Evolution</strong>. Starting with Option 1 allows for rapid learning, while the modularity of Terraform and Ansible ensures the platform is "Phase 3 Ready" when the business scale justifies the complexity.</p>
-
 </article>
-
 </body>
-
 </html>
