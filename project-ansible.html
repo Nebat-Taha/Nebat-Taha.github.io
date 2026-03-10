@@ -32,6 +32,7 @@
         <a href="#backup" class="toc-link">04. Multi-Cloud Backup</a>
         <a href="#restore" class="toc-link">05. Precision Restore</a>
         <a href="#security" class="toc-link">06. Policy Enforcement</a>
+        <a href="perational-safety" class="toc-link">07. Operational Safety Design</a>
     </aside>
 
     <article class="article-container">
@@ -49,7 +50,17 @@
                 <span class="tag">BACKBLAZE B2</span>
                 <span class="tag">BACKUP & RESTORE</span>  
             </div>
-            
+            <div class="summary-box">
+<h4>Architecture Summary</h4>
+<ul>
+<li><strong>Control Node:</strong> GitHub Actions Runner (ephemeral)</li>
+<li><strong>Automation Engine:</strong> Ansible</li>
+<li><strong>Databases:</strong> MongoDB, Redis</li>
+<li><strong>Inventory:</strong> Dynamic AWS tag-based discovery</li>
+<li><strong>Backup Storage:</strong> Backblaze B2</li>
+<li><strong>Recovery:</strong> Manual precision restore workflow</li>
+</ul>
+</div>
             
         </header>
 
@@ -77,23 +88,39 @@ Dynamic AWS inventory discovers instances using AWS tags and automatically group
 
         <section id="backup">
             <h3>04. Multi-Cloud Backup Strategy</h3>
-            <p>
-Backup workflows stream data from <strong>MongoDB</strong> and <strong>Redis</strong> to <strong>Backblaze B2</strong>, creating a secondary storage layer outside AWS. Backup files are first generated and stored temporarily on the database servers before being uploaded to the external storage target.
+         <h3>04. Multi-Cloud Backup Strategy</h3>
+
+<p>
+Database backup operations are implemented as Ansible tasks executed directly on the database servers. During the process, MongoDB and Redis backup artifacts are generated and stored temporarily in a local backup directory on the database host.
 </p>
 
 <p>
-Credentials for the storage service are securely managed using GitHub Secrets. Once the upload completes, the temporary backup artifacts are automatically removed from the database servers. This approach minimizes local storage usage while providing a reliable multi-cloud backup target that improves resilience against provider-level failures.
+The generated backup artifacts are then uploaded to <strong>Backblaze B2</strong>, creating a secondary storage layer outside AWS. Authentication credentials are securely injected into the workflow through GitHub Secrets and passed to the playbook during execution.
+</p>
+
+<p>
+After a successful upload, the temporary backup files are automatically removed from the database server. This approach minimizes local disk usage while establishing a reliable multi-cloud backup target that improves resilience against provider-level failures.
 </p>
         </section>
 
         <section id="restore">
             <h3>05. Precision Restore</h3>
-        <p>
-The restore workflow is intentionally designed as a manual operation to prevent accidental recovery from corrupted backups or unintended restores across multiple instances. Before the restore begins, operators must explicitly specify the backup object stored in Backblaze B2, the target instance IP address, and the AWS region where the server is hosted.
+<h3>05. Precision Restore</h3>
+
+<p>
+The restore process is intentionally implemented as a manually triggered workflow to prevent accidental recovery from corrupted backups or unintended restoration across multiple database nodes.
 </p>
 
 <p>
-Once triggered, the GitHub runner acts as an ephemeral Ansible control node and dynamically generates a temporary inventory file containing the target server IP. The restore playbook is then executed against this single host to ensure precise and controlled recovery operations. Because the runner itself is ephemeral, the generated inventory file exists only for the duration of the workflow and is automatically discarded when the runner is destroyed at the end of execution.
+Operators must explicitly provide three parameters before the restore process begins: the backup object stored in Backblaze B2, the IP address of the target instance, and the AWS region where the server is hosted.
+</p>
+
+<p>
+Once the workflow is triggered, the GitHub Actions runner dynamically generates a temporary inventory file containing the specified target host. The runner acts as the Ansible control node and uses this ephemeral inventory to execute the restore playbook against the selected instance.
+</p>
+
+<p>
+Because GitHub runners are ephemeral environments that are destroyed after workflow completion, the generated inventory file is automatically discarded. This design combines precise operator control with automated execution while reducing the risk of unintended data recovery events.
 </p>    
         </section>
 
@@ -101,6 +128,27 @@ Once triggered, the GitHub runner acts as an ephemeral Ansible control node and 
             <h3>06. Policy Enforcement</h3>
             <p>While Terraform defines the primary infrastructure as code layer, Ansible acts as a <strong>post-provisioning governance mechanism</strong>. It continuously enforces configuration and security policies across deployed resources.</p>
             <p>If infrastructure is created manually through the AWS Console or CLI, the automation pipeline automatically applies the required configuration policies. This ensures manually provisioned resources are brought back into compliance without requiring manual remediation.</p>
+        </section>
+
+
+        <section id="perational-safety">
+            <h3>07. Operational Safety Design</h3>
+
+<p>
+Operational safety was a key design consideration when implementing the automation workflows. Several safeguards were introduced to reduce the risk of unintended configuration changes or data recovery events.
+</p>
+
+<p>
+The restore process is intentionally separated from the configuration workflow and requires manual execution. Operators must explicitly provide the target instance, region, and backup object before a recovery operation can begin. This prevents accidental restores across multiple database nodes and ensures that recovery actions are always deliberate.
+</p>
+
+<p>
+Automation tasks are executed from ephemeral GitHub Actions runners acting as temporary Ansible control nodes. Because the runners are destroyed after workflow completion, any temporary files such as dynamically generated inventory files are automatically removed. This eliminates the persistence of sensitive operational artifacts.
+</p>
+
+<p>
+Together, these design decisions combine controlled operator input with automated execution, improving operational safety while maintaining the benefits of infrastructure automation.
+</p>
         </section>
 
             <a href="https://github.com/Nebat-Taha/ansible-aws" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View GitHub Repo →</a>
