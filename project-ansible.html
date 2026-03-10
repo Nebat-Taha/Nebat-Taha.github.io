@@ -32,7 +32,7 @@
         <a href="#backup" class="toc-link">04. Multi-Cloud Backup</a>
         <a href="#restore" class="toc-link">05. Precision Restore</a>
         <a href="#security" class="toc-link">06. Policy Enforcement</a>
-        <a href="perational-safety" class="toc-link">07. Operational Safety Design</a>
+    
     </aside>
 
     <article class="article-container">
@@ -50,17 +50,7 @@
                 <span class="tag">BACKBLAZE B2</span>
                 <span class="tag">BACKUP & RESTORE</span>  
             </div>
-            <div class="summary-box">
-<h4>Architecture Summary</h4>
-<ul>
-<li><strong>Control Node:</strong> GitHub Actions Runner (ephemeral)</li>
-<li><strong>Automation Engine:</strong> Ansible</li>
-<li><strong>Databases:</strong> MongoDB, Redis</li>
-<li><strong>Inventory:</strong> Dynamic AWS tag-based discovery</li>
-<li><strong>Backup Storage:</strong> Backblaze B2</li>
-<li><strong>Recovery:</strong> Manual precision restore workflow</li>
-</ul>
-</div>
+           
             
         </header>
 
@@ -87,7 +77,6 @@ Dynamic AWS inventory discovers instances using AWS tags and automatically group
         
 
         <section id="backup">
-            <h3>04. Multi-Cloud Backup Strategy</h3>
          <h3>04. Multi-Cloud Backup Strategy</h3>
 
 <p>
@@ -104,7 +93,6 @@ After a successful upload, the temporary backup files are automatically removed 
         </section>
 
         <section id="restore">
-            <h3>05. Precision Restore</h3>
 <h3>05. Precision Restore</h3>
 
 <p>
@@ -131,26 +119,7 @@ Because GitHub runners are ephemeral environments that are destroyed after workf
         </section>
 
 
-        <section id="perational-safety">
-            <h3>07. Operational Safety Design</h3>
-
-<p>
-Operational safety was a key design consideration when implementing the automation workflows. Several safeguards were introduced to reduce the risk of unintended configuration changes or data recovery events.
-</p>
-
-<p>
-The restore process is intentionally separated from the configuration workflow and requires manual execution. Operators must explicitly provide the target instance, region, and backup object before a recovery operation can begin. This prevents accidental restores across multiple database nodes and ensures that recovery actions are always deliberate.
-</p>
-
-<p>
-Automation tasks are executed from ephemeral GitHub Actions runners acting as temporary Ansible control nodes. Because the runners are destroyed after workflow completion, any temporary files such as dynamically generated inventory files are automatically removed. This eliminates the persistence of sensitive operational artifacts.
-</p>
-
-<p>
-Together, these design decisions combine controlled operator input with automated execution, improving operational safety while maintaining the benefits of infrastructure automation.
-</p>
-        </section>
-
+        
             <a href="https://github.com/Nebat-Taha/ansible-aws" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View GitHub Repo →</a>
 
         
