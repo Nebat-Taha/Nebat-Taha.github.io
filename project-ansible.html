@@ -28,7 +28,7 @@
         <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
         <a href="#control-plane" class="toc-link">01. Ephemeral Control Plane </a>
         <a href="#inventory" class="toc-link">02. Dynamic Inventory</a>
-        <a href="#inventory" class="toc-link">03. Multi-Region CI/CD</a>
+        <a href="#multi-region" class="toc-link">03. Multi-Region CI/CD</a>
         <a href="#backup" class="toc-link">04. Multi-Cloud Backup</a>
         <a href="#restore" class="toc-link">05. Precision Restore</a>
         <a href="#security" class="toc-link">06. Policy Enforcement</a>
@@ -65,7 +65,9 @@
 
         <section id="multi-region">
             <h3>03. Multi-Region CI/CD</h3>
-            <p>Parallel deployment workflow using GitHub Actions strategy matrix allows consistent automation across regions, improving reliability and scalability.</p>
+             <p>A GitHub Actions pipeline orchestrates configuration management across regions using a strategy matrix, allowing the same automation to run independently in multiple AWS regions.</p>
+             <p>Before any configuration changes are applied, the pipeline executes an <strong>Ansible dry-run validation</strong> using <code>--check --diff</code>. This stage previews exactly what configuration changes would occur without modifying the servers, providing visibility and reducing operational risk.</p>
+             <p>After validation, the deployment stage requires manual approval through a protected <strong>GitHub Environment</strong>. Once approved, the same playbooks are executed in apply mode, ensuring safe and consistent configuration updates across all regions.</p>
         </section>
         
 
