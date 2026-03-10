@@ -55,35 +55,52 @@
 
         <section id="control-plane"  style="margin-top: 40px;">
             <h3>01. Ephemeral Control Plane</h3>
-            <p>Instead of a permanent Ansible server, the <strong>GitHub Runner</strong> acts as a temporary control node. This eliminates recurring EC2 costs and ensures each deployment starts from a 100% "known good" environment, preventing configuration drift in the management plane.</p>
+            <p>
+Instead of maintaining a permanent Ansible control node, the <strong>GitHub Actions runner</strong> acts as a temporary control plane during each deployment. This design eliminates the need for a dedicated management server while ensuring every execution starts from a clean, reproducible environment. By rebuilding the control plane on each run, the system avoids configuration drift and guarantees a consistent automation environment.
+</p>
         </section>
 
         <section id="inventory">
             <h3>02. Dynamic Inventory</h3>
-            <p> Dynamic AWS inventory uses instance tags to group servers by role (e.g., Redis, MongoDB), eliminating manual IP management. Any changes in instances are automatically reflected without intervention. </p>
+            <p>
+Dynamic AWS inventory discovers instances using AWS tags and automatically groups servers by role (for example Redis or MongoDB). This removes the need for manual host management and allows infrastructure changes to be reflected automatically in the automation layer. As instances are created or terminated, the inventory updates dynamically, ensuring configuration tasks always target the correct infrastructure.
+</p>
         </section>
 
         <section id="multi-region">
             <h3>03. Multi-Region CI/CD</h3>
-             <p>A GitHub Actions pipeline orchestrates configuration management across regions using a strategy matrix, allowing the same automation to run independently in multiple AWS regions.</p>
-             <p>Before any configuration changes are applied, the pipeline executes an <strong>Ansible dry-run validation</strong> using <code>--check --diff</code>. This stage previews exactly what configuration changes would occur without modifying the servers, providing visibility and reducing operational risk.</p>
-             <p>After validation, the deployment stage requires manual approval through a protected <strong>GitHub Environment</strong>. Once approved, the same playbooks are executed in apply mode, ensuring safe and consistent configuration updates across all regions.</p>
+             <p>A GitHub Actions pipeline orchestrates configuration management across regions using a strategy matrix, allowing the same automation to run independently in multiple AWS regions and  ensuring consistent configuration management at global scale.</p>
+             <p>Before any changes are applied, the pipeline executes an <strong>Ansible dry-run validation</strong> using <code>--check --diff</code>. This stage previews exactly what configuration updates would occur without modifying any servers, providing full visibility into pending changes and reducing operational risk.</p>
+            <p>After validation, the deployment stage requires manual approval through a protected <strong>GitHub Environment</strong>. Once approved, the same playbooks are executed in apply mode, ensuring controlled and consistent configuration updates across all regions. </p> 
         </section>
         
 
         <section id="backup">
             <h3>04. Multi-Cloud Backup Strategy</h3>
-            <p>Backups are streamed securely to <strong>Backblaze B2</strong> using GitHub Secrets for credentials. Files are staged in a temporary local folder and deleted immediately after upload, automating multi-cloud resiliency while minimizing storage footprint and operational risk.</p>
+            <p>
+Backup workflows stream data from <strong>MongoDB</strong> and <strong>Redis</strong> to <strong>Backblaze B2</strong>, creating a secondary storage layer outside AWS. Backup files are first generated and stored temporarily on the database servers before being uploaded to the external storage target.
+</p>
+
+<p>
+Credentials for the storage service are securely managed using GitHub Secrets. Once the upload completes, the temporary backup artifacts are automatically removed from the database servers. This approach minimizes local storage usage while providing a reliable multi-cloud backup target that improves resilience against provider-level failures.
+</p>
         </section>
 
         <section id="restore">
             <h3>05. Precision Restore</h3>
-            <p>The restore workflow is manually triggered to avoid accidental recovery of corrupted backups. Operators specify the exact file in B2, which is downloaded and restored via an ephemeral Ansible runner, combining precision with automated safeguards.</p>
+        <p>
+The restore workflow is intentionally designed as a manual operation to prevent accidental recovery from corrupted backups or unintended restores across multiple instances. Before the restore begins, operators must explicitly specify the backup object stored in Backblaze B2, the target instance IP address, and the AWS region where the server is hosted.
+</p>
+
+<p>
+Once triggered, the GitHub runner acts as an ephemeral Ansible control node and dynamically generates a temporary inventory file containing the target server IP. The restore playbook is then executed against this single host to ensure precise and controlled recovery operations. Because the runner itself is ephemeral, the generated inventory file exists only for the duration of the workflow and is automatically discarded when the runner is destroyed at the end of execution.
+</p>    
         </section>
 
         <section id="security">
             <h3>06. Policy Enforcement</h3>
-            <p>While Terraform enforces primary IaC, Ansible acts as a <strong>post-provisioning guard</strong>. It automatically Ansible enforces security and configuration policies on resources created via Console or CLI, bringing manually provisioned resources into governance automatically.</p>
+            <p>While Terraform defines the primary infrastructure as code layer, Ansible acts as a <strong>post-provisioning governance mechanism</strong>. It continuously enforces configuration and security policies across deployed resources.</p>
+            <p>If infrastructure is created manually through the AWS Console or CLI, the automation pipeline automatically applies the required configuration policies. This ensures manually provisioned resources are brought back into compliance without requiring manual remediation.</p>
         </section>
 
             <a href="https://github.com/Nebat-Taha/ansible-aws" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View GitHub Repo →</a>
