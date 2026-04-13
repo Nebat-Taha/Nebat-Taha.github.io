@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Orchestrator | Nebat Taha</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <nav class="header-nav">
+        <div class="nav-links"><a href="index.html">HOME</a><a href="projects.html" style="color: var(--accent);">PROJECTS</a></div>
+    </nav>
+
+    <header class="hero">
+        <h1>AI-Driven Infrastructure Orchestrator</h1>
+        <p>Bridging the gap between Project Management (Jira) and Version Control (GitHub) using Local LLMs.</p>
+    </header>
+
+    <section class="about-section">
+        <span class="section-title">The Workflow</span>
+        <div class="about-text">
+            <ul>
+                <li><strong>Trigger:</strong> Manual Jira Automation rule (triggered via UI button).</li>
+                <li><strong>Middleware:</strong> FastAPI receives the webhook payload (Summary, Key, Labels).</li>
+                <li><strong>Contextual Prompting:</strong> System matches Jira labels to local markdown prompts (e.g., `terraform.md`).</li>
+                <li><strong>Intelligence:</strong> Local LLM (Ollama) generates the code/fix based on the summary.</li>
+                <li><strong>Action:</strong> Automatically creates a GitHub branch and PR, or updates an existing one with comments.</li>
+                <li><strong>Feedback Loop:</strong> Posts the PR link back to the Jira ticket for seamless tracking.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <span class="section-title">Tech Stack & Security</span>
+        <div class="about-text">
+            <p>Built with <strong>Python</strong> and <strong>FastAPI</strong>. Security is managed via <code>.env</code> configurations for GitHub tokens and Jira API credentials, ensuring no sensitive data is hardcoded.</p>
+        </div>
+    </section>
+</div>
+</body>
+</html>
