@@ -7,7 +7,15 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+    <style>
+        /* This ensures that any tab-content NOT marked as active is hidden on load */
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
 
@@ -37,26 +45,23 @@
 
         <div id="devops" class="tab-content active">
             <div class="project-grid">
-          <div class="project-card">
-    <div class="card-header-row">
-        <div class="card-icon"><i class="fas fa-robot"></i></div>
-        <span class="card-tag">Python + FastAPI + Ollama</span>
-    </div>
-    <h3>AI-Driven Infrastructure Orchestrator</h3>
-    <p>An end-to-end automation tool that transforms Jira tickets into GitHub Pull Requests. It uses local LLMs to generate code based on task labels and provides real-time feedback via Jira comments.</p>
-    <a href="project-ai-orchestrator.html" class="wes-link" style="display:inline-block; margin-top:15px;">View Project Details →</a>
-</div>
-
-                
                 <div class="project-card">
-          
+                    <div class="card-header-row">
+                        <div class="card-icon"><i class="fas fa-robot"></i></div>
+                        <span class="card-tag">Python + FastAPI + Ollama</span>
+                    </div>
+                    <h3>AI-Driven Infrastructure Orchestrator</h3>
+                    <p>An end-to-end automation tool that transforms Jira tickets into GitHub Pull Requests. It uses local LLMs to generate code based on task labels and provides real-time feedback via Jira comments.</p>
+                    <a href="project-ai-orchestrator.html" class="wes-link" style="display:inline-block; margin-top:15px;">View Project Details →</a>
+                </div>
+
+                <div class="project-card">
                     <div class="project-meta">
                         <span class="tag">Terraform</span>
                         <span class="tag">AWS</span>
                         <span class="tag">Github-Action</span>
                         <span class="tag">Multi-Region</span>
                         <span class="tag">Terraform Modules</span>
-                        
                     </div>
                     <h3>Multi-Region Infrastructure Automation</h3>
                     <p> Modular Terraform infrastructure deployed across multiple regions using GitHub Actions matrix workflows and independent state files to ensure consistent, compliant environments. </p>
@@ -86,16 +91,13 @@
                     </div>
                     <h3>Full-Stack Observability</h3>
                     <p>Custom Prometheus exporters and Grafana dashboards with alerting rules to monitor system health and notify administrators when critical thresholds are exceeded.</p>
-                   <p> Coming Soon</p>
-                    <!--  <a href="project-observability.html" class="wes-link">Case Study →</a> -->
+                    <p> Coming Soon</p>
                 </div>
             </div>
         </div>
 
         <div id="architecture" class="tab-content">
             <div class="project-grid">
-                
-
                 <div class="project-card">
                     <div class="project-meta"><span class="tag">Roadmap</span></div>
                     <h3>Global Scaling Strategy</h3>
@@ -110,7 +112,6 @@
                     <a href="arch-disaster-recovery.html" class="wes-link">View Analysis →</a>
                 </div>
 
-
                 <div class="project-card">
                     <div class="project-meta"><span class="tag">Architecture</span></div>
                     <h3>Multi-Region Evolution</h3>
@@ -118,7 +119,6 @@
                     <p>Coming Soon</p>
                 </div>
 
-                
                 <div class="project-card">
                     <div class="project-meta"><span class="tag">Strategy</span></div>
                     <h3>Monitoring & Alarm Review</h3>
@@ -137,20 +137,17 @@
         function openTab(evt, tabName) {
             var i, tabcontent, tablinks;
             
-            // Hide all tab content
             tabcontent = document.getElementsByClassName("tab-content");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
                 tabcontent[i].classList.remove("active");
             }
 
-            // Remove 'active' class from all buttons
             tablinks = document.getElementsByClassName("tab-btn");
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].classList.remove("active");
             }
 
-            // Show current tab and add active class
             document.getElementById(tabName).style.display = "block";
             document.getElementById(tabName).classList.add("active");
             evt.currentTarget.classList.add("active");
