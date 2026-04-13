@@ -85,4 +85,28 @@
             <section id="discovery">
                 <h2>07. Dynamic Infrastructure Discovery</h2>
                 <p>I utilized AWS resource tagging in conjunction with Ansible dynamic inventory and Prometheus EC2 service discovery to automatically detect and monitor new instances.</p>
-                <p><strong>Impact:</strong> This removes the need to manually track IP addresses or update configuration files. New infrastructure is "
+                <p><strong>Impact:</strong> This removes the need to manually track IP addresses or update configuration files. New infrastructure is "born" into the monitoring system automatically as soon as it is tagged.</p>
+            </section>
+
+            <section id="services">
+                <h2>08. Everything as a Service</h2>
+                <p>All custom monitoring scripts and exporters are deployed as <code>systemd</code> services using templated configurations. Each script executes within a centralized, isolated Python virtual environment.</p>
+                <p><strong>Impact:</strong> This ensures reliability and process persistence. Services restart automatically on failure and persist across reboots, eliminating the need for manual startup after maintenance.</p>
+            </section>
+
+            <section id="workflow">
+                <h2>09. Workflow-Driven Observability</h2>
+                <p>A dedicated deployment workflow triggers only when monitoring scripts or configurations change. This workflow handles pre-deployment validation, deployment to the fleet, and service restarts.</p>
+                <p><strong>Impact:</strong> This allows engineers to focus strictly on observability logic. The platform handles the "how" of deployment automatically, reducing operational overhead and accelerating iteration speed.</p>
+            </section>
+
+            <a href="https://github.com/Nebat-Taha/git-driven-monitoring" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View GitHub Repo →</a>
+
+
+            <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
+                <p>&copy; 2026 Nebat Taha | Built for Scalability.</p>
+            </footer>
+        </article>
+    </div>
+</body>
+</html>
