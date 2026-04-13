@@ -3,121 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloud-Native Observability | Nebat Taha</title>
+    <title>Git-Driven Observability | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        .sticky-toc {
-            position: fixed;
-            left: 5%;
-            top: 150px;
-            width: 180px;
-            display: none;
-        }
-        @media (min-width: 1400px) { .sticky-toc { display: block; } }
-        
-        .toc-link {
-            display: block;
-            font-size: 0.75rem;
-            color: #999;
-            text-decoration: none;
-            margin-bottom: 12px;
-            font-family: 'Fira Code', monospace;
-        }
-        .toc-link:hover { color: var(--accent); }
-
-        .article-container { max-width: 850px; margin: 40px auto; padding: 0 20px; }
-        .project-meta { margin: 25px 0; display: flex; gap: 10px; flex-wrap: wrap; }
-        .tag { font-size: 0.7rem; font-weight: 700; color: var(--accent); border: 1px solid #eee; padding: 4px 10px; border-radius: 4px; text-transform: uppercase; }
-        
-        pre { background: #f9f9f9; padding: 25px; border-radius: 8px; overflow-x: auto; border: 1px solid #eee; margin: 20px 0; }
-        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
 
-    <nav>
-        <div style="font-weight: 900;">NT</div>
-        <ul>
-            <li><a href="index.html">HOME</a></li>
-            <li><a href="projects.html" style="color: var(--accent);">PROJECTS</a></li>
-        </ul>
-    </nav>
-
-    <aside class="sticky-toc">
-        <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
-        <a href="#exporter" class="toc-link">01. Custom Python Exporter</a>
-        <a href="#prometheus" class="toc-link">02. Prometheus & Service Discovery</a>
-        <a href="#grafana" class="toc-link">03. Visualization (Grafana)</a>
-        <a href="#alerting" class="toc-link">04. Alertmanager & SNS</a>
-        <a href="#scaling" class="toc-link">05. Strategy Whitepaper</a>
-    </aside>
-
-    <article class="article-container">
-        <header>
-            <a href="projects.html" class="back-link">← Back to Projects</a>
-            <h1 style="margin-top: 20px;">Full-Stack Observability: Prometheus, Grafana & Python</h1>
-            
-            <div class="project-meta">
-                <span class="tag">Python</span>
-                <span class="tag">Prometheus</span>
-                <span class="tag">Grafana</span>
-                <span class="tag">Docker</span>
-                <span class="tag">AWS CloudWatch</span>
+    <div class="container">
+        <nav class="header-nav">
+            <div class="nav-links">
+                <a href="index.html" style="color: var(--accent);">HOME</a>
+                <a href="projects.html">PROJECTS</a>
             </div>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/Nebat-Taha/" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="mailto:nebatn@gmail.com"><i class="fas fa-envelope"></i></a>
+                <a href="assets/Nebat_Taha_Resume.pdf" class="resume-btn" target="_blank">RESUME</a>
+            </div>
+        </nav>
 
-            <p class="about-text">
-                Building a proactive monitoring ecosystem that moves beyond basic "Up/Down" checks. This project implements custom metric collection, automated service discovery, and high-fidelity alerting for distributed systems.
-            </p>
-        </header>
+        <aside class="sticky-toc">
+            <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
+            <a href="#goal" class="toc-link">01. Design Goal</a>
+            <a href="#truth" class="toc-link">02. Source of Truth</a>
+            <a href="#infrastructure" class="toc-link">03. Entry Point</a>
+            <a href="#oidc" class="toc-link">04. Authentication</a>
+            <a href="#keyless" class="toc-link">05. Keyless Access</a>
+            <a href="#separation" class="toc-link">06. Layered Workflows</a>
+            <a href="#discovery" class="toc-link">07. Dynamic Discovery</a>
+            <a href="#services" class="toc-link">08. Everything as a Service</a>
+            <a href="#workflow" class="toc-link">09. Automation Logic</a>
+        </aside>
 
-        <section id="exporter" class="decision-box" style="margin-top: 40px;">
-            <h3>01. Custom Python Metrics Exporter</h3>
-            <p>Standard exporters (like Node Exporter) provide infrastructure data, but they miss <strong>Business Logic</strong>. I developed a Python-based exporter using the <code>prometheus_client</code> library to track application-specific health metrics.</p>
-            
-            <pre><code>
-from prometheus_client import start_http_server, Summary, Counter
-import time
+        <article class="article-container">
+            <header>
+                <a href="projects.html" class="back-link">← Back to Projects</a>
+                <h1 style="margin-top: 20px;">Git-Driven Observability Platform</h1>
+                <p style="font-size: 1.1rem; color: #666;">A robust observability ecosystem where infrastructure, configuration, and monitoring logic are entirely driven from Git to enable rapid recovery and zero manual intervention.</p>
+                <div style="margin-top: 20px;">
+                    <span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">Ansible</span><span class="tag">Terraform</span><span class="tag">AWS</span>
+                </div>
+            </header>
 
-# Create a metric to track request latency and count
-REQUEST_TIME = Summary('request_processing_seconds', 'Time spent processing request')
-ERROR_COUNT = Counter('app_error_total', 'Total number of application errors')
+            <section id="goal" style="margin-top: 40px;">
+                <h2>01. Design Goal</h2>
+                <p>The goal was to design an observability system where every component—from the underlying cloud resources to the alerting rules—is defined in code. This ensures consistent deployment across environments and enables the team to rebuild the entire monitoring stack from scratch in minutes if necessary.</p>
+            </section>
 
-@REQUEST_TIME.time()
-def process_request():
-    # Application Logic here
-    pass
-            </code></pre>
-        </section>
+            <section id="truth">
+                <h2>02. Git as the Source of Truth</h2>
+                <p>I designed the system so that infrastructure provisioning, configuration, and monitoring logic all originate from Git. Changes to Terraform modules, Ansible playbooks, or custom Python monitoring scripts trigger their respective CI/CD workflows automatically.</p>
+                <p><strong>Impact:</strong> This removes manual configuration from the system and ensures total consistency. It makes the entire platform reproducible, allowing for reliable environment cloning and disaster recovery.</p>
+            </section>
 
-        <section id="prometheus" class="decision-box">
-            <h3>02. Prometheus Service Discovery</h3>
-            <p>In a dynamic cloud environment, IP addresses change constantly. I configured Prometheus with <strong>EC2 Service Discovery</strong>, allowing it to automatically find and scrape any instance tagged with <code>monitoring: enabled</code>. This eliminates the manual overhead of updating static config files.</p>
-        </section>
+            <section id="infrastructure">
+                <h2>03. Infrastructure as an Entry Point</h2>
+                <p>Terraform serves as the foundational layer, ensuring infrastructure is provisioned before configuration or monitoring logic is applied. The setup utilizes remote state management in S3 with DynamoDB locking to prevent concurrent state modifications.</p>
+                <p><strong>Impact:</strong> This enforces a predictable provisioning order and prevents configuration drift. It allows the entire platform to be created or destroyed on demand, directly supporting cost optimization and testing scenarios.</p>
+            </section>
 
-        
+            <section id="oidc">
+                <h2>04. OIDC-Based Authentication</h2>
+                <p>Instead of relying on static, high-risk IAM credentials, I implemented OpenID Connect (OIDC) between GitHub Actions and AWS. Workflows assume IAM roles dynamically at runtime based on the repository's identity.</p>
+                <p><strong>Impact:</strong> This eliminates long-lived secrets and drastically improves the security posture. Access is temporary, short-lived, and scoped specifically to each workflow execution.</p>
+            </section>
 
-        <section id="grafana" class="decision-box">
-            <h3>03. Visualization: The Global Dashboard</h3>
-            <p>Data is useless without context. I engineered multi-tenant Grafana dashboards that correlate <strong>System Metrics</strong> (CPU/RAM) with <strong>Application Metrics</strong> (Error Rates/Latency). This allows for "Single Pane of Glass" troubleshooting during incidents.</p>
-        </section>
+            <section id="keyless">
+                <h2>05. Keyless Access with EC2 Instance Connect</h2>
+                <p>I eliminated the need for manual SSH key pair management by leveraging EC2 Instance Connect. The GitHub runner generates a one-time temporary key and injects it into the instance metadata at runtime.</p>
+                <p><strong>Impact:</strong> This removes the operational burden of secret rotation and secret management for SSH. Access becomes identity-based rather than file-based, making the system easier to share and more secure.</p>
+            </section>
 
-        <section id="alerting" class="decision-box">
-            <h3>04. Intelligent Alertmanager Routing</h3>
-            <p>To prevent "Alert Fatigue," I implemented a tiered alerting system. Critical errors trigger <strong>PagerDuty/SMS</strong>, while non-critical warnings are routed to specific <strong>Slack channels</strong>. Alert grouping ensures that 100 failing containers result in one consolidated notification rather than 100 individual pings.</p>
-        </section>
+            <section id="separation">
+                <h2>06. Separation of Provisioning and Deployment</h2>
+                <p>Ansible workflows are split into two layers: a base "provisioning" workflow for system hardening and setup, and a lightweight "deployment" workflow for updating specific monitoring scripts.</p>
+                <p><strong>Impact:</strong> This dramatically reduces execution time for frequent changes. Updating a single Prometheus exporter doesn't require a full system reconfiguration, leading to more efficient pipelines.</p>
+            </section>
 
-        <section id="scaling" class="decision-box" style="background: #f0f7ff; border-left: 4px solid var(--accent);">
-            <h3>05. Deep-Dive Strategy Paper</h3>
-            <p>This implementation is backed by a comprehensive 14-minute research document evaluating Nagios vs. Datadog vs. Prometheus. For a detailed breakdown of the "Why" behind these tool choices, read the full whitepaper.</p>
-            <a href="blog-observability-research.html" class="read-more">Read Research Whitepaper →</a>
-        </section>
-
-        <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
-            <p>&copy; 2026 Nebat Taha | Observability Architect</p>
-            <a href="https://github.com/Nebat-Taha" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 700;">View Monitoring Scripts →</a>
-        </footer>
-    </article>
-
-</body>
-</html>
+            <section id="discovery">
+                <h2>07. Dynamic Infrastructure Discovery</h2>
+                <p>I utilized AWS resource tagging in conjunction with Ansible dynamic inventory and Prometheus EC2 service discovery to automatically detect and monitor new instances.</p>
+                <p><strong>Impact:</strong> This removes the need to manually track IP addresses or update configuration files. New infrastructure is "
