@@ -3,41 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Orchestrator | Nebat Taha</title>
+    <title>AI PR Orchestrator | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-<div class="container">
-    <nav class="header-nav">
-        <div class="nav-links"><a href="index.html">HOME</a><a href="projects.html" style="color: var(--accent);">PROJECTS</a></div>
+
+    <nav class="header-nav container">
+        <div class="nav-links">
+            <a href="index.html">HOME</a>
+            <a href="projects.html" class="active">PROJECTS</a>
+        </div>
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/nebat-nurhussen-taha-toronto-ontario/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/Nebat-Taha/" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="mailto:nebatn@gmail.com"><i class="fas fa-envelope"></i></a>
+        </div>
     </nav>
 
-    <header class="hero">
-        <h1>AI-Driven Infrastructure Orchestrator</h1>
-        <p>Bridging the gap between Project Management (Jira) and Version Control (GitHub) using Local LLMs.</p>
-    </header>
+    <div class="case-study-wrapper container">
+        <aside class="case-study-sidebar">
+            <div class="sidebar-sticky">
+                <h4>Architecture Index</h4>
+                <ul>
+                    <li><a href="#goal">Design Goal</a></li>
+                    <li><a href="#label-driven">Label-Driven Execution</a></li>
+                    <li><a href="#control-layer">Orchestrator Control Layer</a></li>
+                    <li><a href="#prompt-code">Prompt as Code</a></li>
+                    <li><a href="#structured-output">Structured Enforcement</a></li>
+                    <li><a href="#context-injection">Context Injection</a></li>
+                    <li><a href="#self-healing">Retry & Self-Healing</a></li>
+                    <li><a href="#security">Security & Scoped Bots</a></li>
+                </ul>
+            </div>
+        </aside>
 
-    <section class="about-section">
-        <span class="section-title">The Workflow</span>
-        <div class="about-text">
-            <ul>
-                <li><strong>Trigger:</strong> Manual Jira Automation rule (triggered via UI button).</li>
-                <li><strong>Middleware:</strong> FastAPI receives the webhook payload (Summary, Key, Labels).</li>
-                <li><strong>Contextual Prompting:</strong> System matches Jira labels to local markdown prompts (e.g., `terraform.md`).</li>
-                <li><strong>Intelligence:</strong> Local LLM (Ollama) generates the code/fix based on the summary.</li>
-                <li><strong>Action:</strong> Automatically creates a GitHub branch and PR, or updates an existing one with comments.</li>
-                <li><strong>Feedback Loop:</strong> Posts the PR link back to the Jira ticket for seamless tracking.</li>
-            </ul>
-        </div>
-    </section>
+        <main class="case-study-content">
+            <header class="project-header">
+                <span class="project-category">AI-Driven Infrastructure</span>
+                <h1>AI PR Orchestrator</h1>
+                <p class="project-lead">Automating the bridge between Jira task management and GitHub version control using FastAPI and Local LLMs (Ollama).</p>
+            </header>
 
-    <section class="about-section">
-        <span class="section-title">Tech Stack & Security</span>
-        <div class="about-text">
-            <p>Built with <strong>Python</strong> and <strong>FastAPI</strong>. Security is managed via <code>.env</code> configurations for GitHub tokens and Jira API credentials, ensuring no sensitive data is hardcoded.</p>
-        </div>
-    </section>
-</div>
+            <section id="goal" class="content-section">
+                <h2>Design Goal</h2>
+                <p>The primary objective was to build a system that translates structured Jira tickets into functional code while maintaining strict architectural control, scalability, and clear system boundaries between project management and version control.</p>
+            </section>
+
+            <section id="label-driven" class="content-section">
+                <div class="impact-badge">Extensibility</div>
+                <h2>1. Label-Driven Execution</h2>
+                <p>I utilized Jira labels to drive system logic. The orchestrator reads labels (e.g., <code>terraform</code>, <code>python</code>) to determine which prompt templates to load, which repository to target, and which specific CI workflows to trigger.</p>
+                <blockquote>
+                    <strong>Impact:</strong> This removes hardcoded logic from the FastAPI application. Adding support for a new tool becomes a simple configuration change rather than a code deployment, allowing the system to scale with zero friction.
+                </blockquote>
+            </section>
+
+            <section id="control-layer" class="content-section">
+                <div class="impact-badge">Separation of Concerns</div>
+                <h2>2. Orchestrator as Control Layer</h2>
+                <p>I introduced a lightweight **FastAPI** middleware to coordinate interactions. Jira defines the <strong>intent</strong>, the LLM handles the <strong>generation</strong>, and GitHub manages <strong>version control</strong>.</p>
+                <blockquote>
+                    <strong>Impact:</strong> This creates a clear separation of concerns. The orchestrator is the only place where decision logic resides, simplifying maintenance and allowing each component of the stack to evolve independently.
+                </blockquote>
+            </section>
+
+            <section id="prompt-code" class="content-section">
+                <div class="impact-badge">DevOps Alignment</div>
+                <h2>3. Prompt as Code</h2>
+                <p>Prompts are stored as version-controlled <code>.md</code> files within the repository. They are treated as first-class citizens, identical to infrastructure or application code.</p>
+                <blockquote>
+                    <strong>Impact:</strong> This makes AI behavior transparent and reviewable. Prompt changes must pass through standard Pull Request reviews, ensuring that the evolution of the AI's logic is governed by existing engineering standards.
+                </blockquote>
+            </section>
+
+            <section id="structured-output" class="content-section">
+                <div class="impact-badge">Reliability</div>
+                <h2>4. Structured Output Enforcement</h2>
+                <p>The system enforces a strict JSON schema for all LLM responses. Instead of free-form text, the model must return data that the orchestrator can immediately parse and act upon.</p>
+                <blockquote>
+                    <strong>Impact:</strong> This removes the inherent ambiguity of LLM outputs. It ensures downstream automation (like branch creation) can operate reliably without complex regex or secondary parsing logic.
+                </blockquote>
+            </section>
+
+            <section id="context-injection" class="content-section">
+                <div class="impact-badge">Accuracy</div>
+                <h2>5. Context Injection</h2>
+                <p>The orchestrator dynamically injects live project context—such as existing module definitions and directory structures—into the prompt before it reaches **Ollama**.</p>
+                <blockquote>
+                    <strong>Impact:</strong> By providing the model with real system information, we significantly reduce hallucinations. The generated code fits perfectly into the existing architecture rather than making generic assumptions.
+                </blockquote>
+            </section>
+
+            <section id="self-healing" class="content-section">
+                <div class="impact-badge">Resilience</div>
+                <h2>6. Retry with Error Context</h2>
+                <p>If the GitHub CI/CD validation fails (e.g., a <code>terraform plan</code> error), the orchestrator captures the error logs and feeds them back to the LLM for a correction attempt.</p>
+                <blockquote>
+                    <strong>Impact:</strong> This introduces an automated feedback loop. Instead of the process stopping at failure, the system attempts to self-correct, moving toward a more resilient, "self-healing" automation workflow.
+                </blockquote>
+            </section>
+
+            <section id="security" class="content-section">
+                <div class="impact-badge">Security</div>
+                <h2>7. Scoped GitHub Bots</h2>
+                <p>I implemented separate GitHub bot identities (via distinct Personal Access Tokens) for different domains, such as <code>infra-bot</code> for Terraform and <code>app-bot</code> for Python tasks.</p>
+                <blockquote>
+                    <strong>Impact:</strong> This enforces the principle of **Least Privilege**. It also provides clear audit trails for automated changes, which is critical for security and compliance in a collaborative environment.
+                </blockquote>
+            </section>
+        </main>
+    </div>
+
+    <footer class="container" style="padding: 60px 0; border-top: 1px solid #eee; text-align: center;">
+        <p style="color: #999; font-size: 0.8rem;">&copy; 2026 NEBAT TAHA | DEVOPS ENGINEER</p>
+    </footer>
+
 </body>
 </html>
