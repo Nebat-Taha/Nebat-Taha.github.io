@@ -29,8 +29,8 @@
             <a href="#goal" class="toc-link">01. Design Goal</a>
             <a href="#truth" class="toc-link">02. Source of Truth</a>
             <a href="#infrastructure" class="toc-link">03. Entry Point</a>
-            <a href="#oidc" class="toc-link">04. Authentication</a>
-            <a href="#keyless" class="toc-link">05. Keyless Access</a>
+            <a href="#separation" class="toc-link">04. Layered Workflows</a>
+            <a href="#discovery" class="toc-link">05. Dynamic Discovery</a>
             <a href="#separation" class="toc-link">06. Layered Workflows</a>
             <a href="#discovery" class="toc-link">07. Dynamic Discovery</a>
             <a href="#services" class="toc-link">08. Everything as a Service</a>
@@ -49,44 +49,46 @@
 
             <section id="goal" style="margin-top: 40px;">
                 <h2>01. Design Goal</h2>
-                <p>The goal was to design an observability system where every component—from the underlying cloud resources to the alerting rules—is defined in code. This ensures consistent deployment across environments and enables the team to rebuild the entire monitoring stack from scratch in minutes if necessary.</p>
+                <p>The goal was to design an observability system where every component from the underlying cloud resources to the alerting rules is defined in code. This ensures consistent deployment across environments and enables the team to rebuild the entire monitoring stack from scratch in minutes if necessary.</p>
             </section>
 
             <section id="truth">
                 <h2>02. Git as the Source of Truth</h2>
-                <p>I designed the system so that infrastructure provisioning, configuration, and monitoring logic all originate from Git. Changes to Terraform modules, Ansible playbooks, or custom Python monitoring scripts trigger their respective CI/CD workflows automatically.</p>
-                <p><strong>Impact:</strong> This removes manual configuration from the system and ensures total consistency. It makes the entire platform reproducible, allowing for reliable environment cloning and disaster recovery.</p>
-            </section>
+                <p>I designed the system so that infrastructure provisioning, configuration management, and monitoring logic all originate from Git. Changes to Terraform modules, Ansible playbooks, or custom Python monitoring scripts automatically trigger their respective CI/CD workflows, which apply updates to the environment in a controlled and repeatable manner. This approach ensures that infrastructure evolves in a version-controlled and predictable way, where changes are intentionally deployed rather than manually applied, enabling easier replication and recovery of environments over time.</p>
+                      </section>
 
             <section id="infrastructure">
                 <h2>03. Infrastructure as an Entry Point</h2>
-                <p>Terraform serves as the foundational layer, ensuring infrastructure is provisioned before configuration or monitoring logic is applied. The setup utilizes remote state management in S3 with DynamoDB locking to prevent concurrent state modifications.</p>
-                <p><strong>Impact:</strong> This enforces a predictable provisioning order and prevents configuration drift. It allows the entire platform to be created or destroyed on demand, directly supporting cost optimization and testing scenarios.</p>
-            </section>
-
-            <section id="oidc">
-                <h2>04. OIDC-Based Authentication</h2>
-                <p>Instead of relying on static, high-risk IAM credentials, I implemented OpenID Connect (OIDC) between GitHub Actions and AWS. Workflows assume IAM roles dynamically at runtime based on the repository's identity.</p>
-                <p><strong>Impact:</strong> This eliminates long-lived secrets and drastically improves the security posture. Access is temporary, short-lived, and scoped specifically to each workflow execution.</p>
-            </section>
-
-            <section id="keyless">
-                <h2>05. Keyless Access with EC2 Instance Connect</h2>
-                <p>I eliminated the need for manual SSH key pair management by leveraging EC2 Instance Connect. The GitHub runner generates a one-time temporary key and injects it into the instance metadata at runtime.</p>
-                <p><strong>Impact:</strong> This removes the operational burden of secret rotation and secret management for SSH. Access becomes identity-based rather than file-based, making the system easier to share and more secure.</p>
+                <p>Terraform serves as the foundational layer of the platform, responsible for provisioning infrastructure before configuration and observability layers are applied. Remote state is managed using S3 with DynamoDB locking to ensure safe and consistent state operations during deployment workflows.</p>
+                <p>Identity-based authentication (OIDC for CI/CD and EC2 Instance Connect for runtime access) is used across the platform. The full implementation of this authentication layer is documented in the <a href="project-terraform.html" class="wes-link"> Terraform project. </a></p>
+                <p>This establishes a controlled infrastructure lifecycle where provisioning and access are both driven by ephemeral, identity-aware mechanisms rather than long-lived secrets or manual intervention.</p>
             </section>
 
             <section id="separation">
-                <h2>06. Separation of Provisioning and Deployment</h2>
-                <p>Ansible workflows are split into two layers: a base "provisioning" workflow for system hardening and setup, and a lightweight "deployment" workflow for updating specific monitoring scripts.</p>
-                <p><strong>Impact:</strong> This dramatically reduces execution time for frequent changes. Updating a single Prometheus exporter doesn't require a full system reconfiguration, leading to more efficient pipelines.</p>
-            </section>
+                <h2>04. Separation of Provisioning and Deployment</h2>
+                <p>Ansible workflows are split into two distinct operational layers: a base provisioning layer responsible for system setup and hardening, and a lightweight deployment layer used for updating monitoring scripts and exporters. This separation ensures that frequent changes do not trigger full system reconfiguration.</p>
+                <p>This design reduces execution overhead and isolates long-running infrastructure setup from fast-moving observability updates, allowing the platform to evolve more efficiently.</p>
+                 </section>
 
             <section id="discovery">
-                <h2>07. Dynamic Infrastructure Discovery</h2>
-                <p>I utilized AWS resource tagging in conjunction with Ansible dynamic inventory and Prometheus EC2 service discovery to automatically detect and monitor new instances.</p>
-                <p><strong>Impact:</strong> This removes the need to manually track IP addresses or update configuration files. New infrastructure is "born" into the monitoring system automatically as soon as it is tagged.</p>
+                <h2>05. Multi-Resource Dynamic Discovery Layer</h2>
+                    <p>I extended observability discovery beyond EC2 instances by building a tag-driven mechanism for AWS services such as S3. Resources are identified based on predefined monitoring tags and processed through custom AWS CLI-based discovery logic, enabling observability targets to be defined consistently across different AWS resource types.</p>
+                    <p>EC2-based targets are discovered using Ansible’s AWS dynamic inventory (amazon.aws.aws_ec2 plugin), with implementation details documented in the <a href="project-ansible.html" class="wes-link">Ansible project. </a> All discovered resources are normalized into Prometheus file-based service discovery formats, allowing the monitoring system to automatically adapt to infrastructure changes without manual configuration updates.</p>
             </section>
+
+            
+            <section id="separation">
+                <h2>06. Separation of Provisioning and Deployment</h2>
+                    <p>All custom monitoring scripts and exporters are deployed as systemd services using templated configurations to ensure they run continuously and reliably. Each service runs within an isolated execution environment to maintain consistency across deployments.</p>
+                    <p>This approach transforms monitoring logic into persistent, self-recovering services that automatically restart on failure and persist across reboots. It removes the need for manual execution or reinitialization after system maintenance, ensuring that observability components remain continuously active and operational.</p>
+                   </section>
+
+            <section id="workflow">
+                <h2>07.Workflow-Driven Observability</h2>
+                <p>I implemented a dedicated workflow layer that governs how observability changes are introduced and propagated across the system. Monitoring scripts, exporter configurations, and discovery outputs are only deployed through controlled CI/CD pipelines triggered by changes in Git.</p>
+                <p>Each workflow handles validation, deployment, and service refresh operations, ensuring that updates are applied consistently across the infrastructure without requiring manual intervention. This creates a structured change flow where observability updates move from code to production in a predictable and automated manner.</p>
+                <p>This approach decouples observability logic from operational execution. Engineers focus on defining or modifying monitoring behavior in Git, while the platform handles deployment, service updates, and system synchronization automatically.</p>
+                  </section>
 
             <section id="services">
                 <h2>08. Everything as a Service</h2>
