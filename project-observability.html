@@ -28,13 +28,12 @@
             <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
             <a href="#goal" class="toc-link">01. Design Goal</a>
             <a href="#truth" class="toc-link">02. Source of Truth</a>
-            <a href="#infrastructure" class="toc-link">03. Entry Point</a>
+            <a href="#infrastructure" class="toc-link">03. Infrastructure </a>
             <a href="#separation" class="toc-link">04. Layered Workflows</a>
             <a href="#discovery" class="toc-link">05. Dynamic Discovery</a>
-            <a href="#separation" class="toc-link">06. Layered Workflows</a>
-            <a href="#discovery" class="toc-link">07. Dynamic Discovery</a>
-            <a href="#services" class="toc-link">08. Everything as a Service</a>
-            <a href="#workflow" class="toc-link">09. Automation Logic</a>
+            <a href="#services" class="toc-link">06. Everything as a Service</a>
+            <a href="#workflow" class="toc-link">07. Automation Logic</a>
+        
         </aside>
 
         <article class="article-container">
@@ -58,7 +57,7 @@
                       </section>
 
             <section id="infrastructure">
-                <h2>03. Infrastructure as an Entry Point</h2>
+                <h2>03. Infrastructure Foundation & Secure Access Layer</h2>
                 <p>Terraform serves as the foundational layer of the platform, responsible for provisioning infrastructure before configuration and observability layers are applied. Remote state is managed using S3 with DynamoDB locking to ensure safe and consistent state operations during deployment workflows.</p>
                 <p>Identity-based authentication (OIDC for CI/CD and EC2 Instance Connect for runtime access) is used across the platform. The full implementation of this authentication layer is documented in the <a href="project-terraform.html" class="wes-link"> Terraform project. </a></p>
                 <p>This establishes a controlled infrastructure lifecycle where provisioning and access are both driven by ephemeral, identity-aware mechanisms rather than long-lived secrets or manual intervention.</p>
@@ -77,8 +76,8 @@
             </section>
 
             
-            <section id="separation">
-                <h2>06. Separation of Provisioning and Deployment</h2>
+            <section id="services">
+                <h2>06. Everything as a Service</h2>
                     <p>All custom monitoring scripts and exporters are deployed as systemd services using templated configurations to ensure they run continuously and reliably. Each service runs within an isolated execution environment to maintain consistency across deployments.</p>
                     <p>This approach transforms monitoring logic into persistent, self-recovering services that automatically restart on failure and persist across reboots. It removes the need for manual execution or reinitialization after system maintenance, ensuring that observability components remain continuously active and operational.</p>
                    </section>
@@ -90,18 +89,7 @@
                 <p>This approach decouples observability logic from operational execution. Engineers focus on defining or modifying monitoring behavior in Git, while the platform handles deployment, service updates, and system synchronization automatically.</p>
                   </section>
 
-            <section id="services">
-                <h2>08. Everything as a Service</h2>
-                <p>All custom monitoring scripts and exporters are deployed as <code>systemd</code> services using templated configurations. Each script executes within a centralized, isolated Python virtual environment.</p>
-                <p><strong>Impact:</strong> This ensures reliability and process persistence. Services restart automatically on failure and persist across reboots, eliminating the need for manual startup after maintenance.</p>
-            </section>
-
-            <section id="workflow">
-                <h2>09. Workflow-Driven Observability</h2>
-                <p>A dedicated deployment workflow triggers only when monitoring scripts or configurations change. This workflow handles pre-deployment validation, deployment to the fleet, and service restarts.</p>
-                <p><strong>Impact:</strong> This allows engineers to focus strictly on observability logic. The platform handles the "how" of deployment automatically, reducing operational overhead and accelerating iteration speed.</p>
-            </section>
-
+         
             <a href="https://github.com/Nebat-Taha/git-driven-monitoring" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View GitHub Repo →</a>
 
             
