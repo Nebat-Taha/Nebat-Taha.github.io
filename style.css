@@ -209,7 +209,8 @@ h1, h2, h3, h4, .tag, .toc-link, .wes-link, th, td {
 .back-link:hover { color: var(--accent); }
 
 .sticky-toc { position: fixed; left: 2%; top: 150px; width: 180px; display: none; z-index: 10; }
-@media (min-width: 1100px) { .sticky-toc { display: block; } }
+@media (min-width: 1200px) { .sticky-toc { display: block; } 
+                           .article-container { margin-left: 240px; max-width: 750px; }}
 
 .toc-link { 
     display: block; 
