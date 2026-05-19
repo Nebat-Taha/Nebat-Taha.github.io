@@ -33,6 +33,7 @@
             <a href="#discovery" class="toc-link">05. Dynamic Discovery</a>
             <a href="#services" class="toc-link">06. Everything as a Service</a>
             <a href="#workflow" class="toc-link">07. Automation Logic</a>
+            <a href="#workflow" class="toc-link">08. Summary</a>
         
         </aside>
 
@@ -40,7 +41,7 @@
             <header>
                 <a href="projects.html" class="back-link">← Back to Projects</a>
                 <h1 style="margin-top: 20px;">Git-Driven Observability Platform</h1>
-                <p style="font-size: 1.1rem; color: #666;">A robust observability ecosystem where infrastructure, configuration, and monitoring logic are entirely driven from Git to enable rapid recovery and zero manual intervention.</p>
+                <p style="font-size: 1.1rem; color: #666;">A Git-driven observability platform where infrastructure, configuration, and monitoring workflows are managed through code and automated deployment pipelines.</p>
                 <div style="margin-top: 20px;">
                     <span class="tag">Prometheus</span><span class="tag">Grafana</span><span class="tag">Ansible</span><span class="tag">Terraform</span><span class="tag">AWS</span>
                 </div>
@@ -48,48 +49,52 @@
 
             <section id="goal" style="margin-top: 40px;">
                 <h2>01. Design Goal</h2>
-                <p>The goal was to design an observability system where every component from the underlying cloud resources to the alerting rules is defined in code. This ensures consistent deployment across environments and enables the team to rebuild the entire monitoring stack from scratch in minutes if necessary.</p>
+                <p>The goal was to design an observability platform where infrastructure, configuration, and monitoring logic are fully managed through code and automated workflows. Custom Python exporters are used to collect only defined and operationally relevant metrics rather than relying on broad default metric collection.</p>
+                <p>This approach enables consistent deployments across environments while keeping observability focused on actionable telemetry while reducing unnecessary metric ingestion. The platform is designed to support repeatable provisioning, workflow-driven updates, and predictable monitoring behavior across infrastructure lifecycles.</p>
             </section>
 
             <section id="truth">
-                <h2>02. Git as the Source of Truth</h2>
+                <h2>02. Git-Driven Control Layer</h2>
                 <p>I designed the system so that infrastructure provisioning, configuration management, and monitoring logic all originate from Git. Changes to Terraform modules, Ansible playbooks, or custom Python monitoring scripts automatically trigger their respective CI/CD workflows, which apply updates to the environment in a controlled and repeatable manner. This approach ensures that infrastructure evolves in a version-controlled and predictable way, where changes are intentionally deployed rather than manually applied, enabling easier replication and recovery of environments over time.</p>
                       </section>
 
             <section id="infrastructure">
-                <h2>03. Infrastructure Foundation & Secure Access Layer</h2>
+                <h2>03. Infrastructure Foundation & Secure Access </h2>
                 <p>Terraform serves as the foundational layer of the platform, responsible for provisioning infrastructure before configuration and observability layers are applied. Remote state is managed using S3 with DynamoDB locking to ensure safe and consistent state operations during deployment workflows.</p>
                 <p>Identity-based authentication (OIDC for CI/CD and EC2 Instance Connect for runtime access) is used across the platform. The full implementation of this authentication layer is documented in the <a href="project-terraform.html" class="wes-link"> Terraform project. </a></p>
                 <p>This establishes a controlled infrastructure lifecycle where provisioning and access are both driven by ephemeral, identity-aware mechanisms rather than long-lived secrets or manual intervention.</p>
             </section>
 
             <section id="separation">
-                <h2>04. Separation of Provisioning and Deployment</h2>
+                <h2>04. Provisioning and Deployment Separation</h2>
                 <p>Ansible workflows are split into two distinct operational layers: a base provisioning layer responsible for system setup and hardening, and a lightweight deployment layer used for updating monitoring scripts and exporters. This separation ensures that frequent changes do not trigger full system reconfiguration.</p>
                 <p>This design reduces execution overhead and isolates long-running infrastructure setup from fast-moving observability updates, allowing the platform to evolve more efficiently.</p>
                  </section>
 
             <section id="discovery">
                 <h2>05. Multi-Resource Dynamic Discovery Layer</h2>
-                    <p>I extended observability discovery beyond EC2 instances by building a tag-driven mechanism for AWS services such as S3. Resources are identified based on predefined monitoring tags and processed through custom AWS CLI-based discovery logic, enabling observability targets to be defined consistently across different AWS resource types.</p>
+                    <p>I extended observability discovery beyond EC2 instances by building a tag-driven mechanism for AWS services such as S3. Resources are identified based on predefined monitoring tags and processed through custom discovery logic, enabling observability coverage to extend beyond compute infrastructure into service-level AWS resources.</p>
                     <p>EC2-based targets are discovered using Ansible’s AWS dynamic inventory (amazon.aws.aws_ec2 plugin), with implementation details documented in the <a href="project-ansible.html" class="wes-link">Ansible project. </a> All discovered resources are normalized into Prometheus file-based service discovery formats, allowing the monitoring system to automatically adapt to infrastructure changes without manual configuration updates.</p>
             </section>
 
             
             <section id="services">
-                <h2>06. Everything as a Service</h2>
+                <h2>06. Service Execution Layer</h2>
                     <p>All custom monitoring scripts and exporters are deployed as systemd services using templated configurations to ensure they run continuously and reliably. Each service runs within an isolated execution environment to maintain consistency across deployments.</p>
                     <p>This approach transforms monitoring logic into persistent, self-recovering services that automatically restart on failure and persist across reboots. It removes the need for manual execution or reinitialization after system maintenance, ensuring that observability components remain continuously active and operational.</p>
                    </section>
 
             <section id="workflow">
-                <h2>07.Workflow-Driven Observability</h2>
+                <h2>07.Workflow Orchestration Observability</h2>
                 <p>I implemented a dedicated workflow layer that governs how observability changes are introduced and propagated across the system. Monitoring scripts, exporter configurations, and discovery outputs are only deployed through controlled CI/CD pipelines triggered by changes in Git.</p>
                 <p>Each workflow handles validation, deployment, and service refresh operations, ensuring that updates are applied consistently across the infrastructure without requiring manual intervention. This creates a structured change flow where observability updates move from code to production in a predictable and automated manner.</p>
                 <p>This approach decouples observability logic from operational execution. Engineers focus on defining or modifying monitoring behavior in Git, while the platform handles deployment, service updates, and system synchronization automatically.</p>
                   </section>
 
-         
+         <section id="summary">
+             <h2>08. Summary</h2>
+             <p>This project focused on treating observability as a continuously evolving platform rather than a static monitoring stack. By combining infrastructure automation, dynamic discovery, workflow-driven deployments, and service-based execution, the system can adapt to infrastructure changes while keeping operational processes controlled, repeatable, and version-driven.</p>
+         </section>
             <a href="https://github.com/Nebat-Taha/git-driven-monitoring" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View GitHub Repo →</a>
 
             
