@@ -38,10 +38,10 @@
     <article class="article-container">
         <header>
             <a href="projects.html" class="back-link">← Back to Projects</a>
-            <h1 style="margin-top: 40px;">Multi-Region Configuration & Multi-Cloud Backup</h1>
+            <h1 style="margin-top: 40px;">Multi-Cloud Backup and Recovery Automation</h1>
             <p class="about-text" style="font-size: 1.1rem; color: #666;">
-                Automated multi-region configuration, backup, and restore workflows using ephemeral Ansible runners and GitHub Actions, ensuring consistent infrastructure state and multi-cloud resilience while minimizing operational overhead.
-                     </p>
+               Automated backup, recovery, and configuration workflows using ephemeral Ansible runners, identity-based access, and cross-cloud storage orchestration to maintain resilient operational recovery across distributed environments.
+            </p>
             
             <div style="margin-top: 20px;">
                 <span class="tag">ANSIBLE</span>
@@ -55,10 +55,10 @@
         </header>
 
         <section id="control-plane"  style="margin-top: 40px;">
-            <h3>01. Ephemeral Control Plane</h3>
-            <p>
-Instead of maintaining a permanent Ansible control node, the <strong>GitHub Actions runner</strong> acts as a temporary control plane during each deployment. This design eliminates the need for a dedicated management server while ensuring every execution starts from a clean, reproducible environment. By rebuilding the control plane on each run, the system avoids configuration drift and guarantees a consistent automation environment.
-</p>
+            <h3>01. Ephemeral Operational Control </h3>
+            <p>Instead of maintaining a permanent Ansible control node, GitHub Actions runners act as temporary execution environments during each workflow run. Ansible, Python dependencies, inventories, and runtime configurations are initialized dynamically at execution time, allowing every operation to begin from a clean and reproducible state.
+            </p>
+            <p>This approach removes the need for long-lived automation servers while reducing persistent operational overhead. By rebuilding the execution environment on demand, setup, backup, and recovery workflows remain isolated, repeatable, and easier to manage across regions and environments.</p>
         </section>
 
         <section id="inventory">
