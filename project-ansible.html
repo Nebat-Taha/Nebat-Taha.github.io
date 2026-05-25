@@ -27,11 +27,12 @@
     <aside class="sticky-toc">
         <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
         <a href="#control-plane" class="toc-link">01. Ephemeral Control Plane </a>
-        <a href="#inventory" class="toc-link">02. Dynamic Inventory</a>
-        <a href="#multi-region" class="toc-link">03. Multi-Region CI/CD</a>
-        <a href="#backup" class="toc-link">04. Multi-Cloud Backup</a>
-        <a href="#restore" class="toc-link">05. Precision Restore</a>
-        <a href="#security" class="toc-link">06. Policy Enforcement</a>
+        <a href="#security" class="toc-link">02. Security</a>
+        <a href="#inventory" class="toc-link">03. Dynamic Inventory</a>
+        <a href="#cicd" class="toc-link">04. Multi-Region CI/CD</a>
+        <a href="#backup" class="toc-link">05. Multi-Cloud Backup</a>
+        <a href="#restore" class="toc-link">06. Precision Restore</a>
+        
     
     </aside>
 
@@ -56,66 +57,40 @@
 
         <section id="control-plane"  style="margin-top: 40px;">
             <h3>01. Ephemeral Operational Control </h3>
-            <p>Instead of maintaining a permanent Ansible control node, GitHub Actions runners act as temporary execution environments during each workflow run. Ansible, Python dependencies, inventories, and runtime configurations are initialized dynamically at execution time, allowing every operation to begin from a clean and reproducible state.
-            </p>
-            <p>This approach removes the need for long-lived automation servers while reducing persistent operational overhead. By rebuilding the execution environment on demand, setup, backup, and recovery workflows remain isolated, repeatable, and easier to manage across regions and environments.</p>
+            <p>Instead of maintaining a permanent Ansible control node, GitHub Actions runners act as temporary execution environments during each workflow run. Ansible, Python dependencies, inventories, and runtime configurations are initialized dynamically at execution time, allowing every operation to begin from a clean and reproducible state.</p>
+            <p>This approach removes the need for long-lived automation servers, reducing both persistent operational overhead and infrastructure cost. By rebuilding the execution environment on demand, setup, backup, and recovery workflows remain isolated, repeatable, and easier to manage across regions and environments. </p>
+                 </section>
+
+        <section id="security">
+            <h3>02. Identity-Based Access & Runtime Credential Injection</h3>
+            <p>The automation workflows use temporary, identity-based authentication mechanisms instead of persistent infrastructure credentials. GitHub Actions authenticates to AWS using OpenID Connect (OIDC), while runtime server access is established through EC2 Instance Connect with ephemeral SSH key injection.</p>
+            <p>For cross-cloud backup operations, external provider credentials are injected into runtime environment variables through GitHub Secrets during workflow execution. This allows backup and recovery workflows to securely authenticate with external storage providers without storing credentials directly on servers or maintaining permanent SSH access between environments.</p>   
         </section>
 
         <section id="inventory">
-            <h3>02. Dynamic Inventory</h3>
-            <p>
-Dynamic AWS inventory discovers instances using AWS tags and automatically groups servers by role (for example Redis or MongoDB). This removes the need for manual host management and allows infrastructure changes to be reflected automatically in the automation layer. As instances are created or terminated, the inventory updates dynamically, ensuring configuration tasks always target the correct infrastructure.
-</p>
+            <h3>03. Dynamic Infrastructure Targeting</h3>
+            <p>Infrastructure targets are identified dynamically using AWS resource tags and Ansible’s AWS dynamic inventory plugin (amazon.aws.aws_ec2). Instances are automatically grouped by operational roles and regions, allowing setup, backup, and recovery workflows to target the correct systems without maintaining static inventory files.</p>
+            <p>This approach allows automation workflows to adapt as infrastructure changes over time. As instances are added, removed, or replaced, the inventory layer updates automatically through AWS discovery mechanisms, reducing manual host management and improving operational consistency across environments.</p>
         </section>
 
-        <section id="multi-region">
-            <h3>03. Multi-Region CI/CD</h3>
-             <p>A GitHub Actions pipeline orchestrates configuration management across regions using a strategy matrix, allowing the same automation to run independently in multiple AWS regions and  ensuring consistent configuration management at global scale.</p>
-             <p>Before any changes are applied, the pipeline executes an <strong>Ansible dry-run validation</strong> using <code>--check --diff</code>. This stage previews exactly what configuration updates would occur without modifying any servers, providing full visibility into pending changes and reducing operational risk.</p>
-            <p>After validation, the deployment stage requires manual approval through a protected <strong>GitHub Environment</strong>. Once approved, the same playbooks are executed in apply mode, ensuring controlled and consistent configuration updates across all regions. </p> 
-        </section>
+            <Section id="cicd">
+               <h3>04. Multi-Region Automation Execution</h3>
+                <p>GitHub Actions workflows orchestrate Ansible operations across multiple AWS regions using region-specific execution contexts. A strategy matrix allows the same automation workflows to execute independently per region while dynamically limiting operations to the appropriate infrastructure targets.</p>
+                <p>This design creates isolated operational boundaries between regions while maintaining consistent automation behavior across distributed environments. Setup, backup, and recovery operations can be executed in parallel without requiring separate workflow definitions or manually maintained regional pipelines.</p>
+            </section>
         
 
         <section id="backup">
-         <h3>04. Multi-Cloud Backup</h3>
-
-<p>
-Database backup operations are implemented as Ansible tasks executed directly on the database servers. During the process, MongoDB and Redis backup artifacts are generated and stored temporarily in a local backup directory on the database host.
-</p>
-
-<p>
-The generated backup artifacts are then uploaded to <strong>Backblaze B2</strong>, creating a secondary storage layer outside AWS. Authentication credentials are securely injected into the workflow through GitHub Secrets and passed to the playbook during execution.
-</p>
-
-<p>
-After a successful upload, the temporary backup files are automatically removed from the database server. This approach minimizes local disk usage while establishing a reliable multi-cloud backup target that improves resilience against provider-level failures.
-</p>
+            <h3>05. Multi-Cloud Backup Orchestration </h3>
+            <p>Database backup operations are executed through dedicated Ansible workflows that run directly against MongoDB and Redis hosts across regions. Backup artifacts are generated on the database servers, temporarily staged locally, and then transferred to Backblaze B2 as an external recovery storage layer outside AWS.</p>
+            <p>This design separates operational infrastructure from backup storage, improving resilience against provider-level failures and reducing dependency on a single cloud environment. After successful uploads, temporary backup artifacts are automatically removed from the database hosts to minimize persistent storage consumption and maintain cleaner operational states.</p>
         </section>
 
         <section id="restore">
-<h3>05. Precision Restore</h3>
-
-<p>
-The restore process is intentionally implemented as a manually triggered workflow to prevent accidental recovery from corrupted backups or unintended restoration across multiple database nodes.
-</p>
-
-<p>
-Operators must explicitly provide three parameters before the restore process begins: the backup object stored in Backblaze B2, the IP address of the target instance, and the AWS region where the server is hosted.
-</p>
-
-<p>
-Once the workflow is triggered, the GitHub Actions runner dynamically generates a temporary inventory file containing the specified target host. The runner acts as the Ansible control node and uses this ephemeral inventory to execute the restore playbook against the selected instance.
-</p>
-
-<p>
-Because GitHub runners are ephemeral environments that are destroyed after workflow completion, the generated inventory file is automatically discarded. This design combines precise operator control with automated execution while reducing the risk of unintended data recovery events.
-</p>    
-        </section>
-
-        <section id="security">
-            <h3>06. Policy Enforcement</h3>
-            <p>While Terraform defines the primary infrastructure as code layer, Ansible acts as a <strong>post-provisioning governance mechanism</strong>. It continuously enforces configuration and security policies across deployed resources.</p>
-            <p>If infrastructure is created manually through the AWS Console or CLI, the automation pipeline automatically applies the required configuration policies. This ensures manually provisioned resources are brought back into compliance without requiring manual remediation.</p>
+            <h3>06. Precision Restore</h3>
+            <p>The recovery process is implemented as a manually triggered workflow to ensure restoration operations remain intentional and tightly controlled. Operators explicitly define the target database type, AWS region, recovery host, and backup artifact before execution begins, allowing recovery operations to be scoped precisely to the intended environment and recovery point.</p>
+            <p>During execution, the workflow dynamically generates a temporary runtime inventory containing only the selected recovery target. Ansible then performs the restore operation against the isolated host using the specified backup artifact from Backblaze B2. Because the execution environment and generated inventories are ephemeral, recovery operations leave no persistent orchestration state after completion.</p>
+            <p>This design prioritizes operational safety and recovery precision by combining controlled operator input with automated execution workflows, reducing the risk of unintended restoration events across distributed environments.</p>
         </section>
 
 
