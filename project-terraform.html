@@ -38,7 +38,7 @@
         <header>
             <a href="projects.html" class="back-link">← Back to Projects</a>
             <h1 style="margin-top: 20px;">Multi-Region Infrastructure Automation with Terraform</h1>
-            <p style="font-size: 1.1rem; color: #666;">Infrastructure automation and governance workflows using Terraform, federated CI/CD authentication, and region-scoped deployment controls to manage secure and consistent infrastructure lifecycles across distributed AWS environments.</p>
+            <p style="font-size: 1.1rem; color: #666;">Infrastructure automation and governance workflows using Terraform, federated CI/CD authentication, and region-scoped deployment controls to manage consistent and secure infrastructure lifecycle operations across AWS.</p>
             <div style="margin-top: 20px;">
                 <span class="tag">Terraform</span><span class="tag">AWS</span><span class="tag">GitHub Action</span><span class="tag">OIDC</span><span class="tag">Multi-Region</span>
             </div>
@@ -46,48 +46,51 @@
 
         <section id="lifecycles" style="margin-top: 40px;">
             <h2>01. Infrastructure Lifecycle Segmentation</h2>
-            <p>The infrastructure architecture is intentionally separated into global and regional deployment layers to isolate resources with different operational lifecycles. Global services such as IAM, DNS, and shared infrastructure components are managed independently from region-specific compute and application resources, allowing infrastructure changes to be applied within clearly defined operational scopes.</p>
-            <p>This separation extends into the Terraform state architecture, where global and regional resources maintain independent state boundaries aligned with their respective deployment lifecycles. As a result, infrastructure operations remain more contained, maintainable, and easier to manage across distributed environments</p>
+            <p>The infrastructure architecture is intentionally separated into global and regional deployment layers to isolate resources with different operational lifecycles. Global services such as IAM, DNS, and shared infrastructure components are managed independently from region-specific compute and application resources. </p>
+            <p>Each region is treated as an independent deployment scope, where infrastructure is selectively composed based on required services rather than replicated uniformly across all regions. This allows different regions to host different workloads while still operating under a consistent provisioning model. </p>
+            <p>This separation is also reflected in the Terraform state design, where global and regional resources maintain independent state boundaries aligned with their lifecycle and operational scope. As a result, infrastructure operations remain contained, predictable, and easier to manage across a multi-region architecture. </p>
+
+            
         </section>
 
         <section id="authentication">
             <h2>02. Federated Infrastructure Authentication</h2>
             <p>Infrastructure workflows authenticate to AWS using OpenID Connect (OIDC) federation between GitHub Actions and AWS IAM. Instead of storing long-lived AWS access keys inside CI/CD systems, GitHub workflows dynamically assume IAM roles at runtime using short-lived identity tokens issued through the federated trust relationship.</p>
-            <p>IAM trust policies restrict role assumption based on repository and workflow context, ensuring infrastructure access remains scoped to approved automation paths and execution environments.</p>
+            <p>IAM trust policies restrict role assumption based on repository and workflow context, ensuring infrastructure access remains scoped to approved execution paths and automation sources.</p>
             <p>This establishes an identity-aware infrastructure automation model where authentication is temporary, centrally governed, and driven through federated trust rather than persistent credential distribution.</p>
             
         </section>
 
         <section id="deployment">
            <h2>03. Region-Scoped Deployment Governance</h2>
-           <p>Terraform deployments are orchestrated through a plan-and-apply workflow implemented in GitHub Actions. Each AWS region is executed as an independent deployment context using a strategy matrix, allowing infrastructure changes to be evaluated and applied per region in isolation.</p>
-           <p>Terraform plan artifacts are generated during the planning stage and persisted for use in the apply stage after manual approval through protected GitHub Environments. This ensures that the same reviewed plan is the one executed during deployment, maintaining consistency between validation and execution.</p>
-           <p>This design establishes controlled regional deployment boundaries, reducing operational blast radius while maintaining consistent governance across multi-region infrastructure environments.</p>
+           <p>Terraform deployments are executed through a plan-and-apply workflow implemented in GitHub Actions. Each AWS region operates as an independent execution context using a strategy matrix, enabling infrastructure changes to be evaluated and applied per region in isolation. </p>
+           <p>Terraform plan artifacts are generated during the planning phase and persisted for execution in the apply stage after manual approval through protected GitHub Environments. This ensures that the exact reviewed plan is the one applied during deployment, maintaining consistency between validation and execution. </p>
+           <p>This design enables controlled regional deployment boundaries, where each region is independently provisioned and selectively populated with required services while maintaining a consistent infrastructure governance model. </p>
+ 
         </section>
 
         <section id="state">
             <h2>04. Segmented Remote State Coordination</h2>
-            <p>Terraform state is stored remotely in Amazon S3 with DynamoDB-based state locking to coordinate infrastructure operations safely across workflows and regions. Separate state files are maintained for global infrastructure components and for each regional deployment environment, creating isolated state boundaries aligned with the infrastructure lifecycle architecture.</p>
-            <p>This segmentation minimizes operational blast radius by preventing unrelated infrastructure changes from sharing the same state context. Regional deployments can operate, lock, and evolve independently, while global infrastructure remains isolated from region-specific workload changes. DynamoDB locking additionally prevents concurrent Terraform executions from modifying the same state simultaneously, reducing the risk of state corruption during collaborative deployments.</p>
+            <p>Terraform state is stored remotely in Amazon S3, with separate state files for global and regional infrastructure. This separation aligns state boundaries with the operational scope of the system, ensuring that regional and global resources are managed independently. </p>
+            <p>DynamoDB-based state locking is used to coordinate Terraform operations and ensure that only one execution can modify a given state file at a time. This prevents overlapping deployments from applying conflicting updates to the same infrastructure state. </p>        
         </section>
 
         <section id="security">
             <h2>05.Shift-Left Security & Drift Governance</h2>
-            <p>Infrastructure security and compliance validation are enforced directly within the Terraform delivery pipeline using tools such as TFLint, tfsec, and Checkov. Infrastructure configurations are validated before provisioning begins, and workflows fail automatically if resources violate industry-standard security and compliance practices.</p> 
-            <p>This establishes a shift-left security model where infrastructure risks are identified during the provisioning lifecycle rather than after deployment. Security validation becomes part of the delivery process itself, reducing the likelihood of insecure or non-compliant infrastructure reaching production environments.</p>
-            <p>In parallel, automated drift detection is implemented using Terraform plan exit codes to identify infrastructure changes made outside the Terraform lifecycle. CI/CD workflows evaluate Terraform’s detailed exit responses to detect divergence between the defined configuration and deployed infrastructure state, allowing unauthorized or unmanaged changes to surface during deployment operations.</p>
+            <p>Infrastructure security and compliance validation is enforced directly within the Terraform delivery pipeline using tools such as TFLint, tfsec, and Checkov. These checks ensure that infrastructure is validated against industry security standards before any provisioning occurs, preventing non-compliant resources from being deployed. This establishes a “shift-left” approach where security validation is integrated into the infrastructure delivery process itself rather than handled after deployment. </p>
+            <p>In addition, drift detection is implemented as a dedicated CI/CD workflow executed across both global and regional infrastructure scopes. These workflows run Terraform plan in a non-interactive mode to compare live infrastructure against the desired configuration state. When deviations are detected, the pipeline explicitly fails to surface infrastructure drift, allowing it to be reviewed and addressed. Separate workflows are maintained for global and regional state boundaries to ensure drift is detected within each isolated Terraform state scope. </p>
         </section>
 
           <section id="modular">
             <h2>06.Modular Multi-Region Architecture </h2>
-              <p>Developed reusable Terraform modules to standardize infrastructure provisioning across multiple AWS regions. Each module exposes a strictly defined set of variables that act as an interface contract, ensuring all regional deployments conform to a consistent infrastructure standard.</p>
-              <p>This design enforces uniformity across regional deployments while maintaining reusability, allowing infrastructure to scale horizontally across regions without introducing structural inconsistencies between them. It also ensures that regional configurations remain consistent, predictable, and aligned with the same underlying infrastructure model.</p>
+              <p>Reusable Terraform modules are used to structure infrastructure provisioning across AWS regions. Each module defines a set of input variables that are used to configure and create resources in a consistent way.</p>
+              <p>This approach helps maintain a shared provisioning pattern across regions by reusing the same infrastructure definitions with different inputs, depending on regional requirements.</p>
           </section>
 
          <section id="policy">
              <h2>07. Infrastructure Policy Enforcement</h2>
-             <p>Infrastructure governance is reinforced through policy enforcement workflows designed to maintain secure baseline configurations across cloud resources. This includes enforcing organizational standards such as S3 bucket versioning and private access controls across managed environments.</p>
-             <p>By embedding governance validation directly into infrastructure automation workflows, security and compliance requirements become part of the infrastructure lifecycle itself rather than relying solely on manual review or post-deployment remediation processes.</p>
+             <p>In addition to infrastructure provisioning through Terraform, a separate governance mechanism is used to apply baseline configuration standards to existing AWS resources.</p>
+             <p>This includes identifying resources such as S3 buckets and enforcing required configurations like versioning and access control settings across both managed and externally created infrastructure. This approach ensures that foundational compliance requirements are consistently applied, even when resources are created outside the Terraform workflow.</p>
          </section>
 
         <div style="margin-top: 40px; clear: both; position: relative; z-index: 10;">
