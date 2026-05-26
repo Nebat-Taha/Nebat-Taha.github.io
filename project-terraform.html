@@ -31,7 +31,7 @@
         <a href="#state" class="toc-link">04. Remote State</a>
         <a href="#security" class="toc-link">05. Security </a>
         <a href="#modular" class="toc-link">06. Modular Architecture</a>
-        <a href="#policy" class="toc-link">07. Policy Enforcement</a>
+        
     </aside>
 
     <article class="article-container">
@@ -87,11 +87,7 @@
               <p>This approach maintains a shared provisioning pattern across regions by reusing standardized infrastructure definitions with different inputs based on regional requirements.</p>
           </section>
 
-         <section id="policy">
-             <h2>07. Infrastructure Policy Enforcement</h2>
-             <p>In addition to infrastructure provisioning through Terraform, a separate governance mechanism is used to apply baseline configuration standards to existing AWS resources.</p>
-             <p>This includes identifying resources such as S3 buckets and enforcing required configurations like versioning and access control settings across both managed and externally created infrastructure. This approach ensures that foundational compliance requirements are consistently applied, even when resources are created outside the Terraform workflow.</p>
-         </section>
+      
 
         <div style="margin-top: 40px; clear: both; position: relative; z-index: 10;">
                 <a href="https://github.com/Nebat-Taha/terraform-aws" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem; display: inline-block;">View GitHub Repo →</a>
