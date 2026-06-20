@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Region Terraform | Nebat Taha</title>
+    <title>Gitops | Nebat Taha</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     </head>
@@ -37,16 +37,21 @@
     <article class="article-container">
         <header>
             <a href="projects.html" class="back-link">← Back to Projects</a>
-            <h1 style="margin-top: 20px;">Multi-Region Infrastructure Automation with Terraform</h1>
-            <p style="font-size: 1.1rem; color: #666;">Infrastructure automation and governance workflows using Terraform, federated CI/CD authentication, and region-scoped deployment controls to manage a consistent and secure infrastructure lifecycle across AWS.</p>
+            <h1 style="margin-top: 20px;">GitOps Continuous Delivery with ArgoCD and Minikube</h1>
+            <p style="font-size: 1.1rem; color: #666;">Designed and implemented a GitOps-based Continuous Delivery workflow using Minikube, ArgoCD, GitHub Actions, Docker, and GitHub repositories. The project demonstrates how application changes can be automatically built, versioned, and deployed through GitOps principles while maintaining Git as the single source of truth for the deployment state.</p>
+            <p>The platform demonstrates modern DevOps practices by separating application code from deployment manifests and using ArgoCD to continuously reconcile Kubernetes cluster state with Git repositories.</P>
             <div style="margin-top: 20px;">
-                <span class="tag">Terraform</span><span class="tag">AWS</span><span class="tag">GitHub Action</span><span class="tag">OIDC</span><span class="tag">Multi-Region</span>
+                <span class="tag">ArgoCD</span>
+                <span class="tag">Docker</span>
+                <span class="tag">GitHub Action</span>
+                <span class="tag">Minikube</span>
+                <span class="tag">GitHub</span>
             </div>
         </header>
 
         <section id="lifecycles" style="margin-top: 40px;">
             <h2>01. Infrastructure Lifecycle Segmentation</h2>
-            <p>The infrastructure architecture is intentionally separated into global and regional deployment layers to isolate resources with different operational lifecycles. Global services such as IAM,  and shared infrastructure components are managed independently from region-specific compute and application resources. </p>
+            <p>The workflow enables a consistent delivery model where application changes are automatically promoted into deployment manifests and applied to the target Kubernetes environment. This ensures that the cluster state always reflects the declared configuration in Git, with full traceability back to source changes. </p>
             <p>Each region is treated as an independent deployment scope, where infrastructure is selectively composed based on required services rather than replicated uniformly across all regions. This allows workloads to differ between regions while still following a shared provisioning approach. </p>
             <p>This separation is also reflected in the Terraform state design, where global and regional resources maintain independent state boundaries aligned with their lifecycle and operational scope. This ensures infrastructure changes remain contained within their respective lifecycle domains. </p>
 
