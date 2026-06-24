@@ -25,12 +25,12 @@
 
     <aside class="sticky-toc">
         <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
-        <a href="#lifecycles" class="toc-link">01. Lifecycles</a>
-        <a href="#authentication" class="toc-link">02. Authentication</a>
-        <a href="#deployment" class="toc-link">03. Regional Deployment</a>
-        <a href="#state" class="toc-link">04. Remote State</a>
+        <a href="#workflow" class="toc-link">01. GitOps Workflow</a>
+        <a href="#Repository" class="toc-link">02. Dual-Repository</a>
+        <a href="#Integration" class="toc-link">03. REpository Integration</a>
+        <a href="#Tagging" class="toc-link">04. Image Tagging</a>
         <a href="#security" class="toc-link">05. Security </a>
-        <a href="#modular" class="toc-link">06. Modular Architecture</a>
+        <a href="#Bootstrapping" class="toc-link">06. Bootstrapping</a>
         
     </aside>
 
@@ -38,8 +38,8 @@
         <header>
             <a href="projects.html" class="back-link">← Back to Projects</a>
             <h1 style="margin-top: 20px;">GitOps Continuous Delivery with ArgoCD and Minikube</h1>
-            <p style="font-size: 1.1rem; color: #666;">Designed and implemented a GitOps-based Continuous Delivery workflow using Minikube, ArgoCD, GitHub Actions, Docker, and GitHub repositories. The project demonstrates how application changes can be automatically built, versioned, and deployed through GitOps principles while maintaining Git as the single source of truth for the deployment state.</p>
-            <p>The platform demonstrates modern DevOps practices by separating application code from deployment manifests and using ArgoCD to continuously reconcile Kubernetes cluster state with Git repositories.</P>
+            <p style="font-size: 1.1rem; color: #666;">This project demonstrates the implementation of a GitOps-based continuous delivery workflow using Minikube, ArgoCD, GitHub Actions, Docker, and Kustomize. The goal was to build an end-to-end deployment pipeline that follows GitOps principles, where Git repositories act as the source of truth for both application delivery and deployment state.</p>
+            <p> The implementation combines continuous integration, container image management, deployment automation, and declarative configuration management to create a repeatable deployment workflow. Application changes are automatically built, versioned, and promoted through Git-based workflows while ArgoCD continuously reconciles the desired state stored in Git with the running environment. </P>
             <div style="margin-top: 20px;">
                 <span class="tag">ArgoCD</span>
                 <span class="tag">Docker</span>
@@ -49,53 +49,47 @@
             </div>
         </header>
 
-        <section id="lifecycles" style="margin-top: 40px;">
-            <h2>01. Infrastructure Lifecycle Segmentation</h2>
-            <p>The workflow enables a consistent delivery model where application changes are automatically promoted into deployment manifests and applied to the target Kubernetes environment. This ensures that the cluster state always reflects the declared configuration in Git, with full traceability back to source changes. </p>
-            <p>Each region is treated as an independent deployment scope, where infrastructure is selectively composed based on required services rather than replicated uniformly across all regions. This allows workloads to differ between regions while still following a shared provisioning approach. </p>
-            <p>This separation is also reflected in the Terraform state design, where global and regional resources maintain independent state boundaries aligned with their lifecycle and operational scope. This ensures infrastructure changes remain contained within their respective lifecycle domains. </p>
-
-            
+        <section id="workflow" style="margin-top: 40px;">
+            <h2>01.End-to-End GitOps Workflow</h2>
+            <p>The project implements a complete GitOps workflow that automates application delivery from source code commit to deployment. Rather than deploying directly to the cluster, every change flows through a controlled process that uses Git repositories as the source of truth.</p>
+            <p>When code is committed to the application repository, GitHub Actions builds a Docker image, tags it (with the commit hash), and pushes it to Docker Hub. The pipeline then updates the deployment manifests stored in a separate GitOps repository. ArgoCD continuously monitors this repository and automatically reconciles the desired state with the running state inside Minikube, ensuring deployments remain consistent and traceable.</p>
         </section>
 
-        <section id="authentication">
-            <h2>02. Federated Infrastructure Authentication</h2>
-            <p>Infrastructure workflows authenticate to AWS using OpenID Connect (OIDC) federation between GitHub Actions and AWS IAM. Instead of storing long-lived AWS access keys inside CI/CD systems, GitHub workflows dynamically assume IAM roles at runtime using short-lived identity tokens issued through the federated trust relationship.</p>
-            <p>IAM trust policies restrict role assumption based on repository and workflow context, ensuring infrastructure access remains scoped to approved execution paths and automation sources.</p>
-            <p>This establishes an identity-aware infrastructure automation model where authentication is temporary, centrally governed, and driven through federated trust rather than static credential. </p>
-            
+        <section id="Repository">
+            <h2>02. Dual-Repository GitOps Architecture</h2>
+            <p>The project follows a common GitOps pattern by separating application code and deployment configuration into independent repositories. The application repository contains the source code, Dockerfile, and CI pipeline, while the manifest repository contains the Kubernetes deployment manifests that define the desired state of the environment.</p> 
+            <p>This separation allows deployment configuration to be managed independently from application development activities. The manifest repository serves as the authoritative source of truth for deployment state, while ArgoCD continuously monitors that repository and applies changes to the environment. This approach improves visibility, simplifies change tracking, and aligns with established GitOps practices.</p>
         </section>
 
-        <section id="deployment">
-           <h2>03. Region-Scoped Deployment Governance</h2>
-           <p>Terraform deployments are executed through a plan-and-apply workflow implemented in GitHub Actions. Each AWS region operates as an independent execution context using a strategy matrix, enabling infrastructure changes to be evaluated and applied per region in isolation. </p>
-           <p>Terraform plan artifacts are generated during the planning phase and persisted for execution in the apply stage after manual approval through protected GitHub Environments. This ensures that the exact reviewed plan is the one applied during deployment, maintaining consistency between validation and execution. </p>
-           <p>This design enables controlled regional deployment boundaries, where each region is independently provisioned while still following a consistent governance workflow. </p>
- 
+        <section id="Integration">
+           <h2>03. Cross-Repository Integration </h2>
+           <p>A key component of the workflow is the automated integration between the application repository and the GitOps manifest repository. While each repository serves a different purpose, they must work together to enable continuous delivery.</p>
+            <p> GitHub Actions was configured with deploy keys and repository secrets that allow the pipeline to securely access the manifest repository. After building and publishing a new container image, the pipeline checks out the manifest repository, updates the deployment configuration, commits the change, and pushes it back to GitHub. This process allows deployment intent to be communicated through Git rather than direct interaction with the cluster, preserving the GitOps model throughout the deployment lifecycle.</p>
         </section>
 
-        <section id="state">
-            <h2>04. Segmented Remote State Coordination</h2>
-            <p> Terraform state is stored remotely in Amazon S3, with separate state files for global and regional infrastructure. This aligns state boundaries with operational scope, ensuring infrastructure domains remain isolated. </p>
-            <p> DynamoDB-based state locking coordinates Terraform executions and prevents concurrent operations from modifying the same state file, reducing the risk of conflicting updates during deployments. </p>        
+        <section id="Tagging">
+            <h2>04. Immutable Deployments with Git SHA Tagging</h2>
+            <p>To improve deployment traceability, container images are tagged using the Git commit SHA rather than mutable tags such as latest. Each deployment therefore references a unique application version that can be traced directly to the source code commit that produced it.</p> 
+            <p>Kustomize is used to manage image version updates within the manifest repository. During pipeline execution, the image reference is updated with the newly generated commit hash and committed back to Git. This approach provides deterministic deployments, simplifies troubleshooting, and makes it possible to identify exactly which version of the application is running at any point in time.</p>
         </section>
 
         <section id="security">
-            <h2>05.Shift-Left Security & Drift Governance</h2>
-            <p>Infrastructure security and compliance validation is enforced directly within the Terraform delivery pipeline using tools such as TFLint, tfsec, and Checkov. These checks ensure that infrastructure is validated against industry security standards before any provisioning, preventing non-compliant resources from being deployed. This establishes a “shift-left” approach where security validation is integrated into the infrastructure delivery process itself rather than handled after deployment. </p>
-            <p> In addition, drift detection is implemented as a dedicated CI/CD workflow executed on a scheduled basis across both global and regional Terraform states. The workflow runs Terraform in a non-interactive mode to compare the desired configuration against the infrastructure state within the Terraform-managed scope. When deviations are detected, the pipeline is explicitly failed to surface drift for review and remediation. This creates a continuous operational signal that highlights divergence introduced outside the provisioning workflow, including emergency or manual interventions. These inconsistencies remain visible until they are reconciled back into the declarative configuration, ensuring that infrastructure changes are eventually reflected in code. </p>
+            <h2>05.Deployment Governance and Security Gates</h2>
+            <p>The workflow incorporates approval mechanisms at both the continuous integration and continuous delivery stages. These controls demonstrate how deployment automation can be combined with governance and change management practices.</p>
+            <p>GitHub Environments were used to introduce approval requirements before image promotion, while branch protection rules and pull request requirements were applied to the GitOps repository. Together, these controls help ensure that deployment-related changes are reviewed before becoming part of the desired state that ArgoCD will eventually synchronize to the environment.</p>            
         </section>
 
-          <section id="modular">
-            <h2>06.Modular Multi-Region Architecture </h2>
-              <p>Reusable Terraform modules are used to structure infrastructure provisioning across AWS regions. Each module defines a set of input variables used to configure and create resources in a consistent and repeatable way.</p>
-              <p>This approach maintains a shared provisioning pattern across regions by reusing standardized infrastructure definitions with different inputs based on regional requirements.</p>
+          <section id="Bootstrapping">
+            <h2>06.Automated Platform Bootstrapping </h2>
+              <P>To reduce manual setup effort and improve repeatability, the project includes automation for provisioning the local GitOps environment. A dedicated bootstrap structure contains the resources and scripts required to initialize Minikube, install ArgoCD, create namespaces, and prepare the platform for application deployment.</P>
+              <p>The setup process is managed through reusable scripts that automate environment initialization and platform configuration. By codifying the platform setup process, the project demonstrates Infrastructure as Code principles and provides a consistent method for recreating the environment from source control. </p>
           </section>
 
       
 
         <div style="margin-top: 40px; clear: both; position: relative; z-index: 10;">
-                <a href="https://github.com/Nebat-Taha/terraform-aws" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem; display: inline-block;">View GitHub Repo →</a>
+               <p><a href="https://github.com/Nebat-Taha/gitops-python-app" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem; display: inline-block;">View GitHub App Repo →</a></p>
+               <p><a href="https://github.com/Nebat-Taha/gitops-manifests" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem; display: inline-block;">View GitHub Manifest Repo →</a></p>
             </div>
 
         <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
