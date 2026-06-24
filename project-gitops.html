@@ -70,19 +70,21 @@
         <section id="Tagging">
             <h2>04. Immutable Deployments with Git SHA Tagging</h2>
             <p>To improve deployment traceability, container images are tagged using the Git commit SHA rather than mutable tags such as latest. Each deployment therefore references a unique application version that can be traced directly to the source code commit that produced it.</p> 
-            <p>Kustomize is used to manage image version updates within the manifest repository. During pipeline execution, the image reference is updated with the newly generated commit hash and committed back to Git. This approach provides deterministic deployments, simplifies troubleshooting, and makes it possible to identify exactly which version of the application is running at any point in time.</p>
+            <p>Kustomize is used to manage image version updates within the manifest repository. During pipeline execution, the image reference is updated with the newly generated commit hash and committed back to Git. This approach creates immutable deployments, simplifies troubleshooting, and provides a clear audit trail of what version is running in the environment at any point in time.</p>
         </section>
 
         <section id="security">
             <h2>05.Deployment Governance and Security Gates</h2>
-            <p>The workflow incorporates approval mechanisms at both the continuous integration and continuous delivery stages. These controls demonstrate how deployment automation can be combined with governance and change management practices.</p>
-            <p>GitHub Environments were used to introduce approval requirements before image promotion, while branch protection rules and pull request requirements were applied to the GitOps repository. Together, these controls help ensure that deployment-related changes are reviewed before becoming part of the desired state that ArgoCD will eventually synchronize to the environment.</p>            
+            <p>The workflow incorporates approval mechanisms at both the continuous integration and continuous delivery stages, demonstrating how deployment automation can be combined with governance controls.</p>
+            <p>GitHub Environments were used to require approval before container images could be published to the registry, while branch protection and pull request requirements were applied to the GitOps repository before deployment-related changes could become part of the desired state. Together, these controls establish review points for both application promotion and deployment configuration changes.</p>
+            
         </section>
 
           <section id="Bootstrapping">
             <h2>06.Automated Platform Bootstrapping </h2>
-              <P>To reduce manual setup effort and improve repeatability, the project includes automation for provisioning the local GitOps environment. A dedicated bootstrap structure contains the resources and scripts required to initialize Minikube, install ArgoCD, create namespaces, and prepare the platform for application deployment.</P>
-              <p>The setup process is managed through reusable scripts that automate environment initialization and platform configuration. By codifying the platform setup process, the project demonstrates Infrastructure as Code principles and provides a consistent method for recreating the environment from source control. </p>
+            <p> To reduce manual setup effort and improve consistency, the project includes automation for provisioning the local GitOps environment. A dedicated bootstrap structure contains the resources and scripts required to initialize Minikube, install ArgoCD, create the required namespaces, and prepare the platform for application deployment.</p>
+            <p> The platform setup process is defined through reusable automation, allowing the environment to be provisioned in a repeatable manner with the same desired configuration each time. By codifying the initialization process, the project demonstrates Infrastructure as Code principles and establishes a consistent foundation for deployment and testing activities.</p>
+             
           </section>
 
       
