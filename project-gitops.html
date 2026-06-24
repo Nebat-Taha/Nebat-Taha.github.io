@@ -27,7 +27,7 @@
         <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
         <a href="#workflow" class="toc-link">01. GitOps Workflow</a>
         <a href="#Repository" class="toc-link">02. Dual-Repository</a>
-        <a href="#Integration" class="toc-link">03. REpository Integration</a>
+        <a href="#Integration" class="toc-link">03. Repository Integration</a>
         <a href="#Tagging" class="toc-link">04. Image Tagging</a>
         <a href="#security" class="toc-link">05. Security </a>
         <a href="#Bootstrapping" class="toc-link">06. Bootstrapping</a>
@@ -38,8 +38,7 @@
         <header>
             <a href="projects.html" class="back-link">← Back to Projects</a>
             <h1 style="margin-top: 20px;">GitOps Continuous Delivery with ArgoCD and Minikube</h1>
-            <p style="font-size: 1.1rem; color: #666;">This project demonstrates the implementation of a GitOps-based continuous delivery workflow using Minikube, ArgoCD, GitHub Actions, Docker, and Kustomize. The goal was to build an end-to-end deployment pipeline that follows GitOps principles, where Git repositories act as the source of truth for both application delivery and deployment state.</p>
-            <p> The implementation combines continuous integration, container image management, deployment automation, and declarative configuration management to create a repeatable deployment workflow. Application changes are automatically built, versioned, and promoted through Git-based workflows while ArgoCD continuously reconciles the desired state stored in Git with the running environment. </P>
+            <p style="font-size: 1.1rem; color: #666;"> This project demonstrates the implementation of a GitOps-based deployment workflow using Minikube, ArgoCD, GitHub Actions, Docker, and Kustomize. Application changes are automatically built, versioned, and promoted through Git-driven workflows, while ArgoCD continuously reconciles the desired state stored in Git with the running environment, following a GitOps model where deployment configuration is managed declaratively through source control.</p>
             <div style="margin-top: 20px;">
                 <span class="tag">ArgoCD</span>
                 <span class="tag">Docker</span>
@@ -52,7 +51,7 @@
         <section id="workflow" style="margin-top: 40px;">
             <h2>01.End-to-End GitOps Workflow</h2>
             <p>The project implements a complete GitOps workflow that automates application delivery from source code commit to deployment. Rather than deploying directly to the cluster, every change flows through a controlled process that uses Git repositories as the source of truth.</p>
-            <p>When code is committed to the application repository, GitHub Actions builds a Docker image, tags it (with the commit hash), and pushes it to Docker Hub. The pipeline then updates the deployment manifests stored in a separate GitOps repository. ArgoCD continuously monitors this repository and automatically reconciles the desired state with the running state inside Minikube, ensuring deployments remain consistent and traceable.</p>
+            <p>When code is committed to the application repository, GitHub Actions builds a Docker image, tags it using the corresponding Git commit SHA, and pushes it to Docker Hub. The pipeline then updates the image tag within the deployment manifests stored in a separate GitOps repository to reference the newly published container image. ArgoCD continuously monitors this repository and reconciles the desired state with the running state inside Minikube, ensuring deployments remain consistent and traceable.</p>   
         </section>
 
         <section id="Repository">
