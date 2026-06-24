@@ -38,19 +38,20 @@
         <header>
             <a href="projects.html" class="back-link">← Back to Projects</a>
             <h1 style="margin-top: 20px;">GitOps Continuous Delivery with ArgoCD and Minikube</h1>
-            <p style="font-size: 1.1rem; color: #666;"> This project demonstrates the implementation of a GitOps-based deployment workflow using Minikube, ArgoCD, GitHub Actions, Docker, and Kustomize. Application changes are automatically built, versioned, and promoted through Git-driven workflows, while ArgoCD continuously reconciles the desired state stored in Git with the running environment, following a GitOps model where deployment configuration is managed declaratively through source control.</p>
+            <p style="font-size: 1.1rem; color: #666;"> This project demonstrates the implementation of a GitOps-based deployment workflow using Minikube, ArgoCD, GitHub Actions, Docker, and Kustomize. Application changes are automatically built, versioned, and deployed through Git-driven workflows, while ArgoCD continuously reconciles the desired state stored in Git with the running environment, following a GitOps model where deployment configuration is managed declaratively through source control.</p>
             <div style="margin-top: 20px;">
                 <span class="tag">ArgoCD</span>
-                <span class="tag">Docker</span>
                 <span class="tag">GitHub Action</span>
+                <span class="tag">Docker</span>
+                <span class="tag">Kustomize </span>
                 <span class="tag">Minikube</span>
-                <span class="tag">GitHub</span>
+               
             </div>
         </header>
 
         <section id="workflow" style="margin-top: 40px;">
             <h2>01.End-to-End GitOps Workflow</h2>
-            <p>The project implements a complete GitOps workflow that automates application delivery from source code commit to deployment. Rather than deploying directly to the cluster, every change flows through a controlled process that uses Git repositories as the source of truth.</p>
+            <p>The project implements a GitOps workflow that automates application delivery from source code commit to deployment. Rather than deploying directly to the cluster, every change flows through a controlled process that uses Git repositories as the source of truth.</p>
             <p>When code is committed to the application repository, GitHub Actions builds a Docker image, tags it using the corresponding Git commit SHA, and pushes it to Docker Hub. The pipeline then updates the image tag within the deployment manifests stored in a separate GitOps repository to reference the newly published container image. ArgoCD continuously monitors this repository and reconciles the desired state with the running state inside Minikube, ensuring deployments remain consistent and traceable.</p>   
         </section>
 
@@ -63,7 +64,7 @@
         <section id="Integration">
            <h2>03. Cross-Repository Integration </h2>
            <p>A key component of the workflow is the automated integration between the application repository and the GitOps manifest repository. While each repository serves a different purpose, they must work together to enable continuous delivery.</p>
-            <p> GitHub Actions was configured with deploy keys and repository secrets that allow the pipeline to securely access the manifest repository. After building and publishing a new container image, the pipeline checks out the manifest repository, updates the deployment configuration, commits the change, and pushes it back to GitHub. This process allows deployment intent to be communicated through Git rather than direct interaction with the cluster, preserving the GitOps model throughout the deployment lifecycle.</p>
+            <p> GitHub Actions was configured with deploy keys and repository secrets that allow the pipeline to securely access the manifest repository. After building and publishing a new container image, the pipeline checks out the manifest repository, updates the image tag within the deployment manifests, commits the change, and pushes it back to GitHub. This process allows deployment intent to be communicated through Git rather than direct interaction with the cluster, preserving the GitOps model throughout the deployment lifecycle.</p>
         </section>
 
         <section id="Tagging">
@@ -75,7 +76,7 @@
         <section id="security">
             <h2>05.Deployment Governance and Security Gates</h2>
             <p>The workflow incorporates approval mechanisms at both the continuous integration and continuous delivery stages, demonstrating how deployment automation can be combined with governance controls.</p>
-            <p>GitHub Environments were used to require approval before container images could be published to the registry, while branch protection and pull request requirements were applied to the GitOps repository before deployment-related changes could become part of the desired state. Together, these controls establish review points for both application promotion and deployment configuration changes.</p>
+            <p>GitHub Environments were used to require approval before container images could be published to the registry, while branch protection and pull request requirements were applied to the GitOps repository before deployment-related changes could become part of the desired state. Together, these controls establish review points for both application changes and deployment configuration changes.</p>
             
         </section>
 
