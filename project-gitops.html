@@ -75,7 +75,7 @@
 
         <section id="security">
             <h2>05.Deployment Governance and Security Gates</h2>
-            <p>The workflow incorporates approval mechanisms at both the continuous integration and continuous delivery stages, demonstrating how deployment automation can be combined with governance controls.</p>
+            <p>The workflow incorporates an approval gate before publishing container images, demonstrating how automated delivery can be combined with governance controls.</p>
             <p>GitHub Environments were used to require approval before container images could be published to the registry, while branch protection and pull request requirements were applied to the GitOps repository before deployment-related changes could become part of the desired state. Together, these controls establish review points for both application changes and deployment configuration changes.</p>
             
         </section>
