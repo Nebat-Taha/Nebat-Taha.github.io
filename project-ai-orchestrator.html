@@ -28,12 +28,14 @@
             <p style="font-weight: 900; font-size: 0.7rem; color: #444; margin-bottom: 20px; letter-spacing: 1px;">PROJECT INDEX</p>
             <a href="#goal" class="toc-link">01. Design Goal</a>
             <a href="#label-driven" class="toc-link">02. Label-Driven</a>
-            <a href="#control-layer" class="toc-link">03. Control Layer</a>
+            <a href="#control-layer" class="toc-link">03. Orchestrator </a>
             <a href="#prompt-code" class="toc-link">04. Prompt as Code</a>
-            <a href="#structured" class="toc-link">05. Enforcement</a>
-            <a href="#context" class="toc-link">06. Context Injection</a>
-            <a href="#retry" class="toc-link">07. Self-Healing</a>
-            <a href="#security" class="toc-link">08. Scoped Bots</a>
+            <a href="#structured" class="toc-link">05. Output Enforcement</a>
+            <a href="#context" class="toc-link">06. Language Routing</a>
+            <a href="#Security" class="toc-link">07. Security and Guardrails</a>
+            <a href="#technology-stack" class="toc-link">08. Technology Stack</a>
+            <a href="#end-to-end-workflow" class="toc-link">09. End-to-End Workflow</a>
+            <a href="#future-enhancements" class="toc-link">10. Future Enhancements</a>
         </aside>
 
         <article class="article-container">
@@ -82,13 +84,13 @@
             </section>
 
             <section id="context">
-                <h2>06. Context Injection</h2>
+                <h2>06. Configuration-Driven Language Routing and Persona Selection</h2>
                 <p>The orchestrator provides the LLM with a structured map of the repository, giving it visibility into the available files and directory structure within its permitted scope. Rather than automatically loading project files into the prompt, the model can use this map to identify relevant files and request their contents through a dedicated repository-reading tool. The orchestrator validates each request against the allowed repository scope and applies sensitive-data redaction before returning file contents.</p>
                 <p><strong>Impact:</strong> This allows the model to build an understanding of the existing codebase before generating changes, without loading the entire repository into its context. It also keeps repository access controlled, limits unnecessary context, and helps generated code align with the existing project structure.</p>
     
             </section>
 
-            <section id="retry">
+            <section id="Security">
                 <h2>07. Security and Guardrails</h2>
                 <p><strong>Webhook Authentication</Strong></p>
                 <p>The Jira webhook endpoint requires a shared secret supplied through a request header. The orchestrator validates this secret using a constant-time comparison before accepting a request for processing. If the secret is missing from the configuration or the request fails authentication, the webhook is rejected.</p>
