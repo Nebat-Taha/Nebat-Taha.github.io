@@ -40,7 +40,7 @@
             <header>
                 <a href="projects.html" class="back-link">← Back to Projects</a>
                 <h1 style="margin-top: 20px;">AI-Driven Infrastructure Orchestrator</h1>
-                <p style="font-size: 1.1rem; color: #666;">Automating the bridge between Jira task management and GitHub version control using FastAPI and Local LLMs (Ollama) to interpret labels and generate context-aware code.</p>
+                <p style="font-size: 1.1rem; color: #666;">An AI-powered software development orchestrator designed to make AI an active participant in the engineering workflow. It receives development tasks, selects the appropriate engineering persona based on the programming language, and builds an understanding of the existing codebase by gathering relevant context through a dedicated repository-reading tool. Using this context, it generates code aligned with the repository's structure and requirements, then creates a GitHub Pull Request for human review.</p>
                 <div style="margin-top: 20px;">
                     <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">Ollama</span><span class="tag">Jira API</span>
                 </div>
@@ -48,37 +48,44 @@
 
             <section id="goal" style="margin-top: 40px;">
                 <h2>01. Design Goal</h2>
-                <p>Design a system that translates structured tickets into code, while maintaining control, scalability, and clear system boundaries. The goal was to ensure that while AI generates the code, the DevOps engineer remains the orchestrator of the logic and governance.</p>
+                <p> The goal was to build a pluggable AI development orchestrator that can take on different engineering tasks while operating within clearly defined boundaries. Each programming language has its own engineering persona and repository scope, controlling where the AI can access and generate code. Repository mapping determines which directories and files are visible to the model, with configurable exclusions preventing designated content from entering its context or being accessed through file-reading requests. Retrieved file content is also inspected and sensitive information is redacted before being exposed to the model. This creates an extensible framework where AI can understand and work within an existing codebase while maintaining controlled access, language-specific boundaries, and human oversight of generated changes.</p>
             </section>
 
             <section id="label-driven">
-                <h2>02. Label-Driven Execution</h2>
-                <p>I used labels from Jira to determine which prompt to use, where the generated code should be placed, and which workflow should run. Instead of embedding logic for each technology, the system reads labels and maps them to configuration.</p>
-                <p><strong>Impact:</strong> This removes hardcoded decision-making from the application and makes the system extensible. Supporting a new tool or workflow becomes a configuration change rather than a code change, which allows the system to scale with minimal friction.</p>
+                <h2>02. Configuration-Driven Language Routing and Persona Selection</h2>
+                <p>Jira labels identify the programming or configuration language associated with each development task. The orchestrator matches the label against registered language profiles, which define the engineering persona, repository scope, and language-specific output handling. This keeps language-specific instructions and execution parameters separate from the core orchestration logic.</p>
+                <p>Routing follows an explicit validation model. If a ticket has no matching registered language label, the orchestrator stops execution and reports the issue rather than guessing the intended language or selecting an arbitrary persona.</p>
+                <p><strong>Impact:</strong> Adding support for another language requires defining its engineering persona and registering the corresponding profile, without changing the core orchestration logic. This makes the system extensible while keeping language selection predictable and controlled.</p>
+
             </section>
 
             <section id="control-layer">
                 <h2>03. Orchestrator as Control Layer</h2>
-                <p>I introduced a lightweight orchestrator using FastAPI to sit between Jira, the LLM, and GitHub. This layer is responsible for handling the workflow and coordinating the interaction between systems.</p>
-                <p><strong>Impact:</strong> This creates a clear separation of concerns. Jira defines intent, the LLM handles generation, and GitHub manages version control. The orchestrator becomes the only place where decisions are made, which simplifies maintenance and allows each component to evolve independently.</p>
+                <p>The orchestrator serves as the central control layer between Jira, the LLM, and GitHub. It receives incoming development tasks, manages the execution sequence, coordinates interactions between these components, and controls how information and generated changes move through the workflow.</p>
+                <p><strong>Impact:</strong> This creates a clear separation of concerns. Jira defines intent, the LLM handles generation, and GitHub manages version control and code review. The orchestrator coordinates the process and enforces the workflow logic, simplifying maintenance and allowing each component to evolve independently.</p>
             </section>
 
             <section id="prompt-code">
                 <h2>04. Prompt as Code</h2>
-                <p>Prompts are stored as version-controlled .md files instead of being embedded in the application logic. They are treated the same way as infrastructure or configuration code.</p>
-                <p><strong>Impact:</strong> This makes AI behavior visible and reviewable. Changes to prompts can go through pull requests, which aligns with existing DevOps practices and introduces control over how the system evolves.</p>
+                
+                <p>Each engineering persona is defined in its own version-controlled Markdown file rather than being embedded in the application logic. These files are not generic prompts, they establish the role the model is expected to assume, along with its technical responsibilities, coding standards, and task-specific instructions.</p>
+                <p>When a Jira label matches a registered language profile, the orchestrator loads the corresponding persona prompt to guide code generation. Alongside it, a shared standard.md file is always loaded to provide common engineering conventions that apply across all personas, such as naming conventions and consistency standards.</p>
+                <p><storng>Impact:</strong> Treating prompts as code makes AI behaviour visible, reviewable, and maintainable. Prompt changes can go through pull requests and version control, just like application code or infrastructure configuration. Separating shared standards from language-specific instructions also makes it easier to maintain consistent engineering practices across different personas, while allowing each persona to evolve independently without changing the core orchestration logic.</p>
+
             </section>
 
             <section id="structured">
                 <h2>05. Structured Output Enforcement</h2>
-                <p>I enforced a strict JSON schema for all LLM responses instead of accepting free-form output. The system expects structured data that can be directly consumed.</p>
-                <p><strong>Impact:</strong> This removes ambiguity from the LLM output and makes it reliable for automation. The trade-off is reduced flexibility, but it ensures consistency and allows downstream processes to operate without additional parsing logic.</p>
+                <p>The orchestrator defines an explicit output contract for the LLM through its persona instructions. Each response is expected to follow a consistent structure containing a file path (PATH:) and the generated code (CODE:), with no additional explanatory text. This gives the orchestrator a predictable format to work with when processing generated changes.</p>
+                <p>The response is then normalized before further processing. Regex-based handling removes Markdown code fences and standardizes field labels, accommodating common formatting variations in LLM responses.</p>
+                <p><strong>Impact:<strong> Defining a consistent output contract reduces ambiguity and makes generated responses easier for the orchestrator to process. Rather than relying on unrestricted natural-language responses, downstream processing can work with clearly identified fields. This improves consistency and predictability across different engineering personas.</p>
             </section>
 
             <section id="context">
                 <h2>06. Context Injection</h2>
-                <p>The orchestrator dynamically injects relevant project context, such as module definitions and structure, into the prompt before sending it to the LLM. This ensures the model works with real system information.</p>
-                <p><strong>Impact:</strong> This reduces hallucination and improves alignment with the existing codebase. The LLM generates output that fits within the actual system rather than making assumptions about it.</p>
+                <p>The orchestrator provides the LLM with a structured map of the repository, giving it visibility into the available files and directory structure within its permitted scope. Rather than automatically loading project files into the prompt, the model can use this map to identify relevant files and request their contents through a dedicated repository-reading tool. The orchestrator validates each request against the allowed repository scope and applies sensitive-data redaction before returning file contents.</p>
+                <p><strong>Impact:</strong> This allows the model to build an understanding of the existing codebase before generating changes, without loading the entire repository into its context. It also keeps repository access controlled, limits unnecessary context, and helps generated code align with the existing project structure.</p>
+    
             </section>
 
             <section id="retry">
