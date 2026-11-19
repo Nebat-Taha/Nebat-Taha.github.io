@@ -105,16 +105,240 @@
     
             </section>
 
-            <section id="security">
-                <h2>08. Technology Stack</h2>
-                <p>The orchestrator brings together five core technologies and integrations, each serving a distinct role in the system.</p>
-                <p><strong>Core Application — Python : </strong> Python provides the foundation for the orchestrator. It handles the application logic, coordinates the workflow, manages interactions between components, and controls the processing of development tasks.</p>
-                <p><strong>API Layer — FastAPI and Uvicorn: </strong>  FastAPI exposes the webhook endpoint that receives Jira events and passes incoming requests into the orchestration process. Uvicorn runs the application as the ASGI server. </p>
-                <p><strong>LLM Runtime — Ollama and Phi-3: </strong> Ollama provides the local runtime for hosting and interacting with the language model. The project currently uses Phi-3 for understanding development tasks, analyzing repository context, and generating code based on the selected engineering persona. </p>
-                <p><strong>Task Management — Jira REST API and Webhooks: </strong>  Jira webhooks trigger the orchestration process when a development request is received. The Jira REST API is used to retrieve the associated issue information, including its summary, description, and labels. </p>
-                <p><strong>Version Control — GitHub API and PyGithub: </strong> GitHub provides the repository and code review platform. The orchestrator uses PyGithub to interact with GitHub, create a branch, commit generated changes, and open a Pull Request for human review. </p>
+            
+<!-- =========================================================
+     08. TECHNOLOGY STACK
+========================================================= -->
+<section id="technology-stack">
+    <h2>08. Technology Stack</h2>
 
-            </section>
+    <p>
+        The orchestrator brings together five core technologies and
+        integrations, each serving a distinct role in the system.
+    </p>
+
+    <h3>Core Application — Python</h3>
+    <p>
+        Python provides the foundation for the orchestrator. It handles
+        the application logic, coordinates the workflow, manages
+        interactions between components, and controls the processing
+        of development tasks.
+    </p>
+
+    <h3>API Layer — FastAPI and Uvicorn</h3>
+    <p>
+        FastAPI exposes the webhook endpoint that receives Jira events
+        and passes incoming requests into the orchestration process.
+        Uvicorn runs the application as the ASGI server.
+    </p>
+
+    <h3>LLM Runtime — Ollama and Phi-3</h3>
+    <p>
+        Ollama provides the local runtime for hosting and interacting
+        with the language model. The project currently uses Phi-3 for
+        understanding development tasks, analyzing repository context,
+        and generating code based on the selected engineering persona.
+    </p>
+
+    <h3>Task Management — Jira REST API and Webhooks</h3>
+    <p>
+        Jira webhooks trigger the orchestration process when a
+        development request is received. The Jira REST API is used to
+        retrieve the associated issue information, including its
+        summary, description, and labels.
+    </p>
+
+    <h3>Version Control — GitHub API and PyGithub</h3>
+    <p>
+        GitHub provides the repository and code review platform.
+        The orchestrator uses PyGithub to interact with GitHub, create
+        a branch, commit generated changes, and open a Pull Request
+        for human review.
+    </p>
+</section>
+
+
+<!-- =========================================================
+     09. END-TO-END WORKFLOW
+========================================================= -->
+<section id="end-to-end-workflow">
+    <h2>09. End-to-End Workflow</h2>
+
+    <p>
+        The workflow begins when a development request is submitted
+        through Jira and ends with a GitHub Pull Request ready for
+        human review. The orchestrator coordinates each stage, from
+        task interpretation and repository investigation to code
+        generation and submission.
+    </p>
+
+    <h3>Workflow Overview</h3>
+
+    <ol class="workflow-steps">
+        <li>
+            <strong>Jira Development Request</strong>
+            <p>
+                A webhook triggers the orchestrator. Issue details
+                and labels are retrieved for processing.
+            </p>
+        </li>
+
+        <li>
+            <strong>Language Routing and Persona Selection</strong>
+            <p>
+                Jira labels are matched to a registered language
+                profile and its corresponding engineering persona.
+            </p>
+        </li>
+
+        <li>
+            <strong>Repository Discovery and Context Retrieval</strong>
+            <p>
+                The repository map is provided to the model, which
+                requests relevant file contents through the
+                controlled repository-reading tool.
+            </p>
+        </li>
+
+        <li>
+            <strong>Code Generation and Output Processing</strong>
+            <p>
+                The model generates code according to the selected
+                persona and output contract. The response is
+                normalized and processed by the orchestrator.
+            </p>
+        </li>
+
+        <li>
+            <strong>GitHub Pull Request</strong>
+            <p>
+                The generated file is committed to a new branch
+                and submitted through a Pull Request for human review.
+            </p>
+        </li>
+    </ol>
+
+    <h3>1. Jira Request Reception</h3>
+    <p>
+        A Jira webhook sends the development request to the FastAPI
+        endpoint. After authenticating the request, the orchestrator
+        retrieves the issue details and extracts the information
+        needed to begin processing, including the task description
+        and language labels.
+    </p>
+
+    <h3>2. Language Routing and Persona Selection</h3>
+    <p>
+        The orchestrator matches the Jira labels against the
+        registered language profiles. The selected profile determines
+        which engineering persona and repository scope will be used
+        for the task. If no supported language is identified,
+        execution stops rather than proceeding with an arbitrary
+        configuration.
+    </p>
+
+    <h3>3. Repository Discovery and Context Retrieval</h3>
+    <p>
+        The orchestrator generates a filtered repository map based
+        on the selected profile and configured exclusions. The model
+        uses this map to identify relevant files and requests their
+        contents through the dedicated repository-reading tool.
+        Requested paths are validated, and retrieved content is
+        inspected for sensitive information before being returned
+        to the model.
+    </p>
+
+    <h3>4. Code Generation and Output Processing</h3>
+    <p>
+        With the relevant repository context available, the model
+        generates code according to the selected persona's
+        instructions and the defined output contract. The
+        orchestrator processes the response, extracts the target
+        file path and code, and applies the applicable output
+        checks before preparing the change for submission.
+    </p>
+
+    <h3>5. GitHub Pull Request Creation</h3>
+    <p>
+        Once the generated output passes the applicable checks,
+        the orchestrator creates a new branch, commits the generated
+        file, and opens a Pull Request. The change is then available
+        for human review through the existing GitHub workflow.
+    </p>
+
+    <p>
+        <strong>Human Review:</strong> The process concludes with
+        a Pull Request, not an automatic merge. Human review remains
+        the final checkpoint before generated changes can become
+        part of the codebase.
+    </p>
+
+    <h3>Demonstration</h3>
+
+    <!-- Replace this placeholder with the embedded demo video. -->
+    <div class="video-placeholder">
+        <p>
+            <strong>End-to-End Workflow Demonstration</strong>
+        </p>
+        <p>
+            Video placeholder — embed the recording showing a Jira
+            request being processed and a GitHub Pull Request
+            being created.
+        </p>
+    </div>
+</section>
+
+
+<!-- =========================================================
+     10. FUTURE ENHANCEMENTS
+========================================================= -->
+<section id="future-enhancements">
+    <h2>10. Future Enhancements</h2>
+
+    <p>
+        The current implementation establishes the core orchestration
+        workflow, from receiving a development task to submitting
+        generated code for human review. There are several areas
+        where the architecture can evolve further.
+    </p>
+
+    <h3>Automated Correction and Retry Loop</h3>
+    <p>
+        Extend the workflow to consume CI/CD feedback from failed
+        validation or test runs. The orchestrator could return
+        relevant error context to the model, allowing it to
+        investigate and propose corrections within defined retry
+        limits before requesting human intervention.
+    </p>
+
+    <h3>Controlled Updates to Existing Files</h3>
+    <p>
+        The current implementation prevents generated changes
+        from overwriting existing files. A future enhancement
+        could introduce a controlled update mechanism that permits
+        modifications only to files previously created and owned
+        by the orchestrator, while preserving restrictions on
+        unrelated repository files.
+    </p>
+
+    <h3>Expanded Engineering Personas</h3>
+    <p>
+        Extend the existing language-profile architecture to
+        support additional engineering personas and development
+        workflows. This could allow the same orchestration framework
+        to handle a broader range of engineering tasks while
+        retaining task-specific instructions and repository
+        boundaries.
+    </p>
+
+    <h3>Expanded Validation and Quality Checks</h3>
+    <p>
+        Introduce more comprehensive validation of generated output,
+        including stricter path and content checks, syntax validation,
+        and automated tests before changes are submitted to GitHub.
+    </p>
+</section>
+
 
             <a href="https://github.com/Nebat-Taha/ai-pr-orchestrator" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View GitHub Repo →</a>
             <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid #eee; text-align: center;">
