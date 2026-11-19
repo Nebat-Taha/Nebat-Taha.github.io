@@ -78,7 +78,7 @@
                 <h2>05. Structured Output Enforcement</h2>
                 <p>The orchestrator defines an explicit output contract for the LLM through its persona instructions. Each response is expected to follow a consistent structure containing a file path (PATH:) and the generated code (CODE:), with no additional explanatory text. This gives the orchestrator a predictable format to work with when processing generated changes.</p>
                 <p>The response is then normalized before further processing. Regex-based handling removes Markdown code fences and standardizes field labels, accommodating common formatting variations in LLM responses.</p>
-                <p><strong>Impact:<strong> Defining a consistent output contract reduces ambiguity and makes generated responses easier for the orchestrator to process. Rather than relying on unrestricted natural-language responses, downstream processing can work with clearly identified fields. This improves consistency and predictability across different engineering personas.</p>
+                <p><strong>Impact:</strong>strong> Defining a consistent output contract reduces ambiguity and makes generated responses easier for the orchestrator to process. Rather than relying on unrestricted natural-language responses, downstream processing can work with clearly identified fields. This improves consistency and predictability across different engineering personas.</p>
             </section>
 
             <section id="context">
