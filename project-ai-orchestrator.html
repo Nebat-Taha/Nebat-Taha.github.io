@@ -89,15 +89,31 @@
             </section>
 
             <section id="retry">
-                <h2>07. Retry with Error Context</h2>
-                <p>When CI/CD validation fails, the system captures the error output and feeds it back into the LLM as additional context for a correction attempt.</p>
-                <p><strong>Impact:</strong> This introduces an iterative feedback loop that reduces manual debugging. Instead of stopping at failure, the system attempts to correct itself, moving toward a more resilient workflow.</p>
+                <h2>07. Security and Guardrails</h2>
+                <p><strong>Webhook Authentication</Strong></p>
+                <p>The Jira webhook endpoint requires a shared secret supplied through a request header. The orchestrator validates this secret using a constant-time comparison before accepting a request for processing. If the secret is missing from the configuration or the request fails authentication, the webhook is rejected.</p>
+                <p><strong>Repository Access Controls</Strong></p>
+                <p>Repository visibility is configurable, allowing designated files and directories to be excluded from the model's view. These exclusions are applied when generating the repository map, so excluded content is not exposed to the model as part of the available project structure. Language profiles also define the repository scope available to each engineering persona, further restricting which parts of the codebase it can access.</p>
+                <p>The dedicated file-reading tool independently validates requested paths, rejects absolute paths and path traversal attempts, and rechecks repository exclusions before accessing the filesystem. Generated file paths are also restricted to the selected language's configured scope, and existing files cannot be overwritten.</p>
+                <p><strong>Execution Limits and Model Guardrails</Strong></p>
+                <p>The orchestration loop uses configurable boundaries to prevent uncontrolled model interactions. The current implementation limits context-gathering to 15 passes, allows up to five distinct file reads, and provides up to three code-generation attempts.</p>
+                <p>Additional guardrails prevent premature code generation during the repository investigation phase. Repeated requests for invalid file paths trigger an abort and a notification for human review.</p>
+                <p><strong>Sensitive-Data Protection</Strong></p>
+                <p>File contents are inspected and sensitive information is redacted before being returned to the model. This includes common patterns such as email addresses, IP addresses, AWS account IDs, secret assignments, and configurable organization-specific terms.</p>
+                <p>A separate outbound security check scans generated code before GitHub submission. If sensitive information is detected, the submission pipeline is stopped rather than allowing the content to proceed.</p>
+                <p><strong>Impact:</strong> These controls establish boundaries around what the model can access, how it interacts with the repository, and what it can submit. By combining request authentication, path validation, execution limits, data redaction, outbound scanning, and language based scope, the orchestrator reduces the risk of unintended access or sensitive-data exposure while keeping the workflow under human oversight through GitHub Pull Requests.</p>
+    
             </section>
 
             <section id="security">
-                <h2>08. Scoped GitHub Bots</h2>
-                <p>I used separate bot identities in GitHub for different domains, such as infrastructure and configuration.</p>
-                <p><strong>Impact:</strong> This enforces least-privilege access and improves security. It also makes ownership of automated changes clearer, which is important in collaborative environments.</p>
+                <h2>08. Technology Stack</h2>
+                <p>The orchestrator brings together five core technologies and integrations, each serving a distinct role in the system.</p>
+                <p><strong>Core Application — Python : </strong> Python provides the foundation for the orchestrator. It handles the application logic, coordinates the workflow, manages interactions between components, and controls the processing of development tasks.</p>
+                <p><strong>API Layer — FastAPI and Uvicorn: </strong>  FastAPI exposes the webhook endpoint that receives Jira events and passes incoming requests into the orchestration process. Uvicorn runs the application as the ASGI server. </p>
+                <p><strong>LLM Runtime — Ollama and Phi-3: </strong> Ollama provides the local runtime for hosting and interacting with the language model. The project currently uses Phi-3 for understanding development tasks, analyzing repository context, and generating code based on the selected engineering persona. </p>
+                <p><strong>Task Management — Jira REST API and Webhooks: </strong>  Jira webhooks trigger the orchestration process when a development request is received. The Jira REST API is used to retrieve the associated issue information, including its summary, description, and labels. </p>
+                <p><strong>Version Control — GitHub API and PyGithub: </strong> GitHub provides the repository and code review platform. The orchestrator uses PyGithub to interact with GitHub, create a branch, commit generated changes, and open a Pull Request for human review. </p>
+
             </section>
 
             <a href="https://github.com/Nebat-Taha/ai-pr-orchestrator" target="_blank" style="color: var(--accent); font-weight: 700; text-decoration: none; font-size: 0.9rem;">View GitHub Repo →</a>
